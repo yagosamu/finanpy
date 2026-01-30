@@ -19,7 +19,7 @@
   - Verificar estrutura criada
   - Testar servidor: `python manage.py runserver`
   
-- [ ] **0.1.4** - Configurar settings.py
+- [X] **0.1.4** - Configurar settings.py
   - Criar arquivo .env na raiz do projeto
   - Mover SECRET_KEY para arquivo .env
   - Configurar DEBUG através de variável de ambiente
@@ -60,11 +60,11 @@
   - Criar arquivo urls.py dentro da app
 
 #### Tarefa 0.3: Configuração do TailwindCSS
-- [ ] **0.3.1** - Instalar Node.js e npm
+- [X] **0.3.1** - Instalar Node.js e npm
   - Verificar instalação: `node --version`
   - Verificar npm: `npm --version`
-  
-- [ ] **0.3.2** - Configurar TailwindCSS via CDN (temporário)
+
+- [X] **0.3.2** - Configurar TailwindCSS via CDN (temporário)
   - Criar arquivo base.html
   - Adicionar CDN do Tailwind no <head>
   - Testar classes básicas
