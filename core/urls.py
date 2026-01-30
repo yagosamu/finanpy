@@ -18,7 +18,10 @@ from django.contrib import admin
 from django.urls import path
 from django.views.generic import TemplateView
 
+from core.views import HomeView
+
 urlpatterns = [
+    path('', HomeView.as_view(), name='home'),
     path('admin/', admin.site.urls),
     path('test-tailwind/', TemplateView.as_view(template_name='test_tailwind.html'), name='test_tailwind'),
 ]

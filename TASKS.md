@@ -153,25 +153,25 @@
   - Verificar tabela no SQLite
 
 #### Tarefa 1.2: Model de Profile
-- [ ] **1.2.1** - Criar Profile model em profiles/models.py
+- [X] **1.2.1** - Criar Profile model em profiles/models.py
   - Campo user (OneToOneField para User)
   - Campo first_name (CharField)
   - Campo last_name (CharField)
   - Campo phone (CharField, opcional)
   - Campo birth_date (DateField, opcional)
   - Campos created_at e updated_at
-  
-- [ ] **1.2.2** - Criar signal para criar Profile automaticamente
+
+- [X] **1.2.2** - Criar signal para criar Profile automaticamente
   - Criar arquivo profiles/signals.py
   - Signal post_save no User para criar Profile
   - Importar signals no apps.py
-  
-- [ ] **1.2.3** - Registrar Profile no admin
+
+- [X] **1.2.3** - Registrar Profile no admin
   - Criar ProfileAdmin em profiles/admin.py
   - Configurar list_display
   - Configurar campos de busca
-  
-- [ ] **1.2.4** - Criar e aplicar migrations
+
+- [X] **1.2.4** - Criar e aplicar migrations
   - `python manage.py makemigrations profiles`
   - `python manage.py migrate`
 
