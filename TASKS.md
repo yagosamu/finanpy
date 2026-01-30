@@ -131,23 +131,23 @@
 ### Sprint 1: Autenticação e Sistema de Usuários (1 semana)
 
 #### Tarefa 1.1: Model de Usuário Customizado
-- [ ] **1.1.1** - Criar CustomUser model em users/models.py
+- [X] **1.1.1** - Criar CustomUser model em users/models.py
   - Herdar de AbstractUser
   - Definir USERNAME_FIELD = 'email'
   - Adicionar campo email como único
   - Adicionar campos created_at e updated_at
   - Remover campo username dos REQUIRED_FIELDS
-  
-- [ ] **1.1.2** - Criar CustomUserManager
+
+- [X] **1.1.2** - Criar CustomUserManager
   - Sobrescrever create_user para usar email
   - Sobrescrever create_superuser para usar email
   - Validar formato de email
-  
-- [ ] **1.1.3** - Configurar AUTH_USER_MODEL
+
+- [X] **1.1.3** - Configurar AUTH_USER_MODEL
   - Adicionar em settings.py: AUTH_USER_MODEL = 'users.CustomUser'
   - Verificar configuração
-  
-- [ ] **1.1.4** - Criar e aplicar migrations
+
+- [X] **1.1.4** - Criar e aplicar migrations
   - `python manage.py makemigrations`
   - `python manage.py migrate`
   - Verificar tabela no SQLite
