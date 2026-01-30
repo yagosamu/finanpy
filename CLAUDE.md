@@ -21,6 +21,11 @@ python manage.py createsuperuser
 
 # Django shell
 python manage.py shell
+
+# TailwindCSS (requires Node.js)
+npm run build:css          # Build CSS once
+npm run watch:css          # Watch for changes and rebuild
+npm run build:css:minify   # Build minified CSS for production
 ```
 
 ## Architecture

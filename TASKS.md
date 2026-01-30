@@ -1,6 +1,6 @@
 ## Lista de Tarefas
 
-### Sprint 0: Setup e Configuração (1 semana)
+### [X] Sprint 0: Setup e Configuração (1 semana)
 
 #### Tarefa 0.1: Configuração Inicial do Projeto
 - [X] **0.1.1** - Criar ambiente virtual Python
@@ -69,7 +69,7 @@
   - Adicionar CDN do Tailwind no <head>
   - Testar classes básicas
   
-- [ ] **0.3.3** - Configurar TailwindCSS local (opcional posterior)
+- [X] **0.3.3** - Configurar TailwindCSS local (opcional posterior)
   - Instalar: `npm install -D tailwindcss`
   - Executar: `npx tailwindcss init`
   - Configurar tailwind.config.js
@@ -77,18 +77,18 @@
   - Configurar script de build
 
 #### Tarefa 0.4: Estrutura de Templates Base
-- [ ] **0.4.1** - Criar diretório de templates
+- [X] **0.4.1** - Criar diretório de templates
   - Criar: `templates/` na raiz do projeto
   - Configurar TEMPLATES em settings.py
   - Adicionar DIRS: [BASE_DIR / 'templates']
-  
-- [ ] **0.4.2** - Criar template base.html
+
+- [X] **0.4.2** - Criar template base.html
   - Estrutura HTML5 básica
   - Inclusão do TailwindCSS
   - Blocks: title, extra_css, content, extra_js
   - Meta tags responsivas
-  
-- [ ] **0.4.3** - Criar template base_dashboard.html
+
+- [X] **0.4.3** - Criar template base_dashboard.html
   - Herdar de base.html
   - Adicionar navbar
   - Adicionar sidebar
@@ -96,16 +96,16 @@
   - Footer
 
 #### Tarefa 0.5: Configuração de Arquivos Estáticos
-- [ ] **0.5.1** - Criar estrutura de pastas static
+- [X] **0.5.1** - Criar estrutura de pastas static
   - Criar: `static/css/`
   - Criar: `static/js/`
   - Criar: `static/images/`
-  
-- [ ] **0.5.2** - Configurar collectstatic
+
+- [X] **0.5.2** - Configurar collectstatic
   - Definir STATIC_ROOT em settings.py
   - Testar: `python manage.py collectstatic`
-  
-- [ ] **0.5.3** - Criar arquivo CSS customizado
+
+- [X] **0.5.3** - Criar arquivo CSS customizado
   - Criar: `static/css/custom.css`
   - Adicionar estilos complementares ao Tailwind
   - Importar no base.html
@@ -116,7 +116,7 @@
   - Criar arquivo .gitignore
   - Adicionar padrões Python/Django ao .gitignore
   
-- [ ] **0.6.2** - Configurar .gitignore
+- [X] **0.6.2** - Configurar .gitignore
   - Adicionar venv/
   - Adicionar __pycache__/
   - Adicionar *.pyc
@@ -124,7 +124,7 @@
   - Adicionar .env
   - Adicionar node_modules/ (se usar npm local)
   
-- [ ] **0.6.3** - Primeiro commit
+- [X] **0.6.3** - Primeiro commit
   - `git add .`
   - `git commit -m "Initial project setup"`
 
