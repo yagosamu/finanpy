@@ -201,18 +201,18 @@
   - Views de confirmação
 
 #### Tarefa 1.4: Forms de Autenticação
-- [ ] **1.4.1** - Criar SignUpForm em users/forms.py
+- [X] **1.4.1** - Criar SignUpForm em users/forms.py
   - Campos: email, password1, password2
   - Validação de email único
   - Validação de senha forte
   - Clean methods customizados
-  
-- [ ] **1.4.2** - Criar CustomAuthenticationForm
+
+- [X] **1.4.2** - Criar CustomAuthenticationForm
   - Herdar de AuthenticationForm
   - Usar email ao invés de username
   - Mensagens de erro customizadas
-  
-- [ ] **1.4.3** - Criar ProfileForm em profiles/forms.py
+
+- [X] **1.4.3** - Criar ProfileForm em profiles/forms.py
   - Campos do Profile
   - Validações de data de nascimento
   - Validação de telefone (formato brasileiro)
