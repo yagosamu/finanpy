@@ -176,26 +176,26 @@
   - `python manage.py migrate`
 
 #### Tarefa 1.3: Views de Autenticação
-- [ ] **1.3.1** - Criar SignUpView (Class Based View)
+- [X] **1.3.1** - Criar SignUpView (Class Based View)
   - Herdar de CreateView
   - Form para cadastro com email e senha
   - Validação de email único
   - Validação de força de senha
   - Redirecionar para dashboard após cadastro
   - Fazer login automático após cadastro
-  
-- [ ] **1.3.2** - Criar LoginView customizada
+
+- [X] **1.3.2** - Criar LoginView customizada
   - Usar LoginView do Django
   - Customizar template
   - Configurar LOGIN_URL e LOGIN_REDIRECT_URL
   - Usar email ao invés de username
-  
-- [ ] **1.3.3** - Criar LogoutView
+
+- [X] **1.3.3** - Criar LogoutView
   - Usar LogoutView do Django
   - Configurar LOGOUT_REDIRECT_URL
   - Mensagem de sucesso
-  
-- [ ] **1.3.4** - Criar PasswordResetView (opcional)
+
+- [X] **1.3.4** - Criar PasswordResetView (opcional)
   - Configurar fluxo de recuperação de senha
   - Templates de email
   - Views de confirmação
