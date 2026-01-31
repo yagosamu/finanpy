@@ -218,53 +218,53 @@
   - Validação de telefone (formato brasileiro)
 
 #### Tarefa 1.5: Templates de Autenticação
-- [ ] **1.5.1** - Criar template signup.html
+- [X] **1.5.1** - Criar template signup.html
   - Formulário de cadastro estilizado
   - Validações em tempo real (JavaScript)
   - Link para página de login
   - Design com gradientes e tema escuro
-  
-- [ ] **1.5.2** - Criar template login.html
+
+- [X] **1.5.2** - Criar template login.html
   - Formulário de login estilizado
   - Link para cadastro
   - Link para recuperar senha (se implementado)
   - Mensagens de erro claras
-  
-- [ ] **1.5.3** - Criar template profile.html
+
+- [X] **1.5.3** - Criar template profile.html
   - Exibição de dados do perfil
   - Botão para editar perfil
   - Layout consistente com dashboard
-  
-- [ ] **1.5.4** - Criar template profile_edit.html
+
+- [X] **1.5.4** - Criar template profile_edit.html
   - Formulário de edição de perfil
   - Campos preenchidos com dados atuais
   - Botão para alterar senha
   - Validações visuais
 
 #### Tarefa 1.6: URLs de Autenticação
-- [ ] **1.6.1** - Configurar users/urls.py
+- [X] **1.6.1** - Configurar users/urls.py
   - Rota para signup
   - Rota para login
   - Rota para logout
   - Rota para recuperar senha (se implementado)
-  
-- [ ] **1.6.2** - Configurar profiles/urls.py
+
+- [X] **1.6.2** - Configurar profiles/urls.py
   - Rota para visualizar perfil
   - Rota para editar perfil
   - Rota para alterar senha
-  
-- [ ] **1.6.3** - Incluir URLs no core/urls.py
+
+- [X] **1.6.3** - Incluir URLs no core/urls.py
   - Include de users.urls
   - Include de profiles.urls
   - Configurar namespace se necessário
 
 #### Tarefa 1.7: Testes Manuais de Autenticação
-- [ ] **1.7.1** - Testar fluxo de cadastro
+- [X] **1.7.1** - Testar fluxo de cadastro
   - Cadastrar novo usuário
   - Verificar criação de Profile
   - Verificar redirecionamento
   
-- [ ] **1.7.2** - Testar fluxo de login
+- [X] **1.7.2** - Testar fluxo de login
   - Login com email
   - Verificar sessão mantida
   - Testar credenciais inválidas

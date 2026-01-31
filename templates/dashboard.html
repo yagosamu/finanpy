@@ -6,7 +6,7 @@
 <!-- Welcome Section -->
 <div class="mb-8">
     <h1 class="text-3xl font-bold text-slate-100 mb-2">
-        Olá, {% if user.first_name %}{{ user.first_name }}{% else %}{{ user.email|split:'@'|first|title }}{% endif %}!
+        Olá, {% if user.first_name %}{{ user.first_name }}{% else %}{{ user.email|truncatechars:20 }}{% endif %}!
     </h1>
     <p class="text-slate-300">
         Bem-vindo ao seu painel financeiro. Aqui está um resumo da sua situação financeira.

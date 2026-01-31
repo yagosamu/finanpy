@@ -1,0 +1,286 @@
+================================================================================
+                     E2E TEST FLOW - USER SIGNUP
+================================================================================
+
+┌──────────────────────────────────────────────────────────────────────────┐
+│                          STEP 1: PAGE NAVIGATION                          │
+└──────────────────────────────────────────────────────────────────────────┘
+
+    Browser                          Server
+       │                                │
+       │  GET /usuarios/cadastro/       │
+       │───────────────────────────────>│
+       │                                │
+       │                                │ Load template
+       │                                │ Render form
+       │                                │ Generate CSRF token
+       │                                │
+       │       HTML + Form              │
+       │<───────────────────────────────│
+       │       (HTTP 200)               │
+       │                                │
+
+    ✓ PASS - Form loaded with all elements
+
+┌──────────────────────────────────────────────────────────────────────────┐
+│                      STEP 2: FORM FILL & SUBMIT                          │
+└──────────────────────────────────────────────────────────────────────────┘
+
+    Browser                          Server                    Database
+       │                                │                           │
+       │  POST /usuarios/cadastro/      │                           │
+       │  {                             │                           │
+       │    csrfmiddlewaretoken: token  │                           │
+       │    email: test@example.com     │                           │
+       │    password1: Test@123456      │                           │
+       │    password2: Test@123456      │                           │
+       │  }                             │                           │
+       │───────────────────────────────>│                           │
+       │                                │                           │
+       │                                │ Validate CSRF             │
+       │                                │ Validate form             │
+       │                                │ Hash password             │
+       │                                │                           │
+       │                                │ CREATE User               │
+       │                                │──────────────────────────>│
+       │                                │                           │
+       │                                │      User ID: 9           │
+       │                                │<──────────────────────────│
+       │                                │                           │
+       │                                │ [Signal: post_save]       │
+       │                                │ CREATE Profile            │
+       │                                │──────────────────────────>│
+       │                                │                           │
+       │                                │    Profile ID: 4          │
+       │                                │<──────────────────────────│
+       │                                │                           │
+       │                                │ login(request, user)      │
+       │                                │ Create session            │
+       │                                │                           │
+       │    302 Redirect                │                           │
+       │    Location: /dashboard/       │                           │
+       │    Set-Cookie: sessionid       │                           │
+       │<───────────────────────────────│                           │
+       │                                │                           │
+
+    ✓ PASS - User created and logged in
+
+┌──────────────────────────────────────────────────────────────────────────┐
+│                       STEP 3: VERIFY REDIRECT                            │
+└──────────────────────────────────────────────────────────────────────────┘
+
+    Response Headers:
+    ┌──────────────────────────────────┐
+    │ Status: 302 Found                │
+    │ Location: /dashboard/            │
+    │ Set-Cookie: sessionid=...        │
+    └──────────────────────────────────┘
+
+    ✓ PASS - Redirected to dashboard
+
+┌──────────────────────────────────────────────────────────────────────────┐
+│                      STEP 4: VERIFY AUTO-LOGIN                           │
+└──────────────────────────────────────────────────────────────────────────┘
+
+    Session Cookies:
+    ┌──────────────────────────────────┐
+    │ sessionid: [encrypted value]     │
+    │ Domain: localhost                │
+    │ Path: /                          │
+    │ HttpOnly: True                   │
+    └──────────────────────────────────┘
+
+    ✓ PASS - Session cookie present
+
+┌──────────────────────────────────────────────────────────────────────────┐
+│                    STEP 5: VERIFY PROFILE ACCESS                         │
+└──────────────────────────────────────────────────────────────────────────┘
+
+    Browser                          Server                    Database
+       │                                │                           │
+       │  GET /perfil/                  │                           │
+       │  Cookie: sessionid=...         │                           │
+       │───────────────────────────────>│                           │
+       │                                │                           │
+       │                                │ Check authentication      │
+       │                                │ Get user from session     │
+       │                                │                           │
+       │                                │ SELECT Profile            │
+       │                                │ WHERE user_id = 9         │
+       │                                │──────────────────────────>│
+       │                                │                           │
+       │                                │    Profile data           │
+       │                                │<──────────────────────────│
+       │                                │                           │
+       │       Profile Page             │                           │
+       │       (HTTP 200)               │                           │
+       │<───────────────────────────────│                           │
+       │                                │                           │
+
+    ✓ PASS - Profile accessible and displays user email
+
+┌──────────────────────────────────────────────────────────────────────────┐
+│                   STEP 6: DATABASE VERIFICATION                          │
+└──────────────────────────────────────────────────────────────────────────┘
+
+    Database Query Results:
+
+    ┌─────────────────────────────────────────────────────┐
+    │ users_user                                          │
+    ├─────────────────────────────────────────────────────┤
+    │ id: 9                                               │
+    │ email: test-user-23613@example.com                  │
+    │ password: pbkdf2_sha256$...                         │
+    │ is_active: True                                     │
+    │ is_staff: False                                     │
+    │ date_joined: 2026-01-31 11:17:41.192998+00:00       │
+    └─────────────────────────────────────────────────────┘
+                            │
+                            │ 1:1 relationship
+                            ▼
+    ┌─────────────────────────────────────────────────────┐
+    │ profiles_profile                                    │
+    ├─────────────────────────────────────────────────────┤
+    │ id: 4                                               │
+    │ user_id: 9 (FK to users_user)                       │
+    │ created_at: 2026-01-31 11:17:41                     │
+    │ updated_at: 2026-01-31 11:17:41                     │
+    └─────────────────────────────────────────────────────┘
+
+    ✓ PASS - User and Profile records exist
+
+================================================================================
+                            TEST SUMMARY
+================================================================================
+
+    Total Steps: 6
+    Passed:      6 ✓✓✓✓✓✓
+    Failed:      0
+    Warnings:    0
+
+    Success Rate: 100%
+
+    Overall Status: ✓✓✓ ALL TESTS PASSED ✓✓✓
+
+================================================================================
+                         SIGNUP FLOW SEQUENCE
+================================================================================
+
+┌────────────┐
+│   START    │
+└─────┬──────┘
+      │
+      ▼
+┌──────────────────────────────┐
+│ User navigates to            │
+│ /usuarios/cadastro/          │
+└──────────────┬───────────────┘
+               │
+               ▼
+┌──────────────────────────────┐
+│ Page loads with signup form  │
+│ - Email field                │
+│ - Password field             │
+│ - Password confirm field     │
+│ - Submit button              │
+│ - CSRF token (hidden)        │
+└──────────────┬───────────────┘
+               │
+               ▼
+┌──────────────────────────────┐
+│ User fills form:             │
+│ - Email: test@example.com    │
+│ - Password: Test@123456      │
+│ - Confirm: Test@123456       │
+└──────────────┬───────────────┘
+               │
+               ▼
+┌──────────────────────────────┐
+│ Client-side validation       │
+│ ✓ Email format valid         │
+│ ✓ Password strength OK       │
+│ ✓ Passwords match            │
+└──────────────┬───────────────┘
+               │
+               ▼
+┌──────────────────────────────┐
+│ User clicks "Criar Conta"    │
+│ Form submits via POST        │
+└──────────────┬───────────────┘
+               │
+               ▼
+┌──────────────────────────────┐
+│ Server-side validation       │
+│ ✓ CSRF token valid           │
+│ ✓ Email unique               │
+│ ✓ Password requirements met  │
+└──────────────┬───────────────┘
+               │
+               ▼
+┌──────────────────────────────┐
+│ Create User in database      │
+│ - Hash password (PBKDF2)     │
+│ - Save user record           │
+└──────────────┬───────────────┘
+               │
+               ▼
+┌──────────────────────────────┐
+│ Django Signal: post_save     │
+│ Automatically creates        │
+│ Profile for User             │
+└──────────────┬───────────────┘
+               │
+               ▼
+┌──────────────────────────────┐
+│ Login user automatically     │
+│ - Create session             │
+│ - Set session cookie         │
+└──────────────┬───────────────┘
+               │
+               ▼
+┌──────────────────────────────┐
+│ Redirect to /dashboard/      │
+│ HTTP 302 Found               │
+└──────────────┬───────────────┘
+               │
+               ▼
+┌──────────────────────────────┐
+│ User lands on dashboard      │
+│ (Authenticated)              │
+└──────────────┬───────────────┘
+               │
+               ▼
+         ┌─────────┐
+         │   END   │
+         └─────────┘
+
+================================================================================
+                        SECURITY FEATURES
+================================================================================
+
+┌──────────────────────────────────────────────────────────────────────────┐
+│                                                                          │
+│  1. CSRF Protection                                                      │
+│     ├─ Token generated on form load                                     │
+│     ├─ Token required in POST request                                   │
+│     └─ Request rejected without valid token                             │
+│                                                                          │
+│  2. Password Security                                                    │
+│     ├─ Minimum 8 characters                                             │
+│     ├─ Requires letters + numbers                                       │
+│     ├─ Hashed with PBKDF2-SHA256                                        │
+│     └─ Never stored in plain text                                       │
+│                                                                          │
+│  3. Email Validation                                                     │
+│     ├─ Format validation (client + server)                              │
+│     ├─ Uniqueness constraint                                            │
+│     └─ Case-insensitive lookup                                          │
+│                                                                          │
+│  4. Session Security                                                     │
+│     ├─ Secure cookie (HttpOnly)                                         │
+│     ├─ Server-side session storage                                      │
+│     └─ Django authentication framework                                  │
+│                                                                          │
+└──────────────────────────────────────────────────────────────────────────┘
+
+================================================================================

@@ -1,9 +1,27 @@
-{% extends 'base.html' %}
-{% load static %}
 
-{% block title %}Criar Conta - Finanpy{% endblock %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Criar Conta - Finanpy</title>
 
-{% block content %}
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- TailwindCSS (compiled) -->
+    <link rel="stylesheet" href="/static/css/output.css">
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="/static/css/custom.css">
+
+    
+</head>
+<body class="min-h-screen bg-slate-900 text-slate-100">
+    
 <!-- Signup Section -->
 <section class="relative min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 overflow-hidden flex items-center justify-center">
     <!-- Decorative Background Elements -->
@@ -17,7 +35,7 @@
     <div class="relative z-10 w-full max-w-md px-4 sm:px-6 lg:px-8 py-12">
         <!-- Logo -->
         <div class="text-center mb-8">
-            <a href="{% url 'home' %}" class="inline-flex items-center justify-center">
+            <a href="/" class="inline-flex items-center justify-center">
                 <div class="w-12 h-12 bg-gradient-to-br from-primary-600 to-primary-800 rounded-xl flex items-center justify-center shadow-lg">
                     <span class="text-white font-bold text-2xl">F</span>
                 </div>
@@ -31,66 +49,45 @@
 
         <!-- Signup Form Card -->
         <div class="bg-slate-800 rounded-xl shadow-2xl border border-slate-700 p-8">
-            <form method="post" action="{% url 'users:signup' %}" class="space-y-6">
-                {% csrf_token %}
+            <form method="post" action="/usuarios/cadastro/" class="space-y-6">
+                <input type="hidden" name="csrfmiddlewaretoken" value="VQZVM8fFVp8hu7X1brhYPhNxZHgugF89KyA6IapRLRI5fKi2UNLfbqbn4EMBqZLo">
 
                 <!-- Form-wide errors -->
-                {% if form.non_field_errors %}
-                    <div class="bg-red-900/30 border border-red-700 rounded-lg p-4 flex items-start">
-                        <span class="text-red-400 mr-3 flex-shrink-0">✗</span>
-                        <div class="text-red-100 text-sm">
-                            {% for error in form.non_field_errors %}
-                                <p>{{ error }}</p>
-                            {% endfor %}
-                        </div>
-                    </div>
-                {% endif %}
+                
 
                 <!-- Email Field -->
                 <div>
-                    <label for="{{ form.email.id_for_label }}" class="block text-sm font-medium text-slate-100 mb-2">
+                    <label for="id_email" class="block text-sm font-medium text-slate-100 mb-2">
                         E-mail
                     </label>
                     <div class="relative">
                         <input type="email"
-                               name="{{ form.email.name }}"
-                               id="{{ form.email.id_for_label }}"
-                               value="{{ form.email.value|default:'' }}"
-                               class="w-full px-4 py-3 bg-slate-900 border {% if form.email.errors %}border-red-500{% else %}border-slate-700{% endif %} rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent transition-all duration-200"
+                               name="email"
+                               id="id_email"
+                               value=""
+                               class="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent transition-all duration-200"
                                placeholder="seu@email.com"
                                required>
                         <div id="email-success" class="hidden absolute right-3 top-1/2 transform -translate-y-1/2">
                             <span class="text-green-500 text-xl">✓</span>
                         </div>
                     </div>
-                    {% if form.email.errors %}
-                        <div class="mt-2 text-red-400 text-sm">
-                            {% for error in form.email.errors %}
-                                <p>{{ error }}</p>
-                            {% endfor %}
-                        </div>
-                    {% endif %}
+                    
                     <div id="email-error" class="hidden mt-2 text-red-400 text-sm"></div>
                 </div>
 
                 <!-- Password Field -->
                 <div>
-                    <label for="{{ form.password1.id_for_label }}" class="block text-sm font-medium text-slate-100 mb-2">
+                    <label for="id_password1" class="block text-sm font-medium text-slate-100 mb-2">
                         Senha
                     </label>
                     <input type="password"
-                           name="{{ form.password1.name }}"
-                           id="{{ form.password1.id_for_label }}"
-                           class="w-full px-4 py-3 bg-slate-900 border {% if form.password1.errors %}border-red-500{% else %}border-slate-700{% endif %} rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent transition-all duration-200"
+                           name="password1"
+                           id="id_password1"
+                           class="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent transition-all duration-200"
                            placeholder="Digite sua senha"
                            required>
-                    {% if form.password1.errors %}
-                        <div class="mt-2 text-red-400 text-sm">
-                            {% for error in form.password1.errors %}
-                                <p>{{ error }}</p>
-                            {% endfor %}
-                        </div>
-                    {% endif %}
+                    
 
                     <!-- Password Requirements -->
                     <div id="password-requirements" class="hidden mt-3 space-y-2">
@@ -122,27 +119,21 @@
 
                 <!-- Password Confirmation Field -->
                 <div>
-                    <label for="{{ form.password2.id_for_label }}" class="block text-sm font-medium text-slate-100 mb-2">
+                    <label for="id_password2" class="block text-sm font-medium text-slate-100 mb-2">
                         Confirmar Senha
                     </label>
                     <div class="relative">
                         <input type="password"
-                               name="{{ form.password2.name }}"
-                               id="{{ form.password2.id_for_label }}"
-                               class="w-full px-4 py-3 bg-slate-900 border {% if form.password2.errors %}border-red-500{% else %}border-slate-700{% endif %} rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent transition-all duration-200"
+                               name="password2"
+                               id="id_password2"
+                               class="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent transition-all duration-200"
                                placeholder="Digite sua senha novamente"
                                required>
                         <div id="password2-success" class="hidden absolute right-3 top-1/2 transform -translate-y-1/2">
                             <span class="text-green-500 text-xl">✓</span>
                         </div>
                     </div>
-                    {% if form.password2.errors %}
-                        <div class="mt-2 text-red-400 text-sm">
-                            {% for error in form.password2.errors %}
-                                <p>{{ error }}</p>
-                            {% endfor %}
-                        </div>
-                    {% endif %}
+                    
                     <div id="password2-error" class="hidden mt-2 text-red-400 text-sm"></div>
                 </div>
 
@@ -165,7 +156,7 @@
 
             <!-- Login Link -->
             <div class="text-center">
-                <a href="{% url 'users:login' %}"
+                <a href="/usuarios/login/"
                    class="inline-block px-6 py-3 bg-slate-700 hover:bg-slate-600 text-slate-100 font-medium rounded-lg border border-slate-600 transition-all duration-200 w-full text-center">
                     Fazer Login
                 </a>
@@ -174,7 +165,7 @@
 
         <!-- Back to Home Link -->
         <div class="text-center mt-6">
-            <a href="{% url 'home' %}" class="text-slate-400 hover:text-primary-400 transition-colors text-sm">
+            <a href="/" class="text-slate-400 hover:text-primary-400 transition-colors text-sm">
                 ← Voltar para a página inicial
             </a>
         </div>
@@ -215,9 +206,9 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     // Get form elements
-    const emailInput = document.getElementById('{{ form.email.id_for_label }}');
-    const password1Input = document.getElementById('{{ form.password1.id_for_label }}');
-    const password2Input = document.getElementById('{{ form.password2.id_for_label }}');
+    const emailInput = document.getElementById('id_email');
+    const password1Input = document.getElementById('id_password1');
+    const password2Input = document.getElementById('id_password2');
 
     // Get validation containers
     const emailError = document.getElementById('email-error');
@@ -424,4 +415,8 @@ document.addEventListener('DOMContentLoaded', function() {
     password2Input.addEventListener('blur', updatePassword2Validation);
 });
 </script>
-{% endblock %}
+
+
+    
+</body>
+</html>
