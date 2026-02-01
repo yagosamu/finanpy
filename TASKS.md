@@ -128,7 +128,7 @@
   - `git add .`
   - `git commit -m "Initial project setup"`
 
-### Sprint 1: Autenticação e Sistema de Usuários (1 semana)
+### [X] Sprint 1: Autenticação e Sistema de Usuários (1 semana)
 
 #### Tarefa 1.1: Model de Usuário Customizado
 - [X] **1.1.1** - Criar CustomUser model em users/models.py
@@ -269,7 +269,7 @@
   - Verificar sessão mantida
   - Testar credenciais inválidas
   
-- [ ] **1.7.3** - Testar proteção de rotas
+- [X] **1.7.3** - Testar proteção de rotas
   - Tentar acessar rotas autenticadas sem login
   - Verificar redirecionamento para login
 
@@ -278,18 +278,18 @@
 ### Sprint 2: Site Público e Landing Page (1 semana)
 
 #### Tarefa 2.1: Estrutura da Landing Page
-- [ ] **2.1.1** - Criar app home (opcional) ou views no core
+- [X] **2.1.1** - Criar app home (opcional) ou views no core
   - Criar view para landing page
   - Configurar como página inicial (/)
-  
-- [ ] **2.1.2** - Criar template home.html
+
+- [X] **2.1.2** - Criar template home.html
   - Header com logo e navegação
   - Hero section com call-to-action
   - Seção de benefícios/features
   - Seção de depoimentos (mockup)
   - Footer com links e informações
-  
-- [ ] **2.1.3** - Implementar navegação responsiva
+
+- [X] **2.1.3** - Implementar navegação responsiva
   - Menu hamburguer para mobile
   - Transições suaves
   - Links para cadastro e login destacados

@@ -21,17 +21,51 @@
                         Finanpy
                     </span>
                 </div>
-                <div class="flex items-center space-x-4">
-                    <a href="#recursos" class="hidden md:block text-slate-300 hover:text-primary-400 px-3 py-2 rounded-lg transition-colors">
+
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex items-center space-x-4">
+                    <a href="#recursos" class="text-slate-300 hover:text-primary-400 px-3 py-2 rounded-lg transition-colors">
                         Recursos
                     </a>
-                    <a href="#beneficios" class="hidden md:block text-slate-300 hover:text-primary-400 px-3 py-2 rounded-lg transition-colors">
+                    <a href="#beneficios" class="text-slate-300 hover:text-primary-400 px-3 py-2 rounded-lg transition-colors">
                         Benefícios
+                    </a>
+                    <a href="#depoimentos" class="text-slate-300 hover:text-primary-400 px-3 py-2 rounded-lg transition-colors">
+                        Depoimentos
                     </a>
                     <a href="{% url 'users:login' %}" class="text-slate-300 hover:text-primary-400 px-4 py-2 rounded-lg transition-colors">
                         Entrar
                     </a>
                     <a href="{% url 'users:signup' %}" class="px-6 py-2 bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 text-white font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-200">
+                        Começar Grátis
+                    </a>
+                </div>
+
+                <!-- Mobile Hamburger Button -->
+                <button id="mobile-menu-button" class="md:hidden text-slate-300 hover:text-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-600 rounded-lg p-2 transition-all duration-200">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path id="menu-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        <path id="close-icon" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Mobile Menu Dropdown -->
+            <div id="mobile-menu" class="hidden md:hidden border-t border-slate-800 py-4 transition-all duration-300">
+                <div class="flex flex-col space-y-2">
+                    <a href="#recursos" class="text-slate-300 hover:text-primary-400 hover:bg-slate-800/50 px-4 py-3 rounded-lg transition-all duration-200">
+                        Recursos
+                    </a>
+                    <a href="#beneficios" class="text-slate-300 hover:text-primary-400 hover:bg-slate-800/50 px-4 py-3 rounded-lg transition-all duration-200">
+                        Benefícios
+                    </a>
+                    <a href="#depoimentos" class="text-slate-300 hover:text-primary-400 hover:bg-slate-800/50 px-4 py-3 rounded-lg transition-all duration-200">
+                        Depoimentos
+                    </a>
+                    <a href="{% url 'users:login' %}" class="text-slate-300 hover:text-primary-400 hover:bg-slate-800/50 px-4 py-3 rounded-lg transition-all duration-200">
+                        Entrar
+                    </a>
+                    <a href="{% url 'users:signup' %}" class="px-4 py-3 bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 text-white font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 text-center">
                         Começar Grátis
                     </a>
                 </div>
@@ -301,6 +335,85 @@
     </div>
 </section>
 
+<!-- Testimonials Section -->
+<section id="depoimentos" class="py-20 bg-slate-900 border-t border-slate-800">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl md:text-5xl font-bold text-slate-100 mb-4">
+                O que nossos usuários dizem
+            </h2>
+            <p class="text-xl text-slate-300 max-w-2xl mx-auto">
+                Conheça as experiências de quem já está usando o Finanpy
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Testimonial 1 -->
+            <div class="bg-slate-800 rounded-xl shadow-lg border border-slate-700 p-8 hover:border-primary-600 transition-all duration-300">
+                <div class="flex items-center mb-6">
+                    <div class="w-14 h-14 bg-gradient-to-br from-primary-600 to-primary-700 rounded-full flex items-center justify-center text-white font-bold text-xl">
+                        MC
+                    </div>
+                    <div class="ml-4">
+                        <h3 class="text-lg font-bold text-slate-100">Maria Costa</h3>
+                        <p class="text-sm text-slate-400">Empreendedora</p>
+                    </div>
+                </div>
+                <div class="text-slate-300 leading-relaxed">
+                    <svg class="w-8 h-8 text-primary-600 mb-3" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
+                    </svg>
+                    <p class="text-slate-300">
+                        O Finanpy mudou completamente a forma como gerencio as finanças do meu negócio. Agora consigo ter uma visão clara de todas as entradas e saídas. Recomendo demais!
+                    </p>
+                </div>
+            </div>
+
+            <!-- Testimonial 2 -->
+            <div class="bg-slate-800 rounded-xl shadow-lg border border-slate-700 p-8 hover:border-secondary-500 transition-all duration-300">
+                <div class="flex items-center mb-6">
+                    <div class="w-14 h-14 bg-gradient-to-br from-secondary-500 to-secondary-600 rounded-full flex items-center justify-center text-white font-bold text-xl">
+                        RS
+                    </div>
+                    <div class="ml-4">
+                        <h3 class="text-lg font-bold text-slate-100">Ricardo Santos</h3>
+                        <p class="text-sm text-slate-400">Profissional Liberal</p>
+                    </div>
+                </div>
+                <div class="text-slate-300 leading-relaxed">
+                    <svg class="w-8 h-8 text-secondary-500 mb-3" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
+                    </svg>
+                    <p class="text-slate-300">
+                        Interface super intuitiva e fácil de usar. Em poucos minutos já estava registrando minhas transações. O dashboard analítico é excelente para acompanhar os gastos mensais.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Testimonial 3 -->
+            <div class="bg-slate-800 rounded-xl shadow-lg border border-slate-700 p-8 hover:border-green-500 transition-all duration-300">
+                <div class="flex items-center mb-6">
+                    <div class="w-14 h-14 bg-gradient-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center text-white font-bold text-xl">
+                        AP
+                    </div>
+                    <div class="ml-4">
+                        <h3 class="text-lg font-bold text-slate-100">Ana Paula</h3>
+                        <p class="text-sm text-slate-400">Estudante</p>
+                    </div>
+                </div>
+                <div class="text-slate-300 leading-relaxed">
+                    <svg class="w-8 h-8 text-green-500 mb-3" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
+                    </svg>
+                    <p class="text-slate-300">
+                        Como estudante, preciso controlar cada centavo. O Finanpy é gratuito e me ajuda a organizar minha mesada e gastos com materiais. Perfeito para quem está começando!
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
 <!-- CTA Section -->
 <section class="py-20 bg-slate-900">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -458,4 +571,44 @@
     animation-delay: 4s;
 }
 </style>
+
+<!-- Mobile Menu Toggle Script -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const menuIcon = document.getElementById('menu-icon');
+    const closeIcon = document.getElementById('close-icon');
+
+    if (mobileMenuButton && mobileMenu) {
+        mobileMenuButton.addEventListener('click', function() {
+            mobileMenu.classList.toggle('hidden');
+            menuIcon.classList.toggle('hidden');
+            closeIcon.classList.toggle('hidden');
+        });
+
+        // Close mobile menu when clicking on a link
+        const mobileMenuLinks = mobileMenu.querySelectorAll('a');
+        mobileMenuLinks.forEach(function(link) {
+            link.addEventListener('click', function() {
+                mobileMenu.classList.add('hidden');
+                menuIcon.classList.remove('hidden');
+                closeIcon.classList.add('hidden');
+            });
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const isClickInsideMenu = mobileMenu.contains(event.target);
+            const isClickOnButton = mobileMenuButton.contains(event.target);
+
+            if (!isClickInsideMenu && !isClickOnButton && !mobileMenu.classList.contains('hidden')) {
+                mobileMenu.classList.add('hidden');
+                menuIcon.classList.remove('hidden');
+                closeIcon.classList.add('hidden');
+            }
+        });
+    }
+});
+</script>
 {% endblock %}
