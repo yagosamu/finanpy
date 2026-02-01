@@ -336,31 +336,31 @@
   - Reordenar elementos se necessário
 
 #### Tarefa 2.4: Componentes Reutilizáveis
-- [ ] **2.4.1** - Criar componente de navbar
+- [X] **2.4.1** - Criar componente de navbar
   - Template include navbar.html
   - Logo com gradiente
   - Links de navegação
   - Botões de ação
-  
-- [ ] **2.4.2** - Criar componente de footer
+
+- [X] **2.4.2** - Criar componente de footer
   - Template include footer.html
   - Links úteis
   - Informações de contato (mockup)
   - Copyright
-  
-- [ ] **2.4.3** - Criar componente de card
+
+- [X] **2.4.3** - Criar componente de card
   - Template include card.html
   - Parâmetros: título, descrição, ícone
   - Estilo consistente com design system
 
 #### Tarefa 2.5: Conteúdo e Copywriting
-- [ ] **2.5.1** - Escrever textos da landing page
+- [X] **2.5.1** - Escrever textos da landing page
   - Título principal impactante
   - Descrição de funcionalidades
   - Benefícios claros
   - Chamadas para ação persuasivas
-  
-- [ ] **2.5.2** - Preparar assets visuais
+
+- [X] **2.5.2** - Preparar assets visuais
   - Ícones (usar biblioteca como Heroicons)
   - Imagens placeholder (ou ilustrações)
   - Logo do Finanpy

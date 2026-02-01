@@ -1,0 +1,68 @@
+{# Reusable Card Component #}
+{#
+Usage:
+{% include 'components/card.html' with title="Card Title" description="Card description text" %}
+{% include 'components/card.html' with title="Card Title" description="Card description" icon_color="secondary" %}
+{% include 'components/card.html' with title="Card Title" description="Card description" href="/some/url/" %}
+{% include 'components/card.html' with title="Card Title" description="Card description" icon="<svg>...</svg>" icon_color="green" %}
+
+Parameters:
+- title (required): Card title text
+- description (required): Card description text
+- icon (optional): SVG icon markup as string
+- icon_color (optional, default: "primary"): Color scheme - primary, secondary, green, blue, amber, purple, red
+- href (optional): If provided, makes the card clickable
+- border_color (optional): Custom border color on hover (e.g., "primary-600", "green-500")
+#}
+
+{# Set default values #}
+{% if not icon_color %}
+    {% with icon_color="primary" %}{% endwith %}
+{% endif %}
+
+{# Define color schemes for icon backgrounds and border hovers #}
+{% if icon_color == "primary" %}
+    {% with gradient_from="from-primary-600" gradient_to="to-primary-700" hover_border="hover:border-primary-600" %}{% endwith %}
+{% elif icon_color == "secondary" %}
+    {% with gradient_from="from-secondary-500" gradient_to="to-secondary-600" hover_border="hover:border-secondary-500" %}{% endwith %}
+{% elif icon_color == "green" %}
+    {% with gradient_from="from-green-500" gradient_to="to-green-600" hover_border="hover:border-green-500" %}{% endwith %}
+{% elif icon_color == "blue" %}
+    {% with gradient_from="from-blue-500" gradient_to="to-blue-600" hover_border="hover:border-blue-500" %}{% endwith %}
+{% elif icon_color == "amber" %}
+    {% with gradient_from="from-amber-500" gradient_to="to-amber-600" hover_border="hover:border-amber-500" %}{% endwith %}
+{% elif icon_color == "purple" %}
+    {% with gradient_from="from-purple-500" gradient_to="to-purple-600" hover_border="hover:border-purple-500" %}{% endwith %}
+{% elif icon_color == "red" %}
+    {% with gradient_from="from-red-500" gradient_to="to-red-600" hover_border="hover:border-red-500" %}{% endwith %}
+{% else %}
+    {% with gradient_from="from-primary-600" gradient_to="to-primary-700" hover_border="hover:border-primary-600" %}{% endwith %}
+{% endif %}
+
+{# Set custom border color if provided #}
+{% if border_color %}
+    {% with hover_border="hover:border-"|add:border_color %}{% endwith %}
+{% endif %}
+
+{# Render as link if href is provided, otherwise as div #}
+{% if href %}
+<a href="{{ href }}" class="block bg-slate-800 rounded-xl shadow-xl border border-slate-700 p-8 {% if icon_color == 'primary' %}hover:border-primary-600{% elif icon_color == 'secondary' %}hover:border-secondary-500{% elif icon_color == 'green' %}hover:border-green-500{% elif icon_color == 'blue' %}hover:border-blue-500{% elif icon_color == 'amber' %}hover:border-amber-500{% elif icon_color == 'purple' %}hover:border-purple-500{% elif icon_color == 'red' %}hover:border-red-500{% elif border_color %}hover:border-{{ border_color }}{% else %}hover:border-primary-600{% endif %} transition-all duration-300 group">
+    {% if icon %}
+    <div class="w-14 h-14 bg-gradient-to-br {% if icon_color == 'primary' %}from-primary-600 to-primary-700{% elif icon_color == 'secondary' %}from-secondary-500 to-secondary-600{% elif icon_color == 'green' %}from-green-500 to-green-600{% elif icon_color == 'blue' %}from-blue-500 to-blue-600{% elif icon_color == 'amber' %}from-amber-500 to-amber-600{% elif icon_color == 'purple' %}from-purple-500 to-purple-600{% elif icon_color == 'red' %}from-red-500 to-red-600{% else %}from-primary-600 to-primary-700{% endif %} rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+        {{ icon|safe }}
+    </div>
+    {% endif %}
+    <h3 class="text-2xl font-bold text-slate-100 mb-3">{{ title }}</h3>
+    <p class="text-slate-300 leading-relaxed">{{ description }}</p>
+</a>
+{% else %}
+<div class="bg-slate-800 rounded-xl shadow-xl border border-slate-700 p-8 {% if icon_color == 'primary' %}hover:border-primary-600{% elif icon_color == 'secondary' %}hover:border-secondary-500{% elif icon_color == 'green' %}hover:border-green-500{% elif icon_color == 'blue' %}hover:border-blue-500{% elif icon_color == 'amber' %}hover:border-amber-500{% elif icon_color == 'purple' %}hover:border-purple-500{% elif icon_color == 'red' %}hover:border-red-500{% elif border_color %}hover:border-{{ border_color }}{% else %}hover:border-primary-600{% endif %} transition-all duration-300 group">
+    {% if icon %}
+    <div class="w-14 h-14 bg-gradient-to-br {% if icon_color == 'primary' %}from-primary-600 to-primary-700{% elif icon_color == 'secondary' %}from-secondary-500 to-secondary-600{% elif icon_color == 'green' %}from-green-500 to-green-600{% elif icon_color == 'blue' %}from-blue-500 to-blue-600{% elif icon_color == 'amber' %}from-amber-500 to-amber-600{% elif icon_color == 'purple' %}from-purple-500 to-purple-600{% elif icon_color == 'red' %}from-red-500 to-red-600{% else %}from-primary-600 to-primary-700{% endif %} rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+        {{ icon|safe }}
+    </div>
+    {% endif %}
+    <h3 class="text-2xl font-bold text-slate-100 mb-3">{{ title }}</h3>
+    <p class="text-slate-300 leading-relaxed">{{ description }}</p>
+</div>
+{% endif %}
