@@ -36,7 +36,7 @@
                     <a href="{% url 'users:login' %}" class="text-slate-300 hover:text-primary-400 px-4 py-2 rounded-lg transition-colors">
                         Entrar
                     </a>
-                    <a href="{% url 'users:signup' %}" class="px-6 py-2 bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 text-white font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-200">
+                    <a href="{% url 'users:signup' %}" class="btn-glow px-6 py-2 bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 text-white font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-200">
                         Começar Grátis
                     </a>
                 </div>
@@ -76,7 +76,7 @@
     <!-- Hero Content -->
     <div class="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-32">
         <div class="max-w-4xl mx-auto text-center">
-            <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold text-slate-100 mb-6 leading-tight">
+            <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-slate-100 mb-6 leading-tight">
                 Controle suas
                 <span class="bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
                     finanças
@@ -88,7 +88,7 @@
                 Tudo que você precisa para organizar sua vida financeira.
             </p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="{% url 'users:signup' %}" class="px-8 py-4 bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 text-lg">
+                <a href="{% url 'users:signup' %}" class="btn-glow px-8 py-4 bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 text-lg">
                     Criar Conta Gratuita
                 </a>
                 <a href="#recursos" class="px-8 py-4 bg-slate-700/50 hover:bg-slate-600/50 text-slate-100 font-semibold rounded-lg border border-slate-600 backdrop-blur-sm transition-all duration-200 text-lg">
@@ -107,7 +107,7 @@
 </section>
 
 <!-- Features Section -->
-<section id="recursos" class="py-20 bg-slate-900 border-t border-slate-800">
+<section id="recursos" class="py-20 bg-slate-900 border-t border-slate-800 opacity-0 transition-all duration-700" data-animate="fadeIn">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
             <h2 class="text-4xl md:text-5xl font-bold text-slate-100 mb-4">
@@ -207,7 +207,7 @@
 </section>
 
 <!-- Benefits Section -->
-<section id="beneficios" class="py-20 bg-gradient-to-br from-slate-800 to-slate-900 border-y border-slate-700">
+<section id="beneficios" class="py-20 bg-gradient-to-br from-slate-800 to-slate-900 border-y border-slate-700 opacity-0 transition-all duration-700" data-animate="fadeIn">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
@@ -278,7 +278,7 @@
             </div>
 
             <div class="relative">
-                <div class="bg-gradient-to-br from-slate-700 to-slate-800 rounded-2xl shadow-2xl border border-slate-600 p-8">
+                <div class="bg-gradient-to-br from-slate-700 to-slate-800 rounded-2xl shadow-2xl border border-slate-600 p-6 md:p-8 overflow-hidden">
                     <div class="space-y-6">
                         <!-- Mock Dashboard Card -->
                         <div class="bg-gradient-to-br from-primary-600 to-primary-700 rounded-xl p-6 shadow-lg">
@@ -336,7 +336,7 @@
 </section>
 
 <!-- Testimonials Section -->
-<section id="depoimentos" class="py-20 bg-slate-900 border-t border-slate-800">
+<section id="depoimentos" class="py-20 bg-slate-900 border-t border-slate-800 opacity-0 transition-all duration-700" data-animate="fadeIn">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
             <h2 class="text-4xl md:text-5xl font-bold text-slate-100 mb-4">
@@ -415,7 +415,7 @@
 </section>
 
 <!-- CTA Section -->
-<section class="py-20 bg-slate-900">
+<section class="py-20 bg-slate-900 opacity-0 transition-all duration-700" data-animate="fadeIn">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
         <div class="bg-gradient-to-r from-primary-600 to-secondary-600 rounded-2xl shadow-2xl p-12 text-center">
             <h2 class="text-4xl md:text-5xl font-bold text-white mb-6">
@@ -609,6 +609,37 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+
+    // Scroll-triggered animations using IntersectionObserver
+    const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1
+    };
+
+    const animateOnScroll = function(entries, observer) {
+        entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+                const element = entry.target;
+                const animationType = element.getAttribute('data-animate');
+
+                // Remove opacity-0 and add the animation class
+                element.classList.remove('opacity-0');
+                element.classList.add('animate-' + animationType);
+
+                // Stop observing once animated
+                observer.unobserve(element);
+            }
+        });
+    };
+
+    const observer = new IntersectionObserver(animateOnScroll, observerOptions);
+
+    // Observe all elements with data-animate attribute
+    const animatedElements = document.querySelectorAll('[data-animate]');
+    animatedElements.forEach(function(element) {
+        observer.observe(element);
+    });
 });
 </script>
 {% endblock %}

@@ -295,42 +295,42 @@
   - Links para cadastro e login destacados
 
 #### Tarefa 2.2: Seções da Landing Page
-- [ ] **2.2.1** - Hero Section
+- [X] **2.2.1** - Hero Section
   - Título impactante
   - Subtítulo explicativo
   - Botões CTA (Cadastre-se, Login)
   - Imagem ou ilustração (mockup)
   - Gradientes e animações sutis
-  
-- [ ] **2.2.2** - Features Section
+
+- [X] **2.2.2** - Features Section
   - Cards com principais funcionalidades
   - Ícones representativos
   - Descrições curtas e objetivas
   - Grid responsivo (3 colunas desktop, 1 mobile)
-  
-- [ ] **2.2.3** - Benefits Section
+
+- [X] **2.2.3** - Benefits Section
   - Lista de benefícios
   - Visual atrativo com ícones
   - Texto persuasivo
-  
-- [ ] **2.2.4** - CTA Section
+
+- [X] **2.2.4** - CTA Section
   - Chamada final para ação
   - Botão grande de cadastro
   - Argumento de valor
 
 #### Tarefa 2.3: Estilização Avançada
-- [ ] **2.3.1** - Implementar gradientes no hero
+- [X] **2.3.1** - Implementar gradientes no hero
   - Gradiente de fundo animado
   - Efeito de brilho nos botões
   - Sombras e profundidade
-  
-- [ ] **2.3.2** - Adicionar animações CSS
+
+- [X] **2.3.2** - Adicionar animações CSS
   - Fade in ao carregar seções
   - Hover effects nos cards
   - Transições suaves
   - Usar classes Tailwind de transição
-  
-- [ ] **2.3.3** - Otimizar responsividade
+
+- [X] **2.3.3** - Otimizar responsividade
   - Testar em diferentes resoluções
   - Ajustar espaçamentos mobile
   - Reordenar elementos se necessário
