@@ -1,0 +1,123 @@
+{
+  "summary": {
+    "total": 14,
+    "passed": 13,
+    "failed": 1,
+    "pass_rate": 92.85714285714286,
+    "timestamp": "2026-02-03T11:42:08.499698"
+  },
+  "results": [
+    {
+      "number": 1,
+      "test": "Admin Login",
+      "status": "PASS",
+      "message": "Successfully logged in as admin@test.com",
+      "screenshot": "test_screenshots/final_03_login_success.png",
+      "timestamp": "2026-02-03T11:41:03.052812"
+    },
+    {
+      "number": 2,
+      "test": "Navigate to Accounts",
+      "status": "PASS",
+      "message": "Successfully navigated to Accounts list. \n\n1 Conta\n\n\n",
+      "screenshot": "test_screenshots/final_04_accounts_list.png",
+      "timestamp": "2026-02-03T11:41:04.934038"
+    },
+    {
+      "number": 3,
+      "test": "Open Add Account Form",
+      "status": "PASS",
+      "message": "Add account form opened",
+      "screenshot": "test_screenshots/final_05_accounts_add_form.png",
+      "timestamp": "2026-02-03T11:41:06.756986"
+    },
+    {
+      "number": 4,
+      "test": "Create Account",
+      "status": "PASS",
+      "message": "Account 'Conta Teste E2E 114103' created successfully",
+      "screenshot": "test_screenshots/final_07_accounts_after_save.png",
+      "timestamp": "2026-02-03T11:41:12.283842"
+    },
+    {
+      "number": 5,
+      "test": "Read Account (List)",
+      "status": "PASS",
+      "message": "Account 'Conta Teste E2E 114103' found in list",
+      "screenshot": "test_screenshots/final_08_accounts_list_with_new.png",
+      "timestamp": "2026-02-03T11:41:14.021483"
+    },
+    {
+      "number": 6,
+      "test": "Update Account",
+      "status": "PASS",
+      "message": "Account updated successfully",
+      "screenshot": "test_screenshots/final_11_accounts_after_update.png",
+      "timestamp": "2026-02-03T11:41:19.746272"
+    },
+    {
+      "number": 7,
+      "test": "Filter Accounts (Type)",
+      "status": "PASS",
+      "message": "Account type filter working (filtered by conta corrente)",
+      "screenshot": "test_screenshots/final_13_accounts_filtered_checking.png",
+      "timestamp": "2026-02-03T11:41:23.321661"
+    },
+    {
+      "number": 8,
+      "test": "Filter Accounts (Active)",
+      "status": "PASS",
+      "message": "Account active filter working (filtered by todos)",
+      "screenshot": "test_screenshots/final_14_accounts_filtered_active.png",
+      "timestamp": "2026-02-03T11:41:25.772124"
+    },
+    {
+      "number": 9,
+      "test": "Search Accounts",
+      "status": "PASS",
+      "message": "Account search functionality working",
+      "screenshot": "test_screenshots/final_15_accounts_searched.png",
+      "timestamp": "2026-02-03T11:41:29.697289"
+    },
+    {
+      "number": 10,
+      "test": "Validate Required Fields",
+      "status": "PASS",
+      "message": "Required field validation working. Errors: 4",
+      "screenshot": "test_screenshots/final_16_accounts_validation.png",
+      "timestamp": "2026-02-03T11:41:33.123203"
+    },
+    {
+      "number": 11,
+      "test": "Navigate to Categories",
+      "status": "PASS",
+      "message": "Successfully navigated to Categories list. \n\n12 Categorias\n\n\n",
+      "screenshot": "test_screenshots/final_17_categories_list.png",
+      "timestamp": "2026-02-03T11:41:34.881419"
+    },
+    {
+      "number": 12,
+      "test": "View Default Categories",
+      "status": "PASS",
+      "message": "Found 5 default categories: Alimentação, Transporte, Salário, Moradia, Saúde",
+      "screenshot": "test_screenshots/final_18_categories_with_defaults.png",
+      "timestamp": "2026-02-03T11:41:35.033538"
+    },
+    {
+      "number": 13,
+      "test": "Open Add Category Form",
+      "status": "PASS",
+      "message": "Add category form opened",
+      "screenshot": "test_screenshots/final_19_categories_add_form.png",
+      "timestamp": "2026-02-03T11:41:36.796975"
+    },
+    {
+      "number": 14,
+      "test": "Create Category",
+      "status": "FAIL",
+      "message": "Exception: Page.select_option: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\"select[name=\\\"category_type\\\"]\")\n",
+      "screenshot": "test_screenshots/final_20_categories_create_error.png",
+      "timestamp": "2026-02-03T11:42:08.497685"
+    }
+  ]
+}

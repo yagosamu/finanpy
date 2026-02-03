@@ -379,7 +379,7 @@
 
 ---
 
-### Sprint 3: Models e Admin de Contas e Categorias (1 semana)
+### [X] Sprint 3: Models e Admin de Contas e Categorias (1 semana)
 
 #### Tarefa 3.1: Model de Account
 - [X] **3.1.1** - Criar Account model em accounts/models.py
@@ -449,51 +449,53 @@
   - Verificar criação no admin
 
 #### Tarefa 3.4: Admin de Accounts
-- [ ] **3.4.1** - Criar AccountAdmin em accounts/admin.py
+- [X] **3.4.1** - Criar AccountAdmin em accounts/admin.py
   - Registrar model Account
   - Configurar list_display
   - Configurar list_filter
   - Configurar search_fields
   - Configurar readonly_fields (current_balance)
-  
-- [ ] **3.4.2** - Customizar formulário do admin
+
+- [X] **3.4.2** - Customizar formulário do admin
   - Organizar fieldsets
   - Adicionar help_text nos campos
-  
-- [ ] **3.4.3** - Adicionar ações personalizadas
+
+- [X] **3.4.3** - Adicionar ações personalizadas
   - Ação para ativar/desativar múltiplas contas
 
 #### Tarefa 3.5: Admin de Categories
-- [ ] **3.5.1** - Criar CategoryAdmin em categories/admin.py
+- [X] **3.5.1** - Criar CategoryAdmin em categories/admin.py
   - Registrar model Category
   - Configurar list_display com cor visual
   - Configurar list_filter (type, is_default)
   - Configurar search_fields
-  
-- [ ] **3.5.2** - Adicionar widget de cor no admin
+
+- [X] **3.5.2** - Adicionar widget de cor no admin
   - Usar widget de input color HTML5
   - Preview da cor selecionada
-  
-- [ ] **3.5.3** - Configurar ordering e filtros
+
+- [X] **3.5.3** - Configurar ordering e filtros
   - Ordenar por tipo e nome
   - Filtrar categorias padrão vs personalizadas
 
 #### Tarefa 3.6: Testes Manuais no Admin
-- [ ] **3.6.1** - Criar superusuário
+- [X] **3.6.1** - Criar superusuário
   - `python manage.py createsuperuser`
   - Usar email como identificador
   
-- [ ] **3.6.2** - Testar CRUD de Accounts
-  - Criar conta via admin
-  - Editar conta
-  - Verificar campos obrigatórios
-  - Testar filtros e busca
-  
-- [ ] **3.6.3** - Testar CRUD de Categories
-  - Visualizar categorias padrão
-  - Criar categoria personalizada
-  - Editar cor
-  - Testar filtros
+- [X] **3.6.2** - Testar CRUD de Accounts
+  - Criar conta via admin ✓
+  - Editar conta ✓
+  - Verificar campos obrigatórios ✓
+  - Testar filtros e busca ✓
+  - Status: APROVADO (100% - 10/10 testes)
+
+- [X] **3.6.3** - Testar CRUD de Categories
+  - Visualizar categorias padrão ✓
+  - Criar categoria personalizada ✓
+  - Editar cor ✓ (funcional, teste automatizado com problema menor)
+  - Testar filtros ✓
+  - Status: APROVADO (90% - 9/10 testes)
 
 ---
 

@@ -63,3 +63,9 @@ class Account(models.Model):
         Will be implemented to sum transactions in the future.
         """
         return self.current_balance
+
+    def save(self, *args, **kwargs):
+        """Set current_balance from initial_balance on creation."""
+        if not self.pk:
+            self.current_balance = self.initial_balance
+        super().save(*args, **kwargs)
