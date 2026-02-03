@@ -502,32 +502,32 @@
 ### Sprint 4: Views e Templates de Contas (1 semana)
 
 #### Tarefa 4.1: Views de Account
-- [ ] **4.1.1** - Criar AccountListView em accounts/views.py
+- [X] **4.1.1** - Criar AccountListView em accounts/views.py
   - Herdar de LoginRequiredMixin e ListView
   - Filtrar contas do usuário logado
   - Ordenar por nome
   - Adicionar saldo total no context
-  
-- [ ] **4.1.2** - Criar AccountCreateView
+
+- [X] **4.1.2** - Criar AccountCreateView
   - Herdar de LoginRequiredMixin e CreateView
   - Associar automaticamente ao user logado
   - Validar dados
   - Redirecionar para lista após criar
   - Mensagem de sucesso
-  
-- [ ] **4.1.3** - Criar AccountUpdateView
+
+- [X] **4.1.3** - Criar AccountUpdateView
   - Herdar de LoginRequiredMixin e UpdateView
   - Garantir que apenas dono pode editar
   - Campos editáveis (exceto current_balance)
   - Mensagem de sucesso
-  
-- [ ] **4.1.4** - Criar AccountDeleteView
+
+- [X] **4.1.4** - Criar AccountDeleteView
   - Herdar de LoginRequiredMixin e DeleteView
   - Soft delete (is_active = False)
   - Confirmação obrigatória
   - Mensagem de sucesso
-  
-- [ ] **4.1.5** - Criar AccountDetailView
+
+- [X] **4.1.5** - Criar AccountDetailView
   - Herdar de LoginRequiredMixin e DetailView
   - Mostrar detalhes da conta
   - Listar últimas transações da conta
