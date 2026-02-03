@@ -275,7 +275,7 @@
 
 ---
 
-### Sprint 2: Site Público e Landing Page (1 semana)
+### [X] Sprint 2: Site Público e Landing Page (1 semana)
 
 #### Tarefa 2.1: Estrutura da Landing Page
 - [X] **2.1.1** - Criar app home (opcional) ou views no core
@@ -366,13 +366,13 @@
   - Logo do Finanpy
 
 #### Tarefa 2.6: SEO Básico
-- [ ] **2.6.1** - Configurar meta tags
+- [X] **2.6.1** - Configurar meta tags
   - Meta description
   - Meta keywords
   - Open Graph tags (Facebook)
   - Twitter cards
-  
-- [ ] **2.6.2** - Otimizar performance
+
+- [X] **2.6.2** - Otimizar performance
   - Minificar CSS (postergar se necessário)
   - Otimizar imagens
   - Lazy loading de imagens

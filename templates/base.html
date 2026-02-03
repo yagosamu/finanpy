@@ -7,6 +7,33 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>{% block title %}Finanpy - Gestao Financeira{% endblock %}</title>
 
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="{% block meta_description %}Finanpy - Sistema de gestão financeira pessoal. Controle suas contas, categorize transações e visualize seus gastos de forma simples e intuitiva.{% endblock %}">
+    <meta name="keywords" content="{% block meta_keywords %}gestão financeira, finanças pessoais, controle de gastos, orçamento pessoal, transações, categorias financeiras, contas bancárias{% endblock %}">
+    <meta name="author" content="Finanpy">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="{% block canonical_url %}{% endblock %}">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="{% block og_type %}website{% endblock %}">
+    <meta property="og:url" content="{% block og_url %}{% endblock %}">
+    <meta property="og:title" content="{% block og_title %}Finanpy - Gestão Financeira Pessoal{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}Controle suas finanças de forma simples e intuitiva. Gerencie contas, categorize transações e visualize seus gastos.{% endblock %}">
+    <meta property="og:image" content="{% block og_image %}{% static 'images/og-image.svg' %}{% endblock %}">
+    <meta property="og:locale" content="pt_BR">
+    <meta property="og:site_name" content="Finanpy">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="{% block twitter_url %}{% endblock %}">
+    <meta name="twitter:title" content="{% block twitter_title %}Finanpy - Gestão Financeira Pessoal{% endblock %}">
+    <meta name="twitter:description" content="{% block twitter_description %}Controle suas finanças de forma simples e intuitiva. Gerencie contas, categorize transações e visualize seus gastos.{% endblock %}">
+    <meta name="twitter:image" content="{% block twitter_image %}{% static 'images/og-image.svg' %}{% endblock %}">
+
+    <!-- Performance: DNS Prefetch -->
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
