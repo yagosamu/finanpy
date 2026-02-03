@@ -1,0 +1,224 @@
+{% extends 'base_dashboard.html' %}
+
+{% block dashboard_title %}{{ object.name }}{% endblock %}
+
+{% block dashboard_content %}
+<div class="min-h-screen bg-slate-900 py-8">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Page Header -->
+        <div class="mb-8">
+            <a href="{% url 'accounts:list' %}"
+               class="inline-flex items-center text-slate-400 hover:text-slate-200 transition-colors duration-200 mb-4">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                </svg>
+                Voltar para Contas
+            </a>
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                <div class="mb-4 md:mb-0">
+                    <h1 class="text-3xl font-bold text-slate-100 mb-2">{{ object.name }}</h1>
+                    <p class="text-slate-400">{{ object.get_account_type_display }}</p>
+                </div>
+                <!-- Action Buttons -->
+                <div class="flex flex-col sm:flex-row gap-3">
+                    <a href="{% url 'accounts:update' object.pk %}"
+                       class="px-6 py-3 bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800 text-white font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 text-center">
+                        <svg class="w-5 h-5 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                        </svg>
+                        Editar
+                    </a>
+                    <a href="{% url 'accounts:delete' object.pk %}"
+                       class="px-6 py-3 bg-transparent hover:bg-red-900/20 text-red-400 hover:text-red-300 font-medium rounded-lg border-2 border-red-600 hover:border-red-500 transition-all duration-200 text-center">
+                        <svg class="w-5 h-5 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                        </svg>
+                        Excluir
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Current Balance Highlight Card -->
+        <div class="mb-8">
+            <div class="bg-gradient-to-br {% if object.current_balance >= 0 %}from-green-600 to-green-700{% else %}from-red-600 to-red-700{% endif %} rounded-xl shadow-xl p-8">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-white/90 text-lg font-medium mb-2">Saldo Atual</p>
+                        <p class="text-white text-4xl font-bold font-mono">
+                            R$ {{ object.current_balance|floatformat:2 }}
+                        </p>
+                    </div>
+                    <div class="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center">
+                        {% if object.account_type == 'checking' %}
+                            <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/>
+                            </svg>
+                        {% elif object.account_type == 'savings' %}
+                            <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/>
+                            </svg>
+                        {% elif object.account_type == 'wallet' %}
+                            <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/>
+                            </svg>
+                        {% elif object.account_type == 'investment' %}
+                            <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                            </svg>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Account Information Card -->
+            <div class="lg:col-span-2">
+                <div class="bg-slate-800 rounded-xl shadow-lg border border-slate-700 p-8">
+                    <h2 class="text-2xl font-bold text-slate-100 mb-6 flex items-center">
+                        <svg class="w-6 h-6 mr-3 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        Informações da Conta
+                    </h2>
+
+                    <dl class="space-y-6">
+                        <!-- Account Name -->
+                        <div class="border-b border-slate-700 pb-4">
+                            <dt class="text-sm font-medium text-slate-400 mb-1">Nome da Conta</dt>
+                            <dd class="text-lg font-semibold text-slate-100">{{ object.name }}</dd>
+                        </div>
+
+                        <!-- Bank -->
+                        <div class="border-b border-slate-700 pb-4">
+                            <dt class="text-sm font-medium text-slate-400 mb-1">Banco</dt>
+                            <dd class="text-lg text-slate-100">
+                                {% if object.bank %}
+                                    {{ object.bank }}
+                                {% else %}
+                                    <span class="text-slate-500 italic">Não informado</span>
+                                {% endif %}
+                            </dd>
+                        </div>
+
+                        <!-- Account Type -->
+                        <div class="border-b border-slate-700 pb-4">
+                            <dt class="text-sm font-medium text-slate-400 mb-1">Tipo de Conta</dt>
+                            <dd>
+                                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary-600/20 text-primary-300 border border-primary-600/30">
+                                    {{ object.get_account_type_display }}
+                                </span>
+                            </dd>
+                        </div>
+
+                        <!-- Initial Balance -->
+                        <div class="border-b border-slate-700 pb-4">
+                            <dt class="text-sm font-medium text-slate-400 mb-1">Saldo Inicial</dt>
+                            <dd class="text-lg font-mono font-semibold text-slate-100">
+                                R$ {{ object.initial_balance|floatformat:2 }}
+                            </dd>
+                        </div>
+
+                        <!-- Current Balance -->
+                        <div class="border-b border-slate-700 pb-4">
+                            <dt class="text-sm font-medium text-slate-400 mb-1">Saldo Atual</dt>
+                            <dd class="text-lg font-mono font-semibold {% if object.current_balance >= 0 %}text-green-400{% else %}text-red-400{% endif %}">
+                                R$ {{ object.current_balance|floatformat:2 }}
+                            </dd>
+                        </div>
+
+                        <!-- Created Date -->
+                        <div class="border-b border-slate-700 pb-4">
+                            <dt class="text-sm font-medium text-slate-400 mb-1">Data de Criação</dt>
+                            <dd class="text-lg text-slate-100">
+                                {{ object.created_at|date:"d/m/Y \à\s H:i" }}
+                            </dd>
+                        </div>
+
+                        <!-- Updated Date -->
+                        <div>
+                            <dt class="text-sm font-medium text-slate-400 mb-1">Última Atualização</dt>
+                            <dd class="text-lg text-slate-100">
+                                {{ object.updated_at|date:"d/m/Y \à\s H:i" }}
+                            </dd>
+                        </div>
+                    </dl>
+                </div>
+            </div>
+
+            <!-- Statistics Section (Placeholder) -->
+            <div class="space-y-6">
+                <!-- Quick Stats Card -->
+                <div class="bg-slate-800 rounded-xl shadow-lg border border-slate-700 p-6">
+                    <h3 class="text-lg font-bold text-slate-100 mb-4 flex items-center">
+                        <svg class="w-5 h-5 mr-2 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                        </svg>
+                        Estatísticas
+                    </h3>
+
+                    <!-- Placeholder for future statistics -->
+                    <div class="space-y-4 text-center py-8">
+                        <svg class="w-16 h-16 mx-auto text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                        </svg>
+                        <p class="text-slate-400 text-sm">
+                            Estatísticas estarão disponíveis em breve
+                        </p>
+                    </div>
+
+                    <!-- Future implementation: Monthly income/expense, transaction count, etc. -->
+                </div>
+
+                <!-- Status Badge -->
+                <div class="bg-slate-800 rounded-xl shadow-lg border border-slate-700 p-6">
+                    <h3 class="text-lg font-bold text-slate-100 mb-4">Status</h3>
+                    <div class="flex items-center justify-between">
+                        <span class="text-slate-300">Conta Ativa</span>
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium {% if object.is_active %}bg-green-900/30 text-green-400 border border-green-700{% else %}bg-red-900/30 text-red-400 border border-red-700{% endif %}">
+                            {% if object.is_active %}
+                                <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                                </svg>
+                                Ativa
+                            {% else %}
+                                <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                                </svg>
+                                Inativa
+                            {% endif %}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Transactions Section (Placeholder) -->
+        <div class="mt-8">
+            <div class="bg-slate-800 rounded-xl shadow-lg border border-slate-700 p-8">
+                <h2 class="text-2xl font-bold text-slate-100 mb-6 flex items-center">
+                    <svg class="w-6 h-6 mr-3 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"/>
+                    </svg>
+                    Últimas Transações
+                </h2>
+
+                <!-- Empty State -->
+                <div class="text-center py-12">
+                    <svg class="w-20 h-20 mx-auto text-slate-600 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                    </svg>
+                    <p class="text-slate-400 text-lg mb-2">Nenhuma transação registrada nesta conta</p>
+                    <p class="text-slate-500 text-sm">
+                        As transações aparecerão aqui quando forem criadas
+                    </p>
+                </div>
+
+                <!-- Note: This section will be populated with transaction data in future implementation -->
+                <!-- Will display: transaction date, description, category, amount (income/expense) -->
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

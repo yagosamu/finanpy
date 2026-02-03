@@ -534,19 +534,19 @@
   - Mostrar gráfico de evolução (postergar)
 
 #### Tarefa 4.2: Forms de Account
-- [ ] **4.2.1** - Criar AccountForm em accounts/forms.py
+- [X] **4.2.1** - Criar AccountForm em accounts/forms.py
   - Campos: name, account_type, bank, initial_balance
   - Validação de initial_balance (decimal positivo ou negativo)
   - Choices traduzidas para português
   - Help texts claros
-  
-- [ ] **4.2.2** - Customizar widgets dos campos
+
+- [X] **4.2.2** - Customizar widgets dos campos
   - Input com classes Tailwind
   - Select estilizado
   - Placeholder nos campos
 
 #### Tarefa 4.3: Templates de Account
-- [ ] **4.3.1** - Criar account_list.html
+- [X] **4.3.1** - Criar account_list.html
   - Herdar de base_dashboard.html
   - Cards para cada conta
   - Informações: nome, banco, tipo, saldo
@@ -554,22 +554,22 @@
   - Card de saldo total destacado
   - Botão para criar nova conta
   - Grid responsivo
-  
-- [ ] **4.3.2** - Criar account_form.html
+
+- [X] **4.3.2** - Criar account_form.html
   - Formulário estilizado
   - Labels em português
   - Validações visuais
   - Botão de salvar com loading state
   - Botão de cancelar
   - Usar componentes do design system
-  
-- [ ] **4.3.3** - Criar account_confirm_delete.html
+
+- [X] **4.3.3** - Criar account_confirm_delete.html
   - Mensagem de confirmação clara
   - Avisos sobre consequências
   - Botões de confirmar e cancelar
   - Design alinhado com tema
-  
-- [ ] **4.3.4** - Criar account_detail.html
+
+- [X] **4.3.4** - Criar account_detail.html
   - Informações completas da conta
   - Histórico de transações
   - Estatísticas da conta
