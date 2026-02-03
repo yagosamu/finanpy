@@ -382,7 +382,7 @@
 ### Sprint 3: Models e Admin de Contas e Categorias (1 semana)
 
 #### Tarefa 3.1: Model de Account
-- [ ] **3.1.1** - Criar Account model em accounts/models.py
+- [X] **3.1.1** - Criar Account model em accounts/models.py
   - Campo user (ForeignKey para User)
   - Campo name (CharField, max_length=100)
   - Campo account_type (CharField com choices)
@@ -391,26 +391,26 @@
   - Campo current_balance (DecimalField)
   - Campo is_active (BooleanField, default=True)
   - Campos created_at e updated_at
-  
-- [ ] **3.1.2** - Definir choices para account_type
+
+- [X] **3.1.2** - Definir choices para account_type
   - CHECKING = 'checking' - Conta Corrente
   - SAVINGS = 'savings' - Poupança
   - WALLET = 'wallet' - Carteira
   - INVESTMENT = 'investment' - Investimentos
-  
-- [ ] **3.1.3** - Implementar método __str__
+
+- [X] **3.1.3** - Implementar método __str__
   - Retornar nome da conta
-  
-- [ ] **3.1.4** - Implementar método get_balance
+
+- [X] **3.1.4** - Implementar método get_balance
   - Calcular saldo baseado em transações
   - Considerar tipo de transação (receita/despesa)
-  
-- [ ] **3.1.5** - Criar migrations e aplicar
+
+- [X] **3.1.5** - Criar migrations e aplicar
   - `python manage.py makemigrations accounts`
   - `python manage.py migrate`
 
 #### Tarefa 3.2: Model de Category
-- [ ] **3.2.1** - Criar Category model em categories/models.py
+- [X] **3.2.1** - Criar Category model em categories/models.py
   - Campo user (ForeignKey para User, null=True para categorias padrão)
   - Campo name (CharField, max_length=50)
   - Campo category_type (CharField com choices)
@@ -418,33 +418,33 @@
   - Campo is_default (BooleanField, default=False)
   - Campo is_active (BooleanField, default=True)
   - Campos created_at e updated_at
-  
-- [ ] **3.2.2** - Definir choices para category_type
+
+- [X] **3.2.2** - Definir choices para category_type
   - INCOME = 'income' - Receita
   - EXPENSE = 'expense' - Despesa
-  
-- [ ] **3.2.3** - Implementar método __str__
+
+- [X] **3.2.3** - Implementar método __str__
   - Retornar nome da categoria
-  
-- [ ] **3.2.4** - Implementar Meta class
+
+- [X] **3.2.4** - Implementar Meta class
   - unique_together = ['user', 'name']
   - ordering = ['name']
-  
-- [ ] **3.2.5** - Criar migrations e aplicar
+
+- [X] **3.2.5** - Criar migrations e aplicar
   - `python manage.py makemigrations categories`
   - `python manage.py migrate`
 
 #### Tarefa 3.3: Categorias Padrão
-- [ ] **3.3.1** - Criar management command
+- [X] **3.3.1** - Criar management command
   - Criar arquivo: categories/management/commands/create_default_categories.py
-  
-- [ ] **3.3.2** - Implementar lógica do command
+
+- [X] **3.3.2** - Implementar lógica do command
   - Lista de categorias padrão de despesas: Alimentação, Transporte, Moradia, Saúde, Educação, Lazer, Vestuário, Outros
   - Lista de categorias padrão de receitas: Salário, Freelance, Investimentos, Outros
   - Verificar se já existem antes de criar
   - Criar com user=None e is_default=True
-  
-- [ ] **3.3.3** - Executar command
+
+- [X] **3.3.3** - Executar command
   - `python manage.py create_default_categories`
   - Verificar criação no admin
 
