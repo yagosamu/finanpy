@@ -1,3 +1,4 @@
+{% load static %}
 {% extends 'base_dashboard.html' %}
 
 {% block dashboard_title %}{{ object.name }}{% endblock %}
@@ -221,4 +222,9 @@
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+{{ block.super }}
+<script src="{% static 'js/accounts.js' %}"></script>
 {% endblock %}

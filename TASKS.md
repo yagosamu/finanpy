@@ -601,12 +601,12 @@
   - Indicador de crescimento (postergar)
 
 #### Tarefa 4.6: JavaScript para Interações
-- [ ] **4.6.1** - Criar accounts.js em static/js/
+- [X] **4.6.1** - Criar accounts.js em static/js/
   - Confirmação de exclusão com modal
   - Validação de formulário em tempo real
   - Formatação de valores monetários
-  
-- [ ] **4.6.2** - Implementar feedback visual
+
+- [X] **4.6.2** - Implementar feedback visual
   - Loading states nos botões
   - Transições suaves
   - Mensagens toast/alert

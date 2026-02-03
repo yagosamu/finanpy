@@ -1,3 +1,4 @@
+{% load static %}
 {% extends 'base_dashboard.html' %}
 
 {% block dashboard_title %}{% if object %}Editar Conta{% else %}Nova Conta{% endif %}{% endblock %}
@@ -187,4 +188,9 @@
         </div>
     </form>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+{{ block.super }}
+<script src="{% static 'js/accounts.js' %}"></script>
 {% endblock %}
