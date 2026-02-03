@@ -1,0 +1,52 @@
+{#
+  Account Card Component
+
+  Description:
+    Reusable card component for displaying bank account information with
+    type-specific colors, icons, and action buttons.
+
+  Parameters:
+    - account (required): Account model instance
+
+  Account fields used:
+    - account.name: Account name
+    - account.bank: Bank name (optional)
+    - account.account_type: One of 'checking', 'savings', 'wallet', 'investment'
+    - account.get_account_type_display: Human-readable account type
+    - account.balance: Current account balance
+    - account.pk: Primary key for URL routing
+
+  Usage:
+    {% include 'components/account_card.html' with account=account %}
+
+  Example:
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {% for account in accounts %}
+        {% include 'components/account_card.html' with account=account %}
+      {% endfor %}
+    </div>
+#}
+
+{# Define color schemes based on account type #}
+{% if account.account_type == 'checking' %}
+  {% with gradient_from='from-blue-500' gradient_to='to-blue-600' border_hover='hover:border-blue-500' icon_bg='bg-blue-500/20' icon_color='text-blue-400' badge_bg='bg-blue-900/40' badge_border='border-blue-700' badge_text='text-blue-300' %}
+    {% include 'components/account_card_content.html' %}
+  {% endwith %}
+{% elif account.account_type == 'savings' %}
+  {% with gradient_from='from-green-500' gradient_to='to-green-600' border_hover='hover:border-green-500' icon_bg='bg-green-500/20' icon_color='text-green-400' badge_bg='bg-green-900/40' badge_border='border-green-700' badge_text='text-green-300' %}
+    {% include 'components/account_card_content.html' %}
+  {% endwith %}
+{% elif account.account_type == 'wallet' %}
+  {% with gradient_from='from-amber-500' gradient_to='to-amber-600' border_hover='hover:border-amber-500' icon_bg='bg-amber-500/20' icon_color='text-amber-400' badge_bg='bg-amber-900/40' badge_border='border-amber-700' badge_text='text-amber-300' %}
+    {% include 'components/account_card_content.html' %}
+  {% endwith %}
+{% elif account.account_type == 'investment' %}
+  {% with gradient_from='from-purple-500' gradient_to='to-purple-600' border_hover='hover:border-purple-500' icon_bg='bg-purple-500/20' icon_color='text-purple-400' badge_bg='bg-purple-900/40' badge_border='border-purple-700' badge_text='text-purple-300' %}
+    {% include 'components/account_card_content.html' %}
+  {% endwith %}
+{% else %}
+  {# Fallback for unknown account types #}
+  {% with gradient_from='from-slate-500' gradient_to='to-slate-600' border_hover='hover:border-slate-500' icon_bg='bg-slate-500/20' icon_color='text-slate-400' badge_bg='bg-slate-900/40' badge_border='border-slate-700' badge_text='text-slate-300' %}
+    {% include 'components/account_card_content.html' %}
+  {% endwith %}
+{% endif %}

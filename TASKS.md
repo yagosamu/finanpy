@@ -576,26 +576,26 @@
   - Botões de ação
 
 #### Tarefa 4.4: URLs de Account
-- [ ] **4.4.1** - Configurar accounts/urls.py
+- [X] **4.4.1** - Configurar accounts/urls.py
   - Path para list: 'accounts/'
   - Path para create: 'accounts/nova/'
   - Path para update: 'accounts/<pk>/editar/'
   - Path para delete: 'accounts/<pk>/excluir/'
   - Path para detail: 'accounts/<pk>/'
   - Nomear URLs adequadamente
-  
-- [ ] **4.4.2** - Incluir em core/urls.py
+
+- [X] **4.4.2** - Incluir em core/urls.py
   - Include de accounts.urls
   - Configurar namespace 'accounts'
 
 #### Tarefa 4.5: Componentes de UI para Contas
-- [ ] **4.5.1** - Criar componente de card de conta
+- [X] **4.5.1** - Criar componente de card de conta
   - Template include: components/account_card.html
   - Parâmetros: account
   - Cor baseada no tipo de conta
   - Ícone por tipo de conta
-  
-- [ ] **4.5.2** - Criar componente de saldo total
+
+- [X] **4.5.2** - Criar componente de saldo total
   - Destaque visual
   - Formatação monetária
   - Indicador de crescimento (postergar)

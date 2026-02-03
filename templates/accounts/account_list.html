@@ -22,99 +22,14 @@
 
 <!-- Total Balance Card -->
 <div class="mb-8">
-    <div class="bg-gradient-to-r from-primary-600/20 to-secondary-500/20 border border-primary-600/30 rounded-xl shadow-lg p-8">
-        <div class="flex items-center justify-between">
-            <div>
-                <p class="text-sm font-medium text-slate-300 mb-2">Saldo Total</p>
-                <p class="text-4xl font-bold text-slate-100 font-mono">
-                    R$ {{ total_balance|floatformat:2 }}
-                </p>
-            </div>
-            <div class="hidden sm:flex items-center justify-center w-16 h-16 bg-gradient-to-br from-primary-600 to-secondary-500 rounded-full shadow-lg">
-                <svg class="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z" />
-                </svg>
-            </div>
-        </div>
-    </div>
+    {% include 'components/total_balance_card.html' with total_balance=total_balance %}
 </div>
 
 {% if object_list or accounts %}
 <!-- Accounts Grid -->
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
     {% for account in object_list|default:accounts %}
-    <div class="bg-slate-800 rounded-xl shadow-lg border border-slate-700 hover:border-primary-600 transition-all duration-200 p-6">
-        <!-- Account Header -->
-        <div class="flex items-start justify-between mb-4">
-            <div class="flex items-center space-x-3">
-                <!-- Account Type Icon -->
-                <div class="flex items-center justify-center w-12 h-12 bg-gradient-to-br from-primary-600 to-secondary-500 rounded-lg shadow-lg flex-shrink-0">
-                    {% if account.account_type == 'checking' %}
-                    <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z" />
-                    </svg>
-                    {% elif account.account_type == 'savings' %}
-                    <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 8.25H9m6 3H9m3 6l-3-3h1.5a3 3 0 100-6M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    {% elif account.account_type == 'wallet' %}
-                    <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a2.25 2.25 0 00-2.25-2.25H15a3 3 0 11-6 0H5.25A2.25 2.25 0 003 12m18 0v6a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 18v-6m18 0V9M3 12V9m18 0a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 9m18 0V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v3" />
-                    </svg>
-                    {% else %}
-                    <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
-                    </svg>
-                    {% endif %}
-                </div>
-                <div>
-                    <h3 class="text-lg font-bold text-slate-100">{{ account.name }}</h3>
-                    {% if account.bank %}
-                    <p class="text-sm text-slate-400">{{ account.bank }}</p>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-
-        <!-- Account Type Badge -->
-        <div class="mb-4">
-            <span class="inline-flex items-center px-3 py-1 bg-primary-600/20 border border-primary-600/30 rounded-full text-xs font-medium text-primary-400">
-                {{ account.get_account_type_display }}
-            </span>
-        </div>
-
-        <!-- Balance -->
-        <div class="mb-6">
-            <p class="text-sm text-slate-400 mb-1">Saldo Atual</p>
-            <p class="text-2xl font-bold text-slate-100 font-mono">
-                R$ {{ account.current_balance|floatformat:2 }}
-            </p>
-        </div>
-
-        <!-- Action Buttons -->
-        <div class="flex items-center space-x-2">
-            <a href="{% url 'accounts:detail' account.pk %}"
-               class="flex-1 inline-flex items-center justify-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-all duration-200">
-                <svg class="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-                Ver
-            </a>
-            <a href="{% url 'accounts:update' account.pk %}"
-               class="inline-flex items-center justify-center p-2 bg-amber-600 hover:bg-amber-700 text-white text-sm font-medium rounded-lg transition-all duration-200">
-                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
-                </svg>
-            </a>
-            <a href="{% url 'accounts:delete' account.pk %}"
-               class="inline-flex items-center justify-center p-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-lg transition-all duration-200">
-                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
-                </svg>
-            </a>
-        </div>
-    </div>
+        {% include 'components/account_card.html' with account=account %}
     {% endfor %}
 </div>
 

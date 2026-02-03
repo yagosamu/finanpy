@@ -26,5 +26,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('usuarios/', include('users.urls')),
     path('', include('profiles.urls')),
+    path('accounts/', include('accounts.urls', namespace='accounts')),
     path('test-tailwind/', TemplateView.as_view(template_name='test_tailwind.html'), name='test_tailwind'),
 ]
