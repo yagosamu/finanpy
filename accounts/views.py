@@ -11,6 +11,7 @@ from django.views.generic import (
     UpdateView,
 )
 
+from .forms import AccountForm, AccountUpdateForm
 from .models import Account
 
 
@@ -40,7 +41,7 @@ class AccountListView(LoginRequiredMixin, ListView):
 class AccountCreateView(LoginRequiredMixin, CreateView):
     """Create a new account for the logged user."""
     model = Account
-    fields = ['name', 'account_type', 'bank', 'initial_balance']
+    form_class = AccountForm
     template_name = 'accounts/account_form.html'
     success_url = reverse_lazy('accounts:list')
 
@@ -58,7 +59,7 @@ class AccountCreateView(LoginRequiredMixin, CreateView):
 class AccountUpdateView(LoginRequiredMixin, UpdateView):
     """Update an existing account."""
     model = Account
-    fields = ['name', 'account_type', 'bank']
+    form_class = AccountUpdateForm
     template_name = 'accounts/account_form.html'
     success_url = reverse_lazy('accounts:list')
 
@@ -86,9 +87,8 @@ class AccountDeleteView(LoginRequiredMixin, DeleteView):
         """Return only accounts owned by the logged user."""
         return Account.objects.filter(user=self.request.user)
 
-    def delete(self, request, *args, **kwargs):
+    def form_valid(self, form):
         """Perform soft delete instead of actual deletion."""
-        self.object = self.get_object()
         success_url = self.get_success_url()
 
         # Soft delete: set is_active to False
@@ -96,7 +96,7 @@ class AccountDeleteView(LoginRequiredMixin, DeleteView):
         self.object.save()
 
         messages.success(
-            request,
+            self.request,
             f'Conta "{self.object.name}" excluída com sucesso!'
         )
 

@@ -1,10 +1,8 @@
-{# Reusable Card Component #}
-{#
+{% comment %}
+Reusable Card Component
+
 Usage:
-{% include 'components/card.html' with title="Card Title" description="Card description text" %}
-{% include 'components/card.html' with title="Card Title" description="Card description" icon_color="secondary" %}
-{% include 'components/card.html' with title="Card Title" description="Card description" href="/some/url/" %}
-{% include 'components/card.html' with title="Card Title" description="Card description" icon="<svg>...</svg>" icon_color="green" %}
+  include 'components/card.html' with title="Card Title" description="Card description text"
 
 Parameters:
 - title (required): Card title text
@@ -13,7 +11,7 @@ Parameters:
 - icon_color (optional, default: "primary"): Color scheme - primary, secondary, green, blue, amber, purple, red
 - href (optional): If provided, makes the card clickable
 - border_color (optional): Custom border color on hover (e.g., "primary-600", "green-500")
-#}
+{% endcomment %}
 
 {# Set default values #}
 {% if not icon_color %}

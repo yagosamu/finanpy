@@ -499,7 +499,7 @@
 
 ---
 
-### Sprint 4: Views e Templates de Contas (1 semana)
+### [X] Sprint 4: Views e Templates de Contas (1 semana)
 
 #### Tarefa 4.1: Views de Account
 - [X] **4.1.1** - Criar AccountListView em accounts/views.py
@@ -612,17 +612,17 @@
   - Mensagens toast/alert
 
 #### Tarefa 4.7: Testes Manuais de Accounts
-- [ ] **4.7.1** - Testar criação de conta
+- [X] **4.7.1** - Testar criação de conta
   - Preencher formulário
   - Verificar validações
   - Confirmar criação no banco
-  
-- [ ] **4.7.2** - Testar listagem
+
+- [X] **4.7.2** - Testar listagem
   - Verificar exibição de contas
   - Testar responsividade
   - Verificar cálculo de saldo total
-  
-- [ ] **4.7.3** - Testar edição e exclusão
+
+- [X] **4.7.3** - Testar edição e exclusão
   - Editar dados de conta
   - Soft delete
   - Verificar redirecionamentos
