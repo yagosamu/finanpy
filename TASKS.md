@@ -632,42 +632,42 @@
 ### Sprint 5: Views e Templates de Categorias (1 semana)
 
 #### Tarefa 5.1: Views de Category
-- [ ] **5.1.1** - Criar CategoryListView em categories/views.py
+- [X] **5.1.1** - Criar CategoryListView em categories/views.py
   - Herdar de LoginRequiredMixin e ListView
   - Listar categorias padrão + personalizadas do usuário
   - Separar por tipo (receita/despesa) no context
   - Ordenar por nome
-  
-- [ ] **5.1.2** - Criar CategoryCreateView
+
+- [X] **5.1.2** - Criar CategoryCreateView
   - Herdar de LoginRequiredMixin e CreateView
   - Associar ao user logado
   - Validar nome único por usuário
   - Mensagem de sucesso
-  
-- [ ] **5.1.3** - Criar CategoryUpdateView
+
+- [X] **5.1.3** - Criar CategoryUpdateView
   - Apenas categorias não-padrão podem ser editadas
   - Validação de permissão
   - Atualizar informações
   - Mensagem de sucesso
-  
-- [ ] **5.1.4** - Criar CategoryDeleteView
+
+- [X] **5.1.4** - Criar CategoryDeleteView
   - Apenas categorias sem transações
   - Verificar uso antes de excluir
   - Soft delete (is_active = False)
   - Mensagem de erro se em uso
 
 #### Tarefa 5.2: Forms de Category
-- [ ] **5.2.1** - Criar CategoryForm em categories/forms.py
+- [X] **5.2.1** - Criar CategoryForm em categories/forms.py
   - Campos: name, category_type, color
   - Validação de nome único
   - Widget de cor (color picker)
   - Choices de tipo traduzidas
-  
-- [ ] **5.2.2** - Implementar validação de cor
+
+- [X] **5.2.2** - Implementar validação de cor
   - Formato hexadecimal (#RRGGBB)
   - Sugestões de cores padrão
-  
-- [ ] **5.2.3** - Adicionar preview de cor
+
+- [X] **5.2.3** - Adicionar preview de cor
   - JavaScript para mostrar cor selecionada
   - Atualização em tempo real
 
