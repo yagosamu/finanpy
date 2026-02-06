@@ -854,7 +854,7 @@
   - Placeholder nos campos
 
 #### Tarefa 6.6: Templates de Transaction
-- [ ] **6.6.1** - Criar transaction_list.html
+- [X] **6.6.1** - Criar transaction_list.html
   - Herdar de base_dashboard.html
   - Filtros no topo (formulário de filtro)
   - Tabela de transações responsiva
@@ -864,14 +864,14 @@
   - Paginação no rodapé
   - Cards de resumo (total receitas, despesas, saldo)
   
-- [ ] **6.6.2** - Criar transaction_form.html
+- [X] **6.6.2** - Criar transaction_form.html
   - Formulário estilizado
   - Campos organizados logicamente
   - Validações visuais
   - Botões de ação
   - Select de categoria dinâmico
   
-- [ ] **6.6.3** - Criar transaction_confirm_delete.html
+- [X] **6.6.3** - Criar transaction_confirm_delete.html
   - Confirmação de exclusão
   - Mostrar detalhes da transação
   - Aviso sobre ajuste de saldo

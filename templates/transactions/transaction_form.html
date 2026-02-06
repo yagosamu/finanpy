@@ -1,0 +1,334 @@
+{% extends 'base_dashboard.html' %}
+{% load static %}
+
+{% block dashboard_title %}{% if object %}Editar Transação{% else %}Nova Transação{% endif %}{% endblock %}
+
+{% block dashboard_content %}
+<!-- Page Header -->
+<div class="mb-8">
+    <div class="flex items-center space-x-3 mb-2">
+        <a href="{% url 'transactions:list' %}" class="text-slate-400 hover:text-slate-100 transition-colors duration-200">
+            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+            </svg>
+        </a>
+        <h1 class="text-3xl font-bold text-slate-100">{% if object %}Editar Transação{% else %}Nova Transação{% endif %}</h1>
+    </div>
+    <p class="text-slate-400">{% if object %}Atualize as informações da transação{% else %}Registre uma nova transação financeira{% endif %}</p>
+</div>
+
+<!-- Form Card -->
+<div class="max-w-3xl">
+    <form method="post" class="bg-slate-800 rounded-xl shadow-lg border border-slate-700 p-8">
+        {% csrf_token %}
+
+        <!-- Display non-field errors -->
+        {% if form.non_field_errors %}
+        <div class="bg-red-900/30 border border-red-700 rounded-lg p-4 flex items-start mb-6">
+            <svg class="w-5 h-5 text-red-400 mr-3 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+            </svg>
+            <div>
+                {% for error in form.non_field_errors %}
+                <p class="text-red-100">{{ error }}</p>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Transaction Information Section -->
+        <div class="mb-8">
+            <h2 class="text-xl font-bold text-slate-100 mb-6">Informações da Transação</h2>
+
+            <!-- Two Column Grid for Type and Amount -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <!-- Transaction Type Field -->
+                <div>
+                    <label for="{{ form.transaction_type.id_for_label }}" class="block text-sm font-medium text-slate-100 mb-2">
+                        Tipo de Transação <span class="text-red-400">*</span>
+                    </label>
+                    <select name="{{ form.transaction_type.name }}"
+                            id="{{ form.transaction_type.id_for_label }}"
+                            class="w-full px-4 py-3 bg-slate-900 border {% if form.transaction_type.errors %}border-red-500{% else %}border-slate-700{% endif %} rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent transition-all duration-200"
+                            required>
+                        <option value="">Selecione o tipo</option>
+                        {% for value, label in form.transaction_type.field.choices %}
+                        {% if value %}
+                        <option value="{{ value }}" {% if form.transaction_type.value == value %}selected{% endif %}>{{ label }}</option>
+                        {% endif %}
+                        {% endfor %}
+                    </select>
+                    {% if form.transaction_type.errors %}
+                    <div class="mt-2">
+                        {% for error in form.transaction_type.errors %}
+                        <p class="text-sm text-red-400 flex items-center">
+                            <svg class="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+                            </svg>
+                            {{ error }}
+                        </p>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Amount Field -->
+                <div>
+                    <label for="{{ form.amount.id_for_label }}" class="block text-sm font-medium text-slate-100 mb-2">
+                        Valor <span class="text-red-400">*</span>
+                    </label>
+                    <div class="relative">
+                        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-mono">R$</span>
+                        <input type="number"
+                               name="{{ form.amount.name }}"
+                               id="{{ form.amount.id_for_label }}"
+                               value="{{ form.amount.value|default:'' }}"
+                               step="0.01"
+                               min="0.01"
+                               class="w-full pl-12 pr-4 py-3 bg-slate-900 border {% if form.amount.errors %}border-red-500{% else %}border-slate-700{% endif %} rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent transition-all duration-200 font-mono"
+                               placeholder="0.00"
+                               required>
+                    </div>
+                    {% if form.amount.errors %}
+                    <div class="mt-2">
+                        {% for error in form.amount.errors %}
+                        <p class="text-sm text-red-400 flex items-center">
+                            <svg class="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+                            </svg>
+                            {{ error }}
+                        </p>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                    {% if form.amount.help_text %}
+                    <p class="text-xs text-slate-400 mt-1">{{ form.amount.help_text }}</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Two Column Grid for Date and Account -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <!-- Date Field -->
+                <div>
+                    <label for="{{ form.date.id_for_label }}" class="block text-sm font-medium text-slate-100 mb-2">
+                        Data <span class="text-red-400">*</span>
+                    </label>
+                    <input type="date"
+                           name="{{ form.date.name }}"
+                           id="{{ form.date.id_for_label }}"
+                           value="{{ form.date.value|default:'' }}"
+                           class="w-full px-4 py-3 bg-slate-900 border {% if form.date.errors %}border-red-500{% else %}border-slate-700{% endif %} rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent transition-all duration-200"
+                           required>
+                    {% if form.date.errors %}
+                    <div class="mt-2">
+                        {% for error in form.date.errors %}
+                        <p class="text-sm text-red-400 flex items-center">
+                            <svg class="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+                            </svg>
+                            {{ error }}
+                        </p>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Account Field -->
+                <div>
+                    <label for="{{ form.account.id_for_label }}" class="block text-sm font-medium text-slate-100 mb-2">
+                        Conta <span class="text-red-400">*</span>
+                    </label>
+                    <select name="{{ form.account.name }}"
+                            id="{{ form.account.id_for_label }}"
+                            class="w-full px-4 py-3 bg-slate-900 border {% if form.account.errors %}border-red-500{% else %}border-slate-700{% endif %} rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent transition-all duration-200"
+                            required>
+                        <option value="">Selecione a conta</option>
+                        {% for value, label in form.account.field.choices %}
+                        {% if value %}
+                        <option value="{{ value }}" {% if form.account.value|stringformat:"d" == value|stringformat:"d" %}selected{% endif %}>{{ label }}</option>
+                        {% endif %}
+                        {% endfor %}
+                    </select>
+                    {% if form.account.errors %}
+                    <div class="mt-2">
+                        {% for error in form.account.errors %}
+                        <p class="text-sm text-red-400 flex items-center">
+                            <svg class="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+                            </svg>
+                            {{ error }}
+                        </p>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Category Field -->
+            <div class="mb-6">
+                <label for="{{ form.category.id_for_label }}" class="block text-sm font-medium text-slate-100 mb-2">
+                    Categoria <span class="text-red-400">*</span>
+                </label>
+                <select name="{{ form.category.name }}"
+                        id="{{ form.category.id_for_label }}"
+                        class="w-full px-4 py-3 bg-slate-900 border {% if form.category.errors %}border-red-500{% else %}border-slate-700{% endif %} rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent transition-all duration-200"
+                        data-categories="{{ form.category.widget.attrs.data-categories }}"
+                        required>
+                    <option value="">Selecione a categoria</option>
+                    {% for value, label in form.category.field.choices %}
+                    {% if value %}
+                    <option value="{{ value }}" {% if form.category.value|stringformat:"d" == value|stringformat:"d" %}selected{% endif %}>{{ label }}</option>
+                    {% endif %}
+                    {% endfor %}
+                </select>
+                <p class="text-xs text-slate-400 mt-1" id="category-hint">Selecione o tipo de transação para filtrar as categorias disponíveis</p>
+                {% if form.category.errors %}
+                <div class="mt-2">
+                    {% for error in form.category.errors %}
+                    <p class="text-sm text-red-400 flex items-center">
+                        <svg class="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+                        </svg>
+                        {{ error }}
+                    </p>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Description Field -->
+            <div>
+                <label for="{{ form.description.id_for_label }}" class="block text-sm font-medium text-slate-100 mb-2">
+                    Descrição
+                </label>
+                <textarea name="{{ form.description.name }}"
+                          id="{{ form.description.id_for_label }}"
+                          rows="3"
+                          class="w-full px-4 py-3 bg-slate-900 border {% if form.description.errors %}border-red-500{% else %}border-slate-700{% endif %} rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent transition-all duration-200 resize-none"
+                          placeholder="Descrição da transação (opcional)">{{ form.description.value|default:'' }}</textarea>
+                {% if form.description.errors %}
+                <div class="mt-2">
+                    {% for error in form.description.errors %}
+                    <p class="text-sm text-red-400 flex items-center">
+                        <svg class="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+                        </svg>
+                        {{ error }}
+                    </p>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                {% if form.description.help_text %}
+                <p class="text-xs text-slate-400 mt-1">{{ form.description.help_text }}</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Form Actions -->
+        <div class="flex flex-col sm:flex-row gap-4 pt-6 border-t border-slate-700">
+            <button type="submit"
+                    class="px-6 py-3 bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 text-white font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 flex items-center justify-center">
+                <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                </svg>
+                {% if object %}Salvar Alterações{% else %}Criar Transação{% endif %}
+            </button>
+            <a href="{% url 'transactions:list' %}"
+               class="px-6 py-3 bg-slate-700 hover:bg-slate-600 text-slate-100 font-medium rounded-lg border border-slate-600 transition-all duration-200 flex items-center justify-center">
+                <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+                Cancelar
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+{{ block.super }}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const typeSelect = document.getElementById('{{ form.transaction_type.id_for_label }}');
+    const categorySelect = document.getElementById('{{ form.category.id_for_label }}');
+    const categoryHint = document.getElementById('category-hint');
+
+    if (!typeSelect || !categorySelect) return;
+
+    // Parse categories data from the widget attribute
+    let categoriesData = [];
+    try {
+        const rawData = categorySelect.getAttribute('data-categories');
+        if (rawData) {
+            categoriesData = JSON.parse(rawData);
+        }
+    } catch (e) {
+        console.error('Error parsing categories data:', e);
+    }
+
+    // Store the currently selected category value
+    const currentCategoryValue = categorySelect.value;
+
+    function filterCategories() {
+        const selectedType = typeSelect.value;
+
+        if (!selectedType || categoriesData.length === 0) {
+            // Show all categories if no type selected
+            categorySelect.querySelectorAll('option').forEach(function(opt) {
+                opt.style.display = '';
+            });
+            categoryHint.textContent = 'Selecione o tipo de transação para filtrar as categorias disponíveis';
+            return;
+        }
+
+        // Map transaction type to category type
+        const categoryType = selectedType;
+
+        // Filter categories
+        const matchingIds = categoriesData
+            .filter(function(cat) { return cat.type === categoryType; })
+            .map(function(cat) { return String(cat.id); });
+
+        let hasSelectedOption = false;
+
+        categorySelect.querySelectorAll('option').forEach(function(opt) {
+            if (opt.value === '') {
+                opt.style.display = '';
+                return;
+            }
+            if (matchingIds.indexOf(opt.value) !== -1) {
+                opt.style.display = '';
+                if (opt.value === currentCategoryValue) {
+                    hasSelectedOption = true;
+                }
+            } else {
+                opt.style.display = 'none';
+                if (opt.selected) {
+                    opt.selected = false;
+                }
+            }
+        });
+
+        // Reset category selection if current is not valid
+        if (!hasSelectedOption && categorySelect.value !== '') {
+            categorySelect.value = '';
+        }
+
+        const typeLabel = selectedType === 'income' ? 'receita' : 'despesa';
+        categoryHint.textContent = 'Mostrando categorias de ' + typeLabel;
+    }
+
+    typeSelect.addEventListener('change', filterCategories);
+
+    // Run filter on page load if type is already selected
+    if (typeSelect.value) {
+        filterCategories();
+        // Restore original category selection if valid
+        if (currentCategoryValue) {
+            categorySelect.value = currentCategoryValue;
+        }
+    }
+});
+</script>
+{% endblock %}
