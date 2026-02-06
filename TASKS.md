@@ -629,7 +629,7 @@
 
 ---
 
-### Sprint 5: Views e Templates de Categorias (1 semana)
+### [X] Sprint 5: Views e Templates de Categorias (1 semana)
 
 #### Tarefa 5.1: Views de Category
 - [X] **5.1.1** - Criar CategoryListView em categories/views.py
@@ -727,18 +727,18 @@
   - Aplicar cor ao clicar
 
 #### Tarefa 5.7: Testes Manuais de Categories
-- [ ] **5.7.1** - Testar listagem
+- [X] **5.7.1** - Testar listagem
   - Verificar categorias padrão
   - Verificar separação por tipo
   - Testar responsividade
   
-- [ ] **5.7.2** - Testar criação de categoria
+- [X] **5.7.2** - Testar criação de categoria
   - Criar categoria de receita
   - Criar categoria de despesa
   - Testar validação de nome único
   - Testar color picker
   
-- [ ] **5.7.3** - Testar edição e exclusão
+- [X] **5.7.3** - Testar edição e exclusão
   - Tentar editar categoria padrão (deve falhar)
   - Editar categoria personalizada
   - Tentar excluir categoria em uso

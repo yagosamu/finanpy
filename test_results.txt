@@ -1,0 +1,36 @@
+CATEGORY CREATION TEST RESULTS
+Date: 2026-02-06 12:32:07
+============================================================
+
+Total Tests: 5
+Passed: 5
+Failed: 0
+Warnings: 0
+
+DETAILED RESULTS
+------------------------------------------------------------
+
+Test 1: Create Income Category (Renda Extra QA)
+Status: PASSED
+Details: Category 'Renda Extra QA' created successfully and appears in list
+------------------------------------------------------------
+
+Test 2: Create Expense Category (Assinaturas QA)
+Status: PASSED
+Details: Category 'Assinaturas QA' created successfully and appears in list
+------------------------------------------------------------
+
+Test 3: Duplicate Name Validation
+Status: PASSED
+Details: Duplicate name validation working - error shown or stayed on form
+------------------------------------------------------------
+
+Test 4: Color Picker Functionality
+Status: PASSED
+Details: Color input visible: True, Type: color, Value accepted: #ff5733
+------------------------------------------------------------
+
+Test 5: Form Validation (Empty Fields)
+Status: PASSED
+Details: Stayed on form: True, Validation shown: True, Required attrs: True
+------------------------------------------------------------
