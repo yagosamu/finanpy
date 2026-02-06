@@ -28,5 +28,6 @@ urlpatterns = [
     path('', include('profiles.urls')),
     path('accounts/', include('accounts.urls', namespace='accounts')),
     path('categorias/', include('categories.urls', namespace='categories')),
+    path('transacoes/', include('transactions.urls', namespace='transactions')),
     path('test-tailwind/', TemplateView.as_view(template_name='test_tailwind.html'), name='test_tailwind'),
 ]

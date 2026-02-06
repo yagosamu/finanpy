@@ -877,13 +877,13 @@
   - Aviso sobre ajuste de saldo
 
 #### Tarefa 6.7: URLs de Transaction
-- [ ] **6.7.1** - Configurar transactions/urls.py
+- [X] **6.7.1** - Configurar transactions/urls.py
   - Path para list: 'transacoes/'
   - Path para create: 'transacoes/nova/'
   - Path para update: 'transacoes/<pk>/editar/'
   - Path para delete: 'transacoes/<pk>/excluir/'
-  
-- [ ] **6.7.2** - Incluir em core/urls.py
+
+- [X] **6.7.2** - Incluir em core/urls.py
   - Include de transactions.urls
   - Namespace 'transactions'
 
