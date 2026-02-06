@@ -1,0 +1,160 @@
+{% comment %}
+  Category Selector Component
+
+  Description:
+    Reusable category selector for forms. Displays categories as colored
+    visual options that can be clicked to select. Supports filtering by
+    type (income/expense) and highlights the currently selected category.
+
+  Parameters:
+    - categories (required): QuerySet of Category model instances
+    - field_name (optional, default: 'category'): Name attribute for the hidden input
+    - field_id (optional, default: 'id_category'): ID attribute for the hidden input
+    - selected_id (optional): PK of the currently selected category
+    - filter_by_type (optional): If provided ('income' or 'expense'), only shows that type
+    - show_type_filter (optional): If True, shows income/expense filter tabs
+
+  Category fields used:
+    - category.pk: Primary key for selection value
+    - category.name: Category name
+    - category.color: Hex color string
+    - category.category_type: 'income' or 'expense'
+
+  Usage:
+    {% include 'components/category_selector.html' with categories=categories field_name='category' %}
+
+  Example with type filter tabs:
+    {% include 'components/category_selector.html' with categories=categories show_type_filter=True %}
+{% endcomment %}
+
+<div class="category-selector" data-filter-type="{{ filter_by_type|default:'' }}">
+
+    {# Type filter tabs #}
+    {% if show_type_filter %}
+    <div class="flex space-x-2 mb-4">
+        <button type="button"
+                class="category-type-filter px-4 py-2 rounded-lg text-sm font-medium border transition-all duration-200 bg-slate-800 border-slate-600 text-slate-300 hover:bg-slate-700"
+                data-filter="all">
+            Todas
+        </button>
+        <button type="button"
+                class="category-type-filter px-4 py-2 rounded-lg text-sm font-medium border transition-all duration-200 bg-slate-800 border-slate-600 text-slate-300 hover:bg-slate-700"
+                data-filter="income">
+            <svg class="w-4 h-4 inline mr-1 text-green-400" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
+            </svg>
+            Receitas
+        </button>
+        <button type="button"
+                class="category-type-filter px-4 py-2 rounded-lg text-sm font-medium border transition-all duration-200 bg-slate-800 border-slate-600 text-slate-300 hover:bg-slate-700"
+                data-filter="expense">
+            <svg class="w-4 h-4 inline mr-1 text-red-400" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 4.5l15 15m0 0V8.25m0 11.25H8.25" />
+            </svg>
+            Despesas
+        </button>
+    </div>
+    {% endif %}
+
+    {# Hidden input to store selected category ID #}
+    <input type="hidden"
+           name="{{ field_name|default:'category' }}"
+           id="{{ field_id|default:'id_category' }}"
+           value="{{ selected_id|default:'' }}">
+
+    {# Category grid #}
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 category-grid">
+        {% for category in categories %}
+        <button type="button"
+                class="category-option flex items-center px-3 py-2.5 rounded-lg border-2 text-left transition-all duration-200 hover:scale-[1.02] {% if category.pk == selected_id %}border-primary-500 bg-slate-700{% else %}border-slate-700 bg-slate-800 hover:border-slate-500{% endif %}"
+                data-category-id="{{ category.pk }}"
+                data-category-type="{{ category.category_type }}"
+                data-category-name="{{ category.name }}"
+                data-category-color="{{ category.color }}">
+            {# Color dot #}
+            <span class="w-3 h-3 rounded-full mr-2.5 flex-shrink-0" style="background-color: {{ category.color }};"></span>
+            {# Category name #}
+            <span class="text-sm text-slate-200 truncate">{{ category.name }}</span>
+        </button>
+        {% empty %}
+        <div class="col-span-full text-center py-6 text-slate-400 text-sm">
+            Nenhuma categoria disponível
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+(function() {
+    const selectors = document.querySelectorAll('.category-selector');
+
+    selectors.forEach(function(selector) {
+        const hiddenInput = selector.querySelector('input[type="hidden"]');
+        const options = selector.querySelectorAll('.category-option');
+        const typeFilters = selector.querySelectorAll('.category-type-filter');
+        const initialFilter = selector.dataset.filterType;
+
+        // Handle category selection
+        options.forEach(function(option) {
+            option.addEventListener('click', function(e) {
+                e.preventDefault();
+                const categoryId = this.dataset.categoryId;
+
+                // Update hidden input
+                hiddenInput.value = categoryId;
+
+                // Update visual state
+                options.forEach(function(opt) {
+                    opt.classList.remove('border-primary-500', 'bg-slate-700');
+                    opt.classList.add('border-slate-700', 'bg-slate-800');
+                });
+                this.classList.remove('border-slate-700', 'bg-slate-800');
+                this.classList.add('border-primary-500', 'bg-slate-700');
+
+                // Dispatch change event
+                hiddenInput.dispatchEvent(new Event('change', { bubbles: true }));
+            });
+        });
+
+        // Handle type filter tabs
+        typeFilters.forEach(function(filter) {
+            filter.addEventListener('click', function(e) {
+                e.preventDefault();
+                const filterType = this.dataset.filter;
+
+                // Update tab visual state
+                typeFilters.forEach(function(f) {
+                    f.classList.remove('bg-primary-600', 'border-primary-500', 'text-white');
+                    f.classList.add('bg-slate-800', 'border-slate-600', 'text-slate-300');
+                });
+                this.classList.remove('bg-slate-800', 'border-slate-600', 'text-slate-300');
+                this.classList.add('bg-primary-600', 'border-primary-500', 'text-white');
+
+                // Show/hide categories based on filter
+                options.forEach(function(option) {
+                    if (filterType === 'all' || option.dataset.categoryType === filterType) {
+                        option.style.display = '';
+                    } else {
+                        option.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // Apply initial filter if set
+        if (initialFilter) {
+            options.forEach(function(option) {
+                if (option.dataset.categoryType !== initialFilter) {
+                    option.style.display = 'none';
+                }
+            });
+        }
+
+        // Activate the 'all' tab by default if type filters exist
+        if (typeFilters.length > 0 && !initialFilter) {
+            typeFilters[0].classList.remove('bg-slate-800', 'border-slate-600', 'text-slate-300');
+            typeFilters[0].classList.add('bg-primary-600', 'border-primary-500', 'text-white');
+        }
+    });
+})();
+</script>

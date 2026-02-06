@@ -694,35 +694,35 @@
   - Botões estilizados
 
 #### Tarefa 5.4: URLs de Category
-- [ ] **5.4.1** - Configurar categories/urls.py
+- [X] **5.4.1** - Configurar categories/urls.py
   - Path para list: 'categorias/'
   - Path para create: 'categorias/nova/'
   - Path para update: 'categorias/<pk>/editar/'
   - Path para delete: 'categorias/<pk>/excluir/'
-  
-- [ ] **5.4.2** - Incluir em core/urls.py
+
+- [X] **5.4.2** - Incluir em core/urls.py
   - Include de categories.urls
   - Namespace 'categories'
 
 #### Tarefa 5.5: Componentes de UI para Categorias
-- [ ] **5.5.1** - Criar badge de categoria
+- [X] **5.5.1** - Criar badge de categoria
   - Template include: components/category_badge.html
   - Parâmetros: category
   - Cor de fundo baseada em category.color
   - Ícone por tipo (receita/despesa)
   
-- [ ] **5.5.2** - Criar seletor de categoria
+- [X] **5.5.2** - Criar seletor de categoria
   - Componente para usar em formulários
   - Visual com cores
   - Filtro por tipo
 
 #### Tarefa 5.6: JavaScript para Categorias
-- [ ] **5.6.1** - Criar categories.js
+- [X] **5.6.1** - Criar categories.js
   - Color picker customizado
   - Preview de cor em tempo real
   - Validação de formato hexadecimal
   
-- [ ] **5.6.2** - Implementar paleta de cores
+- [X] **5.6.2** - Implementar paleta de cores
   - Cores pré-definidas clicáveis
   - Aplicar cor ao clicar
 

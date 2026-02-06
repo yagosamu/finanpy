@@ -1,0 +1,57 @@
+{% comment %}
+  Category Badge Component
+
+  Description:
+    Reusable badge component for displaying a category with its color,
+    name, type icon (income/expense), and optional action buttons.
+
+  Parameters:
+    - category (required): Category model instance
+    - show_actions (optional): If True, show edit/delete buttons for non-default categories
+
+  Category fields used:
+    - category.name: Category name
+    - category.color: Hex color string (e.g., '#3B82F6')
+    - category.category_type: 'income' or 'expense'
+    - category.is_default: Whether it's a system default category
+    - category.pk: Primary key for URL routing
+
+  Usage:
+    {% include 'components/category_badge.html' with category=category %}
+    {% include 'components/category_badge.html' with category=category show_actions=True %}
+
+  Example:
+    <div class="flex flex-wrap gap-3">
+      {% for category in categories %}
+        {% include 'components/category_badge.html' with category=category %}
+      {% endfor %}
+    </div>
+{% endcomment %}
+
+<div class="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium border transition-all duration-200 hover:scale-105"
+     style="background-color: {{ category.color }}15; border-color: {{ category.color }}40;">
+
+    {# Color dot #}
+    <span class="w-2.5 h-2.5 rounded-full mr-2 flex-shrink-0" style="background-color: {{ category.color }};"></span>
+
+    {# Type icon #}
+    {% if category.category_type == 'income' %}
+    <svg class="w-3.5 h-3.5 mr-1.5 text-green-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
+    </svg>
+    {% else %}
+    <svg class="w-3.5 h-3.5 mr-1.5 text-red-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 4.5l15 15m0 0V8.25m0 11.25H8.25" />
+    </svg>
+    {% endif %}
+
+    {# Category name #}
+    <span class="text-slate-200 truncate max-w-[150px]">{{ category.name }}</span>
+
+    {# Default indicator #}
+    {% if category.is_default %}
+    <span class="ml-2 px-1.5 py-0.5 rounded text-[10px] font-semibold uppercase tracking-wide bg-slate-700 text-slate-400">
+        Sistema
+    </span>
+    {% endif %}
+</div>

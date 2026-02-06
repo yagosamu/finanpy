@@ -55,9 +55,16 @@
     },
 
     /**
-     * Create the color preview element
+     * Set up the color preview element (use existing or create new)
      */
     createPreview() {
+      // Check if preview already exists in DOM (from template)
+      const existingPreview = document.getElementById('colorPreview');
+      if (existingPreview) {
+        this.previewElement = existingPreview;
+        return;
+      }
+
       const wrapper = this.colorInput.closest('.color-picker-wrapper') || this.colorInput.parentElement;
 
       // Create preview container
@@ -66,6 +73,7 @@
 
       // Create preview box
       this.previewElement = document.createElement('div');
+      this.previewElement.id = 'colorPreview';
       this.previewElement.className = 'w-10 h-10 rounded-lg border-2 border-slate-600 shadow-inner';
       this.previewElement.style.backgroundColor = this.colorInput.value || '#3B82F6';
 
@@ -82,9 +90,27 @@
     },
 
     /**
-     * Create the suggested colors palette
+     * Set up the suggested colors palette (use existing or create new)
      */
     createPalette() {
+      // Check if palette already exists in DOM (from template)
+      const existingOptions = document.querySelectorAll('.color-option');
+      if (existingOptions.length > 0) {
+        this.paletteContainer = existingOptions[0].closest('.bg-slate-900') || existingOptions[0].parentElement;
+
+        // Bind click events to existing palette buttons
+        existingOptions.forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const color = btn.dataset.color;
+            if (color) {
+              this.selectColor(color);
+            }
+          });
+        });
+        return;
+      }
+
       if (this.suggestedColors.length === 0) return;
 
       const wrapper = this.colorInput.closest('.color-picker-wrapper') || this.colorInput.parentElement;
@@ -106,7 +132,7 @@
       this.suggestedColors.forEach(color => {
         const colorBtn = document.createElement('button');
         colorBtn.type = 'button';
-        colorBtn.className = 'w-8 h-8 rounded-lg border-2 border-slate-600 hover:border-slate-400 transition-all duration-200 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-slate-800';
+        colorBtn.className = 'color-option w-8 h-8 rounded-lg border-2 border-slate-600 hover:border-slate-400 transition-all duration-200 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-slate-800';
         colorBtn.style.backgroundColor = color;
         colorBtn.title = color;
         colorBtn.dataset.color = color;
@@ -175,15 +201,17 @@
      * @param {string} activeColor - Currently selected color
      */
     updatePaletteActiveState(activeColor) {
-      if (!this.paletteContainer) return;
+      // Query both dynamically created and template-existing palette buttons
+      const buttons = this.paletteContainer
+        ? this.paletteContainer.querySelectorAll('button, .color-option')
+        : document.querySelectorAll('.color-option');
 
-      const buttons = this.paletteContainer.querySelectorAll('button');
       buttons.forEach(btn => {
         const btnColor = btn.dataset.color;
         if (btnColor && btnColor.toUpperCase() === activeColor.toUpperCase()) {
-          btn.classList.add('ring-2', 'ring-primary-500', 'ring-offset-2', 'ring-offset-slate-800');
+          btn.classList.add('ring-2', 'ring-primary-600');
         } else {
-          btn.classList.remove('ring-2', 'ring-primary-500', 'ring-offset-2', 'ring-offset-slate-800');
+          btn.classList.remove('ring-2', 'ring-primary-600');
         }
       });
     }
