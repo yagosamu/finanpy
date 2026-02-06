@@ -794,45 +794,45 @@
   - Excluir transação e verificar ajuste
 
 #### Tarefa 6.3: Admin de Transactions
-- [ ] **6.3.1** - Criar TransactionAdmin em transactions/admin.py
+- [X] **6.3.1** - Criar TransactionAdmin em transactions/admin.py
   - Registrar model
   - Configurar list_display
   - Configurar list_filter (tipo, categoria, data)
   - Configurar search_fields
   - Configurar date_hierarchy
-  
-- [ ] **6.3.2** - Customizar formulário
+
+- [X] **6.3.2** - Customizar formulário
   - Organizar fieldsets
   - Filtrar categorias por tipo
   - Readonly field para created_at/updated_at
 
 #### Tarefa 6.4: Views de Transaction
-- [ ] **6.4.1** - Criar TransactionListView
+- [X] **6.4.1** - Criar TransactionListView
   - Herdar de LoginRequiredMixin e ListView
   - Filtrar transações do usuário
   - Implementar paginação (20 por página)
   - Adicionar totais no context
-  
-- [ ] **6.4.2** - Implementar filtros na ListView
+
+- [X] **6.4.2** - Implementar filtros na ListView
   - Filtro por período (data inicial e final)
   - Filtro por categoria
   - Filtro por tipo (receita/despesa)
   - Filtro por conta
   - Usar query parameters GET
-  
-- [ ] **6.4.3** - Criar TransactionCreateView
+
+- [X] **6.4.3** - Criar TransactionCreateView
   - Associar ao user logado
   - Validar data (não pode ser futura)
   - Validar categoria compatível com tipo
   - Redirecionar para lista
   - Mensagem de sucesso
-  
-- [ ] **6.4.4** - Criar TransactionUpdateView
+
+- [X] **6.4.4** - Criar TransactionUpdateView
   - Garantir permissão de edição
   - Recalcular saldo ao editar
   - Validações
-  
-- [ ] **6.4.5** - Criar TransactionDeleteView
+
+- [X] **6.4.5** - Criar TransactionDeleteView
   - Confirmação obrigatória
   - Ajustar saldo ao excluir
   - Mensagem de sucesso
