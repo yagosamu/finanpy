@@ -838,17 +838,17 @@
   - Mensagem de sucesso
 
 #### Tarefa 6.5: Forms de Transaction
-- [ ] **6.5.1** - Criar TransactionForm em transactions/forms.py
+- [X] **6.5.1** - Criar TransactionForm em transactions/forms.py
   - Campos: transaction_type, amount, date, category, account, description
   - Validação de valor positivo
   - Validação de data
   - Filtrar categorias por tipo
   
-- [ ] **6.5.2** - Implementar lógica de filtro de categorias
+- [X] **6.5.2** - Implementar lógica de filtro de categorias
   - JavaScript para mostrar apenas categorias do tipo selecionado
   - Atualização dinâmica do select
   
-- [ ] **6.5.3** - Adicionar máscaras e formatação
+- [X] **6.5.3** - Adicionar máscaras e formatação
   - Máscara para valor monetário
   - Date picker para campo data
   - Placeholder nos campos
