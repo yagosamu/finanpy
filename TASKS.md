@@ -748,7 +748,7 @@
 ### Sprint 6: Model e Views de Transações (2 semanas)
 
 #### Tarefa 6.1: Model de Transaction
-- [ ] **6.1.1** - Criar Transaction model em transactions/models.py
+- [X] **6.1.1** - Criar Transaction model em transactions/models.py
   - Campo user (ForeignKey para User)
   - Campo account (ForeignKey para Account)
   - Campo category (ForeignKey para Category)
@@ -757,38 +757,38 @@
   - Campo date (DateField)
   - Campo description (TextField, opcional)
   - Campos created_at e updated_at
-  
-- [ ] **6.1.2** - Definir choices para transaction_type
+
+- [X] **6.1.2** - Definir choices para transaction_type
   - INCOME = 'income' - Receita
   - EXPENSE = 'expense' - Despesa
-  
-- [ ] **6.1.3** - Implementar método __str__
+
+- [X] **6.1.3** - Implementar método __str__
   - Retornar descrição resumida
-  
-- [ ] **6.1.4** - Implementar Meta class
+
+- [X] **6.1.4** - Implementar Meta class
   - ordering = ['-date', '-created_at']
   - indexes para otimização
-  
-- [ ] **6.1.5** - Criar migrations e aplicar
+
+- [X] **6.1.5** - Criar migrations e aplicar
   - `python manage.py makemigrations transactions`
   - `python manage.py migrate`
 
 #### Tarefa 6.2: Signals para Atualizar Saldo
-- [ ] **6.2.1** - Criar transactions/signals.py
+- [X] **6.2.1** - Criar transactions/signals.py
   - Signal post_save para criar/editar transação
   - Signal pre_delete para excluir transação
   - Signal pre_save para guardar valor antigo
-  
-- [ ] **6.2.2** - Implementar lógica de atualização de saldo
+
+- [X] **6.2.2** - Implementar lógica de atualização de saldo
   - Calcular diferença ao editar
   - Adicionar valor em receitas
   - Subtrair valor em despesas
   - Atualizar Account.current_balance
-  
-- [ ] **6.2.3** - Importar signals no apps.py
+
+- [X] **6.2.3** - Importar signals no apps.py
   - Garantir que signals sejam registrados
-  
-- [ ] **6.2.4** - Testar signals manualmente
+
+- [X] **6.2.4** - Testar signals manualmente
   - Criar transação e verificar saldo
   - Editar transação e verificar recálculo
   - Excluir transação e verificar ajuste
