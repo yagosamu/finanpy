@@ -672,7 +672,7 @@
   - Atualização em tempo real
 
 #### Tarefa 5.3: Templates de Category
-- [ ] **5.3.1** - Criar category_list.html
+- [X] **5.3.1** - Criar category_list.html
   - Herdar de base_dashboard.html
   - Duas seções: Receitas e Despesas
   - Cards/badges para cada categoria
@@ -680,15 +680,15 @@
   - Indicador de categoria padrão
   - Botões de ação (editar/excluir) apenas para personalizadas
   - Botão para criar nova categoria
-  
-- [ ] **5.3.2** - Criar category_form.html
+
+- [X] **5.3.2** - Criar category_form.html
   - Formulário estilizado
   - Color picker integrado
   - Preview da cor selecionada
   - Paleta de cores sugeridas
   - Validações visuais
-  
-- [ ] **5.3.3** - Criar category_confirm_delete.html
+
+- [X] **5.3.3** - Criar category_confirm_delete.html
   - Confirmação de exclusão
   - Aviso se categoria estiver em uso
   - Botões estilizados

@@ -1,0 +1,233 @@
+{% extends 'base_dashboard.html' %}
+{% load static %}
+
+{% block dashboard_title %}{% if object %}Editar Categoria{% else %}Nova Categoria{% endif %}{% endblock %}
+
+{% block dashboard_content %}
+<!-- Page Header -->
+<div class="mb-8">
+    <div class="flex items-center space-x-3 mb-2">
+        <a href="{% url 'categories:list' %}" class="text-slate-400 hover:text-slate-100 transition-colors duration-200">
+            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+            </svg>
+        </a>
+        <h1 class="text-3xl font-bold text-slate-100">{% if object %}Editar Categoria{% else %}Nova Categoria{% endif %}</h1>
+    </div>
+    <p class="text-slate-400">{% if object %}Atualize as informações da sua categoria{% else %}Cadastre uma nova categoria para organizar suas transações{% endif %}</p>
+</div>
+
+<!-- Form Card -->
+<div class="max-w-3xl">
+    <form method="post" class="bg-slate-800 rounded-xl shadow-lg border border-slate-700 p-8">
+        {% csrf_token %}
+
+        <!-- Display non-field errors -->
+        {% if form.non_field_errors %}
+        <div class="bg-red-900/30 border border-red-700 rounded-lg p-4 flex items-start mb-6">
+            <svg class="w-5 h-5 text-red-400 mr-3 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+            </svg>
+            <div>
+                {% for error in form.non_field_errors %}
+                <p class="text-red-100">{{ error }}</p>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Category Information Section -->
+        <div class="mb-8">
+            <h2 class="text-xl font-bold text-slate-100 mb-6">Informações da Categoria</h2>
+
+            <!-- Name Field -->
+            <div class="mb-6">
+                <label for="{{ form.name.id_for_label }}" class="block text-sm font-medium text-slate-100 mb-2">
+                    Nome da Categoria <span class="text-red-400">*</span>
+                </label>
+                <input type="text"
+                       name="{{ form.name.name }}"
+                       id="{{ form.name.id_for_label }}"
+                       value="{{ form.name.value|default:'' }}"
+                       class="w-full px-4 py-3 bg-slate-900 border {% if form.name.errors %}border-red-500{% else %}border-slate-700{% endif %} rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent transition-all duration-200"
+                       placeholder="Ex: Alimentação"
+                       required>
+                {% if form.name.errors %}
+                <div class="mt-2">
+                    {% for error in form.name.errors %}
+                    <p class="text-sm text-red-400 flex items-center">
+                        <svg class="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+                        </svg>
+                        {{ error }}
+                    </p>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                {% if form.name.help_text %}
+                <p class="text-xs text-slate-400 mt-1">{{ form.name.help_text }}</p>
+                {% endif %}
+            </div>
+
+            <!-- Category Type Field -->
+            <div class="mb-6">
+                <label for="{{ form.category_type.id_for_label }}" class="block text-sm font-medium text-slate-100 mb-2">
+                    Tipo <span class="text-red-400">*</span>
+                </label>
+                <select name="{{ form.category_type.name }}"
+                        id="{{ form.category_type.id_for_label }}"
+                        class="w-full px-4 py-3 bg-slate-900 border {% if form.category_type.errors %}border-red-500{% else %}border-slate-700{% endif %} rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent transition-all duration-200"
+                        required>
+                    <option value="">Selecione o tipo</option>
+                    {% for value, label in form.category_type.field.choices %}
+                    {% if value %}
+                    <option value="{{ value }}" {% if form.category_type.value == value %}selected{% endif %}>{{ label }}</option>
+                    {% endif %}
+                    {% endfor %}
+                </select>
+                {% if form.category_type.errors %}
+                <div class="mt-2">
+                    {% for error in form.category_type.errors %}
+                    <p class="text-sm text-red-400 flex items-center">
+                        <svg class="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+                        </svg>
+                        {{ error }}
+                    </p>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                {% if form.category_type.help_text %}
+                <p class="text-xs text-slate-400 mt-1">{{ form.category_type.help_text }}</p>
+                {% endif %}
+            </div>
+
+            <!-- Color Field -->
+            <div>
+                <label for="{{ form.color.id_for_label }}" class="block text-sm font-medium text-slate-100 mb-2">
+                    Cor <span class="text-red-400">*</span>
+                </label>
+
+                <!-- Color Preview and Native Picker -->
+                <div class="flex items-center space-x-4 mb-4">
+                    <!-- Color Preview Circle -->
+                    <div id="colorPreview" class="w-16 h-16 rounded-full border-2 border-slate-600 shadow-lg transition-all duration-200" style="background-color: {{ form.color.value|default:'#3B82F6' }};"></div>
+
+                    <!-- Native Color Input -->
+                    <input type="color"
+                           name="{{ form.color.name }}"
+                           id="{{ form.color.id_for_label }}"
+                           value="{{ form.color.value|default:'#3B82F6' }}"
+                           class="w-20 h-12 cursor-pointer bg-slate-900 border border-slate-700 rounded-lg overflow-hidden"
+                           required>
+
+                    <div class="flex-1">
+                        <p class="text-sm text-slate-300 font-medium">Cor atual</p>
+                        <p class="text-xs text-slate-400 mt-0.5">Clique para escolher ou selecione uma cor sugerida abaixo</p>
+                    </div>
+                </div>
+
+                <!-- Suggested Color Palette -->
+                <div class="bg-slate-900 rounded-lg p-4 border border-slate-700">
+                    <p class="text-xs font-medium text-slate-400 mb-3">Cores sugeridas</p>
+                    <div class="grid grid-cols-9 gap-3">
+                        <button type="button" class="color-option w-10 h-10 rounded-full border-2 border-transparent hover:border-slate-400 transition-all duration-200 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-primary-600" data-color="#EF4444" style="background-color: #EF4444;" title="Vermelho"></button>
+                        <button type="button" class="color-option w-10 h-10 rounded-full border-2 border-transparent hover:border-slate-400 transition-all duration-200 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-primary-600" data-color="#F97316" style="background-color: #F97316;" title="Laranja"></button>
+                        <button type="button" class="color-option w-10 h-10 rounded-full border-2 border-transparent hover:border-slate-400 transition-all duration-200 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-primary-600" data-color="#F59E0B" style="background-color: #F59E0B;" title="Âmbar"></button>
+                        <button type="button" class="color-option w-10 h-10 rounded-full border-2 border-transparent hover:border-slate-400 transition-all duration-200 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-primary-600" data-color="#EAB308" style="background-color: #EAB308;" title="Amarelo"></button>
+                        <button type="button" class="color-option w-10 h-10 rounded-full border-2 border-transparent hover:border-slate-400 transition-all duration-200 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-primary-600" data-color="#84CC16" style="background-color: #84CC16;" title="Lima"></button>
+                        <button type="button" class="color-option w-10 h-10 rounded-full border-2 border-transparent hover:border-slate-400 transition-all duration-200 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-primary-600" data-color="#22C55E" style="background-color: #22C55E;" title="Verde"></button>
+                        <button type="button" class="color-option w-10 h-10 rounded-full border-2 border-transparent hover:border-slate-400 transition-all duration-200 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-primary-600" data-color="#10B981" style="background-color: #10B981;" title="Esmeralda"></button>
+                        <button type="button" class="color-option w-10 h-10 rounded-full border-2 border-transparent hover:border-slate-400 transition-all duration-200 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-primary-600" data-color="#14B8A6" style="background-color: #14B8A6;" title="Teal"></button>
+                        <button type="button" class="color-option w-10 h-10 rounded-full border-2 border-transparent hover:border-slate-400 transition-all duration-200 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-primary-600" data-color="#06B6D4" style="background-color: #06B6D4;" title="Ciano"></button>
+                        <button type="button" class="color-option w-10 h-10 rounded-full border-2 border-transparent hover:border-slate-400 transition-all duration-200 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-primary-600" data-color="#0EA5E9" style="background-color: #0EA5E9;" title="Azul Céu"></button>
+                        <button type="button" class="color-option w-10 h-10 rounded-full border-2 border-transparent hover:border-slate-400 transition-all duration-200 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-primary-600" data-color="#3B82F6" style="background-color: #3B82F6;" title="Azul"></button>
+                        <button type="button" class="color-option w-10 h-10 rounded-full border-2 border-transparent hover:border-slate-400 transition-all duration-200 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-primary-600" data-color="#6366F1" style="background-color: #6366F1;" title="Índigo"></button>
+                        <button type="button" class="color-option w-10 h-10 rounded-full border-2 border-transparent hover:border-slate-400 transition-all duration-200 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-primary-600" data-color="#8B5CF6" style="background-color: #8B5CF6;" title="Violeta"></button>
+                        <button type="button" class="color-option w-10 h-10 rounded-full border-2 border-transparent hover:border-slate-400 transition-all duration-200 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-primary-600" data-color="#A855F7" style="background-color: #A855F7;" title="Roxo"></button>
+                        <button type="button" class="color-option w-10 h-10 rounded-full border-2 border-transparent hover:border-slate-400 transition-all duration-200 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-primary-600" data-color="#D946EF" style="background-color: #D946EF;" title="Fúcsia"></button>
+                        <button type="button" class="color-option w-10 h-10 rounded-full border-2 border-transparent hover:border-slate-400 transition-all duration-200 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-primary-600" data-color="#EC4899" style="background-color: #EC4899;" title="Rosa"></button>
+                        <button type="button" class="color-option w-10 h-10 rounded-full border-2 border-transparent hover:border-slate-400 transition-all duration-200 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-primary-600" data-color="#F43F5E" style="background-color: #F43F5E;" title="Rosa Escuro"></button>
+                        <button type="button" class="color-option w-10 h-10 rounded-full border-2 border-transparent hover:border-slate-400 transition-all duration-200 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-primary-600" data-color="#64748B" style="background-color: #64748B;" title="Cinza"></button>
+                    </div>
+                </div>
+
+                {% if form.color.errors %}
+                <div class="mt-2">
+                    {% for error in form.color.errors %}
+                    <p class="text-sm text-red-400 flex items-center">
+                        <svg class="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+                        </svg>
+                        {{ error }}
+                    </p>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                {% if form.color.help_text %}
+                <p class="text-xs text-slate-400 mt-1">{{ form.color.help_text }}</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Form Actions -->
+        <div class="flex flex-col sm:flex-row gap-4 pt-6 border-t border-slate-700">
+            <button type="submit"
+                    class="px-6 py-3 bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 text-white font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 flex items-center justify-center">
+                <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                </svg>
+                {% if object %}Salvar Alterações{% else %}Criar Categoria{% endif %}
+            </button>
+            <a href="{% url 'categories:list' %}"
+               class="px-6 py-3 bg-slate-700 hover:bg-slate-600 text-slate-100 font-medium rounded-lg border border-slate-600 transition-all duration-200 flex items-center justify-center">
+                <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+                Cancelar
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+{{ block.super }}
+<script>
+    // Get references to color elements
+    const colorInput = document.getElementById('{{ form.color.id_for_label }}');
+    const colorPreview = document.getElementById('colorPreview');
+    const colorOptions = document.querySelectorAll('.color-option');
+
+    // Update preview when native color input changes
+    colorInput.addEventListener('input', function() {
+        colorPreview.style.backgroundColor = this.value;
+    });
+
+    // Handle color palette clicks
+    colorOptions.forEach(function(option) {
+        option.addEventListener('click', function(e) {
+            e.preventDefault();
+            const selectedColor = this.getAttribute('data-color');
+
+            // Update hidden input and preview
+            colorInput.value = selectedColor;
+            colorPreview.style.backgroundColor = selectedColor;
+
+            // Visual feedback
+            colorOptions.forEach(opt => opt.classList.remove('ring-2', 'ring-primary-600'));
+            this.classList.add('ring-2', 'ring-primary-600');
+        });
+    });
+
+    // On page load, highlight the currently selected color if it matches a palette option
+    window.addEventListener('DOMContentLoaded', function() {
+        const currentColor = colorInput.value.toUpperCase();
+        colorOptions.forEach(function(option) {
+            if (option.getAttribute('data-color').toUpperCase() === currentColor) {
+                option.classList.add('ring-2', 'ring-primary-600');
+            }
+        });
+    });
+</script>
+{% endblock %}
