@@ -745,7 +745,7 @@
 
 ---
 
-### Sprint 6: Model e Views de Transações (2 semanas)
+### [X] Sprint 6: Model e Views de Transações (2 semanas)
 
 #### Tarefa 6.1: Model de Transaction
 - [X] **6.1.1** - Criar Transaction model em transactions/models.py
@@ -888,31 +888,31 @@
   - Namespace 'transactions'
 
 #### Tarefa 6.8: JavaScript para Transações
-- [ ] **6.8.1** - Criar transactions.js
+- [X] **6.8.1** - Criar transactions.js
   - Filtro dinâmico de categorias por tipo
   - Máscara de valor monetário
   - Validações em tempo real
   - Confirmação de exclusão
-  
-- [ ] **6.8.2** - Implementar formatação de moeda
+
+- [X] **6.8.2** - Implementar formatação de moeda
   - Formatar valores para real brasileiro
   - Casas decimais fixas
   - Separador de milhares
 
 #### Tarefa 6.9: Testes Manuais de Transactions
-- [ ] **6.9.1** - Testar criação de transação
+- [X] **6.9.1** - Testar criação de transação
   - Criar receita
   - Criar despesa
   - Verificar atualização de saldo
   - Testar validações
   
-- [ ] **6.9.2** - Testar listagem e filtros
+- [X] **6.9.2** - Testar listagem e filtros
   - Aplicar filtro por data
   - Aplicar filtro por categoria
   - Testar paginação
   - Verificar responsividade
   
-- [ ] **6.9.3** - Testar edição e exclusão
+- [X] **6.9.3** - Testar edição e exclusão
   - Editar valor de transação
   - Verificar recálculo de saldo
   - Excluir transação

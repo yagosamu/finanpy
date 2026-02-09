@@ -79,7 +79,7 @@ class TransactionForm(forms.ModelForm):
                     'color': category.color,
                 })
 
-            self.fields['category'].widget.attrs['data-categories'] = json.dumps(categories_data)
+            self.fields['category'].widget.attrs['data_categories'] = json.dumps(categories_data)
 
     def clean_amount(self):
         amount = self.cleaned_data.get('amount')

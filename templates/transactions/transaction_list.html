@@ -33,7 +33,7 @@
                 </svg>
             </div>
         </div>
-        <p class="text-2xl font-bold text-green-400 font-mono">R$ {{ total_income|floatformat:2 }}</p>
+        <p class="text-2xl font-bold text-green-400 font-mono" data-currency="{{ total_income }}">R$ {{ total_income|floatformat:2 }}</p>
     </div>
 
     <!-- Expense Card -->
@@ -46,7 +46,7 @@
                 </svg>
             </div>
         </div>
-        <p class="text-2xl font-bold text-red-400 font-mono">R$ {{ total_expense|floatformat:2 }}</p>
+        <p class="text-2xl font-bold text-red-400 font-mono" data-currency="{{ total_expense }}">R$ {{ total_expense|floatformat:2 }}</p>
     </div>
 
     <!-- Balance Card -->
@@ -59,7 +59,7 @@
                 </svg>
             </div>
         </div>
-        <p class="text-2xl font-bold font-mono {% if balance >= 0 %}text-green-400{% else %}text-red-400{% endif %}">
+        <p class="text-2xl font-bold font-mono {% if balance >= 0 %}text-green-400{% else %}text-red-400{% endif %}" data-currency="{{ balance }}" data-currency-prefix="{% if balance >= 0 %}+{% endif %}">
             {% if balance >= 0 %}+{% endif %}R$ {{ balance|floatformat:2 }}
         </p>
     </div>
@@ -172,7 +172,7 @@
             </thead>
             <tbody class="divide-y divide-slate-700">
                 {% for transaction in transactions %}
-                <tr class="hover:bg-slate-750 hover:bg-slate-700/50 transition-colors duration-150">
+                <tr class="hover:bg-slate-750 hover:bg-slate-700/50 transition-colors duration-150" data-transaction="{{ transaction.pk }}">
                     <!-- Date -->
                     <td class="px-6 py-4 whitespace-nowrap">
                         <span class="text-sm text-slate-100">{{ transaction.date|date:"d/m/Y" }}</span>
@@ -195,7 +195,7 @@
                             </div>
                             {% endif %}
                             <div class="min-w-0">
-                                <p class="text-sm font-medium text-slate-100 truncate max-w-xs">
+                                <p class="text-sm font-medium text-slate-100 truncate max-w-xs transaction-description">
                                     {{ transaction.description|default:transaction.get_transaction_type_display }}
                                 </p>
                                 <p class="text-xs text-slate-400">{{ transaction.get_transaction_type_display }}</p>
@@ -218,7 +218,7 @@
 
                     <!-- Amount -->
                     <td class="px-6 py-4 whitespace-nowrap text-right">
-                        <span class="text-sm font-semibold font-mono {% if transaction.transaction_type == 'income' %}text-green-400{% else %}text-red-400{% endif %}">
+                        <span class="text-sm font-semibold font-mono {% if transaction.transaction_type == 'income' %}text-green-400{% else %}text-red-400{% endif %}" data-currency="{{ transaction.amount }}" data-currency-prefix="{% if transaction.transaction_type == 'income' %}+{% else %}-{% endif %}">
                             {% if transaction.transaction_type == 'income' %}+{% else %}-{% endif %}R$ {{ transaction.amount|floatformat:2 }}
                         </span>
                     </td>
@@ -343,4 +343,9 @@
 </div>
 {% endif %}
 
+{% endblock %}
+
+{% block extra_js %}
+{{ block.super }}
+<script src="{% static 'js/transactions.js' %}"></script>
 {% endblock %}

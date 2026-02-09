@@ -496,6 +496,42 @@
   };
 
   // ============================================================================
+  // CURRENCY DISPLAY MODULE
+  // ============================================================================
+
+  const CurrencyDisplay = {
+    /**
+     * Format a numeric value as Brazilian Real currency
+     * @param {number} value - Numeric value
+     * @returns {string} Formatted string (e.g., "1.234,56")
+     */
+    format(value) {
+      if (!value && value !== 0) return '0,00';
+      const num = typeof value === 'string' ? parseFloat(value) : value;
+      if (isNaN(num)) return '0,00';
+      return num.toLocaleString('pt-BR', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      });
+    },
+
+    /**
+     * Apply Brazilian currency formatting to all elements with data-currency attribute
+     * Elements should have data-currency="1234.56" with the raw numeric value
+     */
+    init() {
+      const elements = document.querySelectorAll('[data-currency]');
+      elements.forEach(el => {
+        const rawValue = parseFloat(el.dataset.currency);
+        if (!isNaN(rawValue)) {
+          const prefix = el.dataset.currencyPrefix || '';
+          el.textContent = prefix + 'R$ ' + this.format(rawValue);
+        }
+      });
+    }
+  };
+
+  // ============================================================================
   // INITIALIZATION
   // ============================================================================
 
@@ -514,6 +550,9 @@
     if (transactionForm) {
       TransactionFormValidator.init(transactionForm);
     }
+
+    // Initialize currency display formatting
+    CurrencyDisplay.init();
 
     // Initialize delete modals for transaction links
     const deleteLinks = document.querySelectorAll('a[href*="/excluir/"]');
@@ -537,6 +576,7 @@
   // Make modules globally accessible
   window.CategoryFilter = CategoryFilter;
   window.CurrencyMask = CurrencyMask;
+  window.CurrencyDisplay = CurrencyDisplay;
   window.TransactionFormValidator = TransactionFormValidator;
   window.TransactionDeleteModal = TransactionDeleteModal;
 

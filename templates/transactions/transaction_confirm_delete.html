@@ -1,4 +1,5 @@
 {% extends 'base_dashboard.html' %}
+{% load static %}
 
 {% block dashboard_title %}Excluir Transação{% endblock %}
 
@@ -46,7 +47,7 @@
                     </div>
                     <div class="flex justify-between items-center border-b border-slate-700 pb-3">
                         <span class="text-slate-400 font-medium">Valor:</span>
-                        <span class="text-slate-100 font-mono font-semibold {% if object.transaction_type == 'income' %}text-green-400{% else %}text-red-400{% endif %}">
+                        <span class="text-slate-100 font-mono font-semibold {% if object.transaction_type == 'income' %}text-green-400{% else %}text-red-400{% endif %}" data-currency="{{ object.amount }}" data-currency-prefix="{% if object.transaction_type == 'income' %}+{% else %}-{% endif %}">
                             {% if object.transaction_type == 'income' %}+{% else %}-{% endif %}R$ {{ object.amount|floatformat:2 }}
                         </span>
                     </div>
@@ -104,4 +105,9 @@
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+{{ block.super }}
+<script src="{% static 'js/transactions.js' %}"></script>
 {% endblock %}

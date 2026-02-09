@@ -173,7 +173,7 @@
                 <select name="{{ form.category.name }}"
                         id="{{ form.category.id_for_label }}"
                         class="w-full px-4 py-3 bg-slate-900 border {% if form.category.errors %}border-red-500{% else %}border-slate-700{% endif %} rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent transition-all duration-200"
-                        data-categories="{{ form.category.widget.attrs.data-categories }}"
+                        data-categories="{{ form.category.widget.attrs.data_categories }}"
                         required>
                     <option value="">Selecione a categoria</option>
                     {% for value, label in form.category.field.choices %}
@@ -248,87 +248,5 @@
 
 {% block extra_js %}
 {{ block.super }}
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const typeSelect = document.getElementById('{{ form.transaction_type.id_for_label }}');
-    const categorySelect = document.getElementById('{{ form.category.id_for_label }}');
-    const categoryHint = document.getElementById('category-hint');
-
-    if (!typeSelect || !categorySelect) return;
-
-    // Parse categories data from the widget attribute
-    let categoriesData = [];
-    try {
-        const rawData = categorySelect.getAttribute('data-categories');
-        if (rawData) {
-            categoriesData = JSON.parse(rawData);
-        }
-    } catch (e) {
-        console.error('Error parsing categories data:', e);
-    }
-
-    // Store the currently selected category value
-    const currentCategoryValue = categorySelect.value;
-
-    function filterCategories() {
-        const selectedType = typeSelect.value;
-
-        if (!selectedType || categoriesData.length === 0) {
-            // Show all categories if no type selected
-            categorySelect.querySelectorAll('option').forEach(function(opt) {
-                opt.style.display = '';
-            });
-            categoryHint.textContent = 'Selecione o tipo de transação para filtrar as categorias disponíveis';
-            return;
-        }
-
-        // Map transaction type to category type
-        const categoryType = selectedType;
-
-        // Filter categories
-        const matchingIds = categoriesData
-            .filter(function(cat) { return cat.type === categoryType; })
-            .map(function(cat) { return String(cat.id); });
-
-        let hasSelectedOption = false;
-
-        categorySelect.querySelectorAll('option').forEach(function(opt) {
-            if (opt.value === '') {
-                opt.style.display = '';
-                return;
-            }
-            if (matchingIds.indexOf(opt.value) !== -1) {
-                opt.style.display = '';
-                if (opt.value === currentCategoryValue) {
-                    hasSelectedOption = true;
-                }
-            } else {
-                opt.style.display = 'none';
-                if (opt.selected) {
-                    opt.selected = false;
-                }
-            }
-        });
-
-        // Reset category selection if current is not valid
-        if (!hasSelectedOption && categorySelect.value !== '') {
-            categorySelect.value = '';
-        }
-
-        const typeLabel = selectedType === 'income' ? 'receita' : 'despesa';
-        categoryHint.textContent = 'Mostrando categorias de ' + typeLabel;
-    }
-
-    typeSelect.addEventListener('change', filterCategories);
-
-    // Run filter on page load if type is already selected
-    if (typeSelect.value) {
-        filterCategories();
-        // Restore original category selection if valid
-        if (currentCategoryValue) {
-            categorySelect.value = currentCategoryValue;
-        }
-    }
-});
-</script>
+<script src="{% static 'js/transactions.js' %}"></script>
 {% endblock %}
