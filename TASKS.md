@@ -982,19 +982,19 @@
   - Responsivo
 
 #### Tarefa 7.4: Atalhos Rápidos no Dashboard
-- [ ] **7.4.1** - Criar seção de ações rápidas
+- [X] **7.4.1** - Criar seção de ações rápidas
   - Botão grande: Nova Transação
   - Botão: Nova Conta
   - Botão: Nova Categoria
   - Grid responsivo de botões
 
 #### Tarefa 7.5: Responsividade do Dashboard
-- [ ] **7.5.1** - Otimizar layout mobile
+- [X] **7.5.1** - Otimizar layout mobile
   - Cards empilhados
   - Gráficos redimensionados
   - Tabela rolável horizontalmente
-  
-- [ ] **7.5.2** - Testar em diferentes resoluções
+
+- [X] **7.5.2** - Testar em diferentes resoluções
   - Mobile (375px)
   - Tablet (768px)
   - Desktop (1280px+)
