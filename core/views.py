@@ -87,8 +87,8 @@ class DashboardView(LoginRequiredMixin, TemplateView):
         current_month_name = month_names[now.month - 1]
 
         # 7.1.3 - Chart data
-        # Aggregate expenses by category for current month
-        expense_by_category = Transaction.objects.filter(
+        # Aggregate expenses by category for current month (all categories)
+        all_expense_by_category = Transaction.objects.filter(
             user=user,
             transaction_type=Transaction.EXPENSE,
             date__gte=current_month_start.date(),
@@ -98,22 +98,76 @@ class DashboardView(LoginRequiredMixin, TemplateView):
             'category__color'
         ).annotate(
             total=Sum('amount')
-        ).order_by('-total')[:5]
+        ).order_by('-total')
 
-        # Calculate percentage and prepare chart data
+        # Top 5 expense categories for context
+        expense_by_category = all_expense_by_category[:5]
+
+        # Calculate chart data with "Outros" grouping
         chart_data = []
         if total_expenses > 0:
-            for item in expense_by_category:
+            top_5_total = Decimal('0.00')
+            for item in all_expense_by_category[:5]:
                 percentage = (item['total'] / total_expenses) * 100
                 chart_data.append({
                     'category': item['category__name'],
                     'color': item['category__color'],
                     'amount': float(item['total']),
-                    'percentage': round(float(percentage), 2)
+                    'percentage': round(float(percentage), 1)
+                })
+                top_5_total += item['total']
+
+            # Group remaining categories as "Outros"
+            remaining = total_expenses - top_5_total
+            if remaining > 0:
+                percentage = (remaining / total_expenses) * 100
+                chart_data.append({
+                    'category': 'Outros',
+                    'color': '#6B7280',
+                    'amount': float(remaining),
+                    'percentage': round(float(percentage), 1)
                 })
 
         # Serialize chart data as JSON for JavaScript consumption
         chart_data_json = json.dumps(chart_data)
+
+        # Aggregate income by category for current month
+        all_income_by_category = Transaction.objects.filter(
+            user=user,
+            transaction_type=Transaction.INCOME,
+            date__gte=current_month_start.date(),
+            date__lt=next_month_start.date()
+        ).values(
+            'category__name',
+            'category__color'
+        ).annotate(
+            total=Sum('amount')
+        ).order_by('-total')
+
+        income_chart_data = []
+        if total_income > 0:
+            top_5_income_total = Decimal('0.00')
+            for item in all_income_by_category[:5]:
+                percentage = (item['total'] / total_income) * 100
+                income_chart_data.append({
+                    'category': item['category__name'],
+                    'color': item['category__color'],
+                    'amount': float(item['total']),
+                    'percentage': round(float(percentage), 1)
+                })
+                top_5_income_total += item['total']
+
+            remaining_income = total_income - top_5_income_total
+            if remaining_income > 0:
+                percentage = (remaining_income / total_income) * 100
+                income_chart_data.append({
+                    'category': 'Outros',
+                    'color': '#6B7280',
+                    'amount': float(remaining_income),
+                    'percentage': round(float(percentage), 1)
+                })
+
+        income_chart_data_json = json.dumps(income_chart_data)
 
         # Add all data to context
         context.update({
@@ -133,6 +187,7 @@ class DashboardView(LoginRequiredMixin, TemplateView):
             # Chart data
             'expense_by_category': expense_by_category,
             'chart_data_json': chart_data_json,
+            'income_chart_data_json': income_chart_data_json,
         })
 
         return context

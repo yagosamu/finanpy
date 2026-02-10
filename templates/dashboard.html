@@ -341,16 +341,53 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 
 <script>
-    // Initialize Expense Distribution Chart
     document.addEventListener('DOMContentLoaded', function() {
         const chartData = {{ chart_data_json|safe }};
 
         if (chartData && chartData.length > 0) {
-            // Prepare data for Chart.js
             const labels = chartData.map(item => item.category);
             const data = chartData.map(item => item.amount);
             const colors = chartData.map(item => item.color);
             const percentages = chartData.map(item => item.percentage);
+
+            // Calculate total for center text
+            const total = data.reduce((sum, val) => sum + val, 0);
+
+            // Format currency in Brazilian Real
+            function formatCurrency(value) {
+                return 'R$ ' + value.toLocaleString('pt-BR', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                });
+            }
+
+            // Center text plugin
+            const centerTextPlugin = {
+                id: 'centerText',
+                afterDraw(chart) {
+                    const { ctx, chartArea } = chart;
+                    if (!chartArea) return;
+
+                    const centerX = (chartArea.left + chartArea.right) / 2;
+                    const centerY = (chartArea.top + chartArea.bottom) / 2;
+
+                    ctx.save();
+
+                    // Label text
+                    ctx.font = '12px Inter, sans-serif';
+                    ctx.fillStyle = '#94A3B8';
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText('Total', centerX, centerY - 12);
+
+                    // Value text
+                    ctx.font = 'bold 16px "JetBrains Mono", monospace';
+                    ctx.fillStyle = '#F1F5F9';
+                    ctx.fillText(formatCurrency(total), centerX, centerY + 10);
+
+                    ctx.restore();
+                }
+            };
 
             // Create the donut chart
             const ctx = document.getElementById('expenseDistributionChart');
@@ -363,36 +400,55 @@
                             data: data,
                             backgroundColor: colors,
                             borderColor: '#1E293B',
-                            borderWidth: 2,
-                            hoverOffset: 10
+                            borderWidth: 3,
+                            hoverOffset: 12,
+                            hoverBorderWidth: 0
                         }]
                     },
                     options: {
                         responsive: true,
                         maintainAspectRatio: true,
+                        cutout: '65%',
+                        animation: {
+                            duration: 800,
+                            easing: 'easeOutQuart'
+                        },
                         plugins: {
                             legend: {
                                 display: false
                             },
                             tooltip: {
-                                backgroundColor: '#1E293B',
+                                backgroundColor: '#0F172A',
                                 titleColor: '#F1F5F9',
-                                bodyColor: '#F1F5F9',
-                                borderColor: '#475569',
+                                titleFont: {
+                                    family: 'Inter, sans-serif',
+                                    size: 13,
+                                    weight: 'bold'
+                                },
+                                bodyColor: '#CBD5E1',
+                                bodyFont: {
+                                    family: '"JetBrains Mono", monospace',
+                                    size: 12
+                                },
+                                borderColor: '#334155',
                                 borderWidth: 1,
-                                padding: 12,
+                                padding: 14,
+                                cornerRadius: 8,
                                 displayColors: true,
+                                boxWidth: 12,
+                                boxHeight: 12,
+                                boxPadding: 4,
                                 callbacks: {
                                     label: function(context) {
-                                        const label = context.label || '';
                                         const value = context.parsed || 0;
-                                        const percentage = percentages[context.dataIndex];
-                                        return `${label}: R$ ${value.toFixed(2)} (${percentage}%)`;
+                                        const pct = percentages[context.dataIndex];
+                                        return ' ' + formatCurrency(value) + '  (' + pct + '%)';
                                     }
                                 }
                             }
                         }
-                    }
+                    },
+                    plugins: [centerTextPlugin]
                 });
             }
 
@@ -402,12 +458,12 @@
                 legendContainer.innerHTML = chartData.map(item => `
                     <div class="flex items-center justify-between p-3 bg-slate-700/50 rounded-lg border border-slate-600 hover:border-slate-500 transition-all duration-200">
                         <div class="flex items-center flex-1 min-w-0">
-                            <span class="w-4 h-4 rounded-full flex-shrink-0 mr-3" style="background-color: ${item.color};"></span>
+                            <span class="w-3 h-3 rounded-full flex-shrink-0 mr-3" style="background-color: ${item.color};"></span>
                             <span class="text-slate-200 text-sm truncate">${item.category}</span>
                         </div>
                         <div class="flex items-center flex-shrink-0 ml-3">
-                            <span class="text-slate-100 font-mono font-medium text-sm mr-2">R$ ${item.amount.toFixed(2)}</span>
-                            <span class="text-slate-400 text-xs">(${item.percentage}%)</span>
+                            <span class="text-slate-100 font-mono font-medium text-sm mr-2">${formatCurrency(item.amount)}</span>
+                            <span class="text-slate-400 text-xs font-mono">${item.percentage}%</span>
                         </div>
                     </div>
                 `).join('');

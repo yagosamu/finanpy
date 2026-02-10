@@ -963,18 +963,18 @@
   - Usar biblioteca de charts
 
 #### Tarefa 7.3: Gráfico de Categorias (Donut/Pizza)
-- [ ] **7.3.1** - Escolher biblioteca de gráficos
+- [X] **7.3.1** - Escolher biblioteca de gráficos
   - Avaliar: Chart.js, ApexCharts, ou Plotly
   - Priorizar leveza e responsividade
   - Instalar/configurar biblioteca escolhida
   
-- [ ] **7.3.2** - Preparar dados no backend
+- [X] **7.3.2** - Preparar dados no backend
   - Agregação de transações por categoria
   - Filtrar por período (mês atual)
   - Calcular percentuais
   - Serializar para JSON
   
-- [ ] **7.3.3** - Implementar gráfico no frontend
+- [X] **7.3.3** - Implementar gráfico no frontend
   - Canvas/elemento para renderização
   - JavaScript para criar gráfico
   - Cores baseadas nas categorias
