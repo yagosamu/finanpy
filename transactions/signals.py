@@ -1,6 +1,8 @@
+from django.db.models import F
 from django.db.models.signals import post_save, pre_delete, pre_save
 from django.dispatch import receiver
 
+from accounts.models import Account
 from .models import Transaction
 
 
@@ -64,9 +66,6 @@ def update_account_balance_on_save(sender, instance, created, **kwargs):
                 instance._old_transaction_type
             )
 
-        # Refresh account from DB to get latest balance
-        instance.account.refresh_from_db()
-
         # Then, apply the new transaction effect
         _apply_transaction_to_account(
             instance.account,
@@ -98,7 +97,7 @@ def update_account_balance_on_delete(sender, instance, **kwargs):
 
 def _apply_transaction_to_account(account, amount, transaction_type):
     """
-    Apply a transaction effect to an account balance.
+    Apply a transaction effect to an account balance using atomic F() expressions.
 
     Args:
         account: Account instance to update
@@ -106,16 +105,19 @@ def _apply_transaction_to_account(account, amount, transaction_type):
         transaction_type: 'income' or 'expense'
     """
     if transaction_type == Transaction.INCOME:
-        account.current_balance += amount
+        Account.objects.filter(pk=account.pk).update(
+            current_balance=F('current_balance') + amount
+        )
     elif transaction_type == Transaction.EXPENSE:
-        account.current_balance -= amount
-
-    account.save()
+        Account.objects.filter(pk=account.pk).update(
+            current_balance=F('current_balance') - amount
+        )
+    account.refresh_from_db()
 
 
 def _reverse_transaction_from_account(account, amount, transaction_type):
     """
-    Reverse a transaction effect from an account balance.
+    Reverse a transaction effect from an account balance using atomic F() expressions.
 
     This is the opposite of apply: income subtracts, expense adds.
 
@@ -125,8 +127,11 @@ def _reverse_transaction_from_account(account, amount, transaction_type):
         transaction_type: 'income' or 'expense'
     """
     if transaction_type == Transaction.INCOME:
-        account.current_balance -= amount
+        Account.objects.filter(pk=account.pk).update(
+            current_balance=F('current_balance') - amount
+        )
     elif transaction_type == Transaction.EXPENSE:
-        account.current_balance += amount
-
-    account.save()
+        Account.objects.filter(pk=account.pk).update(
+            current_balance=F('current_balance') + amount
+        )
+    account.refresh_from_db()

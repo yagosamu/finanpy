@@ -920,7 +920,7 @@
 
 ---
 
-### Sprint 7: Dashboard e Visualizações (2 semanas)
+### [X] Sprint 7: Dashboard e Visualizações (2 semanas)
 
 #### Tarefa 7.1: View do Dashboard
 - [X] **7.1.1** - Criar DashboardView em core
@@ -1001,21 +1001,21 @@
   - Ajustar espaçamentos
 
 #### Tarefa 7.6: Configurar URL do Dashboard
-- [ ] **7.6.1** - Definir rota do dashboard
+- [X] **7.6.1** - Definir rota do dashboard
   - Path: 'dashboard/'
   - Redirecionar após login para dashboard
-  
-- [ ] **7.6.2** - Proteger rota
+
+- [X] **7.6.2** - Proteger rota
   - LoginRequiredMixin
   - Redirecionar não autenticados
 
 #### Tarefa 7.7: Testes Manuais do Dashboard
-- [ ] **7.7.1** - Testar cálculos
+- [X] **7.7.1** - Testar cálculos
   - Verificar saldo total correto
   - Verificar totais mensais
   - Criar transações e ver atualização
-  
-- [ ] **7.7.2** - Testar gráficos
+
+- [X] **7.7.2** - Testar gráficos
   - Verificar renderização
   - Testar interatividade
   - Verificar responsividade
