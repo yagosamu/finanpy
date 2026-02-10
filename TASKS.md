@@ -942,22 +942,22 @@
   - Top 5 categorias de despesas
 
 #### Tarefa 7.2: Template do Dashboard
-- [ ] **7.2.1** - Criar dashboard.html
+- [X] **7.2.1** - Criar dashboard.html
   - Herdar de base_dashboard.html
   - Grid de cards no topo
   - Seção de gráficos
   - Lista de transações recentes
   - Atalhos rápidos
-  
-- [ ] **7.2.2** - Criar cards de resumo financeiro
+
+- [X] **7.2.2** - Criar cards de resumo financeiro
   - Card de saldo total (destaque)
   - Card de receitas do mês
   - Card de despesas do mês
   - Card de economia/déficit
   - Gradientes e cores por tipo
   - Ícones representativos
-  
-- [ ] **7.2.3** - Implementar seção de gráficos
+
+- [X] **7.2.3** - Implementar seção de gráficos
   - Placeholder para gráfico de pizza (categorias)
   - Placeholder para gráfico de linha (evolução)
   - Usar biblioteca de charts
