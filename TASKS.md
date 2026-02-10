@@ -923,20 +923,20 @@
 ### Sprint 7: Dashboard e Visualizações (2 semanas)
 
 #### Tarefa 7.1: View do Dashboard
-- [ ] **7.1.1** - Criar DashboardView em core
+- [X] **7.1.1** - Criar DashboardView em core
   - Herdar de LoginRequiredMixin e TemplateView
   - Calcular saldo total de todas as contas
   - Calcular totais do mês atual (receitas e despesas)
   - Buscar últimas 5 transações
   - Buscar distribuição por categorias
-  
-- [ ] **7.1.2** - Implementar cálculos estatísticos
+
+- [X] **7.1.2** - Implementar cálculos estatísticos
   - Total de receitas do mês
   - Total de despesas do mês
   - Diferença (economia ou déficit)
   - Comparação com mês anterior (postergar)
-  
-- [ ] **7.1.3** - Preparar dados para gráficos
+
+- [X] **7.1.3** - Preparar dados para gráficos
   - Agregação por categoria
   - Percentual de cada categoria
   - Top 5 categorias de despesas
