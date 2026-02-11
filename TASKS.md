@@ -1024,19 +1024,19 @@
 
 ### Sprint 8: Refinamentos e Preparação para MVP (1 semana)
 
-#### Tarefa 8.1: Melhorias de UX
-- [ ] **8.1.1** - Implementar mensagens de feedback
+#### [X] Tarefa 8.1: Melhorias de UX
+- [X] **8.1.1** - Implementar mensagens de feedback
   - Toast notifications para ações
   - Mensagens de sucesso/erro consistentes
   - Timeout automático
   - Posicionamento fixo
   
-- [ ] **8.1.2** - Adicionar confirmações de ações críticas
+- [X] **8.1.2** - Adicionar confirmações de ações críticas
   - Modal de confirmação de exclusão
   - Aviso antes de perder dados não salvos
   - Loading states em botões de ação
   
-- [ ] **8.1.3** - Melhorar navegação
+- [X] **8.1.3** - Melhorar navegação
   - Breadcrumbs em páginas internas
   - Active state em menu lateral
   - Botão de voltar onde aplicável

@@ -50,6 +50,16 @@
 <body class="min-h-screen bg-slate-900 text-slate-100">
     {% block content %}{% endblock %}
 
+    <!-- Django Messages Data (hidden, consumed by toasts.js) -->
+    {% if messages %}
+    <div id="django-messages-data" class="hidden">
+        {% for message in messages %}
+        <span data-message="{{ message|escapejs }}" data-level="{{ message.tags }}"></span>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <script src="{% static 'js/toasts.js' %}"></script>
     {% block extra_js %}{% endblock %}
 </body>
 </html>

@@ -3,6 +3,18 @@
 
 {% block dashboard_title %}{% if object %}Editar Conta{% else %}Nova Conta{% endif %}{% endblock %}
 
+{% block breadcrumbs %}
+<nav class="mb-6" aria-label="Breadcrumb">
+    <ol class="flex items-center space-x-2 text-sm text-slate-400">
+        <li><a href="{% url 'dashboard' %}" class="hover:text-slate-200 transition-colors">Dashboard</a></li>
+        <li><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg></li>
+        <li><a href="{% url 'accounts:list' %}" class="hover:text-slate-200 transition-colors">Contas</a></li>
+        <li><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg></li>
+        <li class="text-slate-200">{% if object %}Editar Conta{% else %}Nova Conta{% endif %}</li>
+    </ol>
+</nav>
+{% endblock %}
+
 {% block dashboard_content %}
 <!-- Page Header -->
 <div class="mb-8">
