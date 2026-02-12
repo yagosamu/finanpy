@@ -72,6 +72,9 @@ class CategoryForm(forms.ModelForm):
             if len(name) < 2:
                 raise ValidationError('O nome da categoria deve ter pelo menos 2 caracteres.')
 
+            if len(name) > 50:
+                raise ValidationError('O nome da categoria não pode ter mais de 50 caracteres.')
+
             # Check for uniqueness among user's categories
             if self.user:
                 # Get existing categories for this user (excluding current instance if updating)

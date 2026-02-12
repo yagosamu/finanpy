@@ -45,6 +45,12 @@ class AccountCreateView(LoginRequiredMixin, CreateView):
     template_name = 'accounts/account_form.html'
     success_url = reverse_lazy('accounts:list')
 
+    def get_form_kwargs(self):
+        """Pass user to form for validation."""
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
+
     def form_valid(self, form):
         """Associate account to logged user before saving."""
         form.instance.user = self.request.user
@@ -66,6 +72,12 @@ class AccountUpdateView(LoginRequiredMixin, UpdateView):
     def get_queryset(self):
         """Return only accounts owned by the logged user."""
         return Account.objects.filter(user=self.request.user)
+
+    def get_form_kwargs(self):
+        """Pass user to form for validation."""
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
 
     def form_valid(self, form):
         """Add success message after update."""
@@ -89,6 +101,15 @@ class AccountDeleteView(LoginRequiredMixin, DeleteView):
 
     def form_valid(self, form):
         """Perform soft delete instead of actual deletion."""
+        # Check if account has transactions
+        if self.object.transactions.exists():
+            messages.error(
+                self.request,
+                f'A conta "{self.object.name}" possui transações vinculadas e não pode ser excluída. '
+                f'Remova as transações antes de excluir a conta.'
+            )
+            return HttpResponseRedirect(self.get_success_url())
+
         success_url = self.get_success_url()
 
         # Soft delete: set is_active to False

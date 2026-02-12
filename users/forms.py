@@ -45,13 +45,19 @@ class SignUpForm(UserCreationForm):
 
     def clean_email(self):
         """
-        Validate that the email is unique.
+        Validate that the email is unique and properly formatted.
         """
         email = self.cleaned_data.get('email')
-        if email and User.objects.filter(email=email).exists():
-            raise ValidationError(
-                'Este email já está cadastrado. Por favor, utilize outro email ou faça login.'
-            )
+        if email:
+            email = email.strip().lower()
+
+            if len(email) > 254:
+                raise ValidationError('O email não pode ter mais de 254 caracteres.')
+
+            if User.objects.filter(email=email).exists():
+                raise ValidationError(
+                    'Este email já está cadastrado. Por favor, utilize outro email ou faça login.'
+                )
         return email
 
     def save(self, commit=True):

@@ -115,13 +115,14 @@ class CategoryDeleteView(LoginRequiredMixin, DeleteView):
             )
             return HttpResponseRedirect(self.success_url)
 
-        # When Transaction model exists, check if category has transactions
-        # if self.object.transactions.exists():
-        #     messages.error(
-        #         self.request,
-        #         f'Categoria "{self.object.name}" possui transações e não pode ser excluída!'
-        #     )
-        #     return HttpResponseRedirect(self.success_url)
+        # Check if category has transactions
+        if self.object.transactions.exists():
+            messages.error(
+                self.request,
+                f'A categoria "{self.object.name}" possui transações vinculadas e não pode ser excluída. '
+                f'Remova ou reclassifique as transações antes de excluir.'
+            )
+            return HttpResponseRedirect(self.success_url)
 
         success_url = self.get_success_url()
 

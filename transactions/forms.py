@@ -83,26 +83,58 @@ class TransactionForm(forms.ModelForm):
 
     def clean_amount(self):
         amount = self.cleaned_data.get('amount')
-        if amount is not None and amount <= 0:
+        if amount is None:
+            raise ValidationError('O valor é obrigatório.')
+        if amount <= 0:
             raise ValidationError('O valor deve ser maior que zero.')
+        if amount > 99999999.99:
+            raise ValidationError('O valor não pode ser maior que R$ 99.999.999,99.')
         return amount
 
     def clean_date(self):
         transaction_date = self.cleaned_data.get('date')
-        if transaction_date and transaction_date > date.today():
+        if not transaction_date:
+            raise ValidationError('A data é obrigatória.')
+        if transaction_date > date.today():
             raise ValidationError('A data da transação não pode ser no futuro.')
+        # Prevent dates too far in the past (more than 10 years)
+        min_date = date.today().replace(year=date.today().year - 10)
+        if transaction_date < min_date:
+            raise ValidationError('A data não pode ser anterior a 10 anos atrás.')
         return transaction_date
+
+    def clean_description(self):
+        description = self.cleaned_data.get('description')
+        if description:
+            description = description.strip()
+            if len(description) > 500:
+                raise ValidationError('A descrição não pode ter mais de 500 caracteres.')
+        return description or ''
 
     def clean(self):
         cleaned_data = super().clean()
         transaction_type = cleaned_data.get('transaction_type')
         category = cleaned_data.get('category')
+        account = cleaned_data.get('account')
 
         # Validate category type matches transaction type
         if transaction_type and category:
             if transaction_type != category.category_type:
                 raise ValidationError({
                     'category': 'O tipo da categoria deve corresponder ao tipo da transação.'
+                })
+
+        # Validate account belongs to user
+        if account and self.user and account.user != self.user:
+            raise ValidationError({
+                'account': 'Conta inválida.'
+            })
+
+        # Validate category belongs to user or is default
+        if category and self.user:
+            if category.user is not None and category.user != self.user:
+                raise ValidationError({
+                    'category': 'Categoria inválida.'
                 })
 
         return cleaned_data

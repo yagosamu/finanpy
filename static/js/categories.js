@@ -418,7 +418,12 @@
         return false;
       }
 
-      this.clearError(field);
+      if (value.length > 50) {
+        this.showError(field, 'O nome não pode ter mais de 50 caracteres.');
+        return false;
+      }
+
+      this.showSuccess(field);
       return true;
     },
 
@@ -441,8 +446,17 @@
         return false;
       }
 
-      this.clearError(field);
+      this.showSuccess(field);
       return true;
+    },
+
+    /**
+     * Show success state for a field
+     * @param {HTMLElement} field - Field element
+     */
+    showSuccess(field) {
+      this.clearError(field);
+      field.classList.add('border-green-500');
     },
 
     /**
@@ -475,7 +489,7 @@
      * @param {HTMLElement} field - Field element
      */
     clearError(field) {
-      field.classList.remove('border-red-500');
+      field.classList.remove('border-red-500', 'border-green-500');
 
       const container = field.closest('.relative') || field.parentElement;
       const errorDiv = container.querySelector('.field-error');

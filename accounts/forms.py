@@ -32,6 +32,10 @@ class AccountUpdateForm(forms.ModelForm):
             }),
         }
 
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
+        super().__init__(*args, **kwargs)
+
     def clean_name(self):
         name = self.cleaned_data.get('name')
 
@@ -41,6 +45,21 @@ class AccountUpdateForm(forms.ModelForm):
             if len(name) < 2:
                 raise ValidationError('O nome da conta deve ter pelo menos 2 caracteres.')
 
+            if len(name) > 100:
+                raise ValidationError('O nome da conta não pode ter mais de 100 caracteres.')
+
+            # Check uniqueness per user
+            if self.user:
+                existing = Account.objects.filter(
+                    user=self.user,
+                    name__iexact=name,
+                    is_active=True
+                )
+                if self.instance and self.instance.pk:
+                    existing = existing.exclude(pk=self.instance.pk)
+                if existing.exists():
+                    raise ValidationError('Você já possui uma conta com este nome.')
+
         return name
 
     def clean_bank(self):
@@ -48,6 +67,8 @@ class AccountUpdateForm(forms.ModelForm):
 
         if bank:
             bank = bank.strip()
+            if len(bank) > 100:
+                raise ValidationError('O nome do banco não pode ter mais de 100 caracteres.')
 
         return bank
 
@@ -87,30 +108,47 @@ class AccountForm(forms.ModelForm):
             }),
         }
 
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
+        super().__init__(*args, **kwargs)
+
     def clean_name(self):
         name = self.cleaned_data.get('name')
 
         if name:
-            # Remove leading/trailing whitespace
             name = name.strip()
 
-            # Check if name has at least 2 characters
             if len(name) < 2:
                 raise ValidationError('O nome da conta deve ter pelo menos 2 caracteres.')
+
+            if len(name) > 100:
+                raise ValidationError('O nome da conta não pode ter mais de 100 caracteres.')
+
+            # Check uniqueness per user
+            if self.user:
+                existing = Account.objects.filter(
+                    user=self.user,
+                    name__iexact=name,
+                    is_active=True
+                )
+                if self.instance and self.instance.pk:
+                    existing = existing.exclude(pk=self.instance.pk)
+                if existing.exists():
+                    raise ValidationError('Você já possui uma conta com este nome.')
 
         return name
 
     def clean_initial_balance(self):
         initial_balance = self.cleaned_data.get('initial_balance')
 
-        if initial_balance is not None:
-            # Check if the value is within acceptable range
-            # max_digits=10, decimal_places=2 means max value is 99999999.99
-            if initial_balance > 99999999.99:
-                raise ValidationError('O saldo inicial não pode ser maior que 99.999.999,99.')
+        if initial_balance is None:
+            raise ValidationError('O saldo inicial é obrigatório.')
 
-            if initial_balance < -99999999.99:
-                raise ValidationError('O saldo inicial não pode ser menor que -99.999.999,99.')
+        if initial_balance > 99999999.99:
+            raise ValidationError('O saldo inicial não pode ser maior que R$ 99.999.999,99.')
+
+        if initial_balance < -99999999.99:
+            raise ValidationError('O saldo inicial não pode ser menor que -R$ 99.999.999,99.')
 
         return initial_balance
 
@@ -118,7 +156,8 @@ class AccountForm(forms.ModelForm):
         bank = self.cleaned_data.get('bank')
 
         if bank:
-            # Remove leading/trailing whitespace
             bank = bank.strip()
+            if len(bank) > 100:
+                raise ValidationError('O nome do banco não pode ter mais de 100 caracteres.')
 
         return bank

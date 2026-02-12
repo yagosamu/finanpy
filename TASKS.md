@@ -1041,18 +1041,18 @@
   - Active state em menu lateral
   - Botão de voltar onde aplicável
 
-#### Tarefa 8.2: Validações Avançadas
-- [ ] **8.2.1** - Validações frontend
+#### [X] Tarefa 8.2: Validações Avançadas
+- [X] **8.2.1** - Validações frontend
   - Validação em tempo real de formulários
   - Feedback visual de erros
   - Prevenir submit de formulários inválidos
-  
-- [ ] **8.2.2** - Validações backend robustas
+
+- [X] **8.2.2** - Validações backend robustas
   - Validar todos os inputs
   - Tratar casos extremos
   - Mensagens de erro claras
-  
-- [ ] **8.2.3** - Validações de negócio
+
+- [X] **8.2.3** - Validações de negócio
   - Impedir exclusão de categoria em uso
   - Validar datas lógicas
 

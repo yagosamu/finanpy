@@ -111,12 +111,17 @@ class ProfileForm(forms.ModelForm):
         first_name = self.cleaned_data.get('first_name')
 
         if first_name:
-            # Remove leading/trailing whitespace
             first_name = first_name.strip()
 
-            # Check if name has at least 2 characters
             if len(first_name) < 2:
                 raise ValidationError('O nome deve ter pelo menos 2 caracteres.')
+
+            if len(first_name) > 150:
+                raise ValidationError('O nome não pode ter mais de 150 caracteres.')
+
+            # Only allow letters, spaces, hyphens, and apostrophes
+            if not re.match(r'^[a-zA-ZÀ-ÿ\s\'-]+$', first_name):
+                raise ValidationError('O nome deve conter apenas letras, espaços e hífens.')
 
         return first_name
 
@@ -124,11 +129,16 @@ class ProfileForm(forms.ModelForm):
         last_name = self.cleaned_data.get('last_name')
 
         if last_name:
-            # Remove leading/trailing whitespace
             last_name = last_name.strip()
 
-            # Check if last name has at least 2 characters
             if len(last_name) < 2:
                 raise ValidationError('O sobrenome deve ter pelo menos 2 caracteres.')
+
+            if len(last_name) > 150:
+                raise ValidationError('O sobrenome não pode ter mais de 150 caracteres.')
+
+            # Only allow letters, spaces, hyphens, and apostrophes
+            if not re.match(r'^[a-zA-ZÀ-ÿ\s\'-]+$', last_name):
+                raise ValidationError('O sobrenome deve conter apenas letras, espaços e hífens.')
 
         return last_name

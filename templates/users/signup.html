@@ -413,6 +413,39 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    // Form submit validation - prevent invalid submissions
+    const signupForm = document.querySelector('form[method="post"]');
+    if (signupForm) {
+        signupForm.addEventListener('submit', function(e) {
+            let isValid = true;
+
+            // Validate email
+            const email = emailInput.value.trim();
+            if (!email || !validateEmail(email)) {
+                updateEmailValidation();
+                isValid = false;
+            }
+
+            // Validate password
+            const password = password1Input.value;
+            if (!password || password.length < 8) {
+                updatePasswordValidation();
+                isValid = false;
+            }
+
+            // Validate password confirmation
+            const password2 = password2Input.value;
+            if (!password2 || password !== password2) {
+                updatePassword2Validation();
+                isValid = false;
+            }
+
+            if (!isValid) {
+                e.preventDefault();
+            }
+        });
+    }
+
     // Attach event listeners
     emailInput.addEventListener('input', updateEmailValidation);
     emailInput.addEventListener('blur', updateEmailValidation);

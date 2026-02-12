@@ -445,13 +445,18 @@
         }
       }
 
+      // Validate name field (min 2 chars)
+      else if (field.id === 'id_name' && value.length > 0 && value.length < 2) {
+        errorMessage = 'O nome deve ter pelo menos 2 caracteres.';
+      }
+
       // Validate min length
       else if (field.minLength && value.length < field.minLength) {
         errorMessage = `Mínimo de ${field.minLength} caracteres.`;
       }
 
       // Validate max length
-      else if (field.maxLength && value.length > field.maxLength) {
+      else if (field.maxLength && field.maxLength > 0 && value.length > field.maxLength) {
         errorMessage = `Máximo de ${field.maxLength} caracteres.`;
       }
 
@@ -459,8 +464,19 @@
         this.showError(field, errorMessage);
         return false;
       } else {
-        this.clearError(field);
+        this.showSuccess(field);
         return true;
+      }
+    },
+
+    /**
+     * Show success state for a field
+     * @param {HTMLElement} field - Field element
+     */
+    showSuccess(field) {
+      this.clearError(field);
+      if (field.value.trim()) {
+        field.classList.add('border-green-500');
       }
     },
 
@@ -470,12 +486,12 @@
      * @param {string} message - Error message
      */
     showError(field, message) {
+      // Remove existing states
+      this.clearError(field);
+
       // Add error styling to field
       field.classList.remove('border-slate-700', 'focus:ring-primary-600');
       field.classList.add('border-red-500', 'focus:ring-red-500');
-
-      // Remove existing error message
-      this.clearError(field);
 
       // Create error message element
       const errorDiv = document.createElement('div');
@@ -499,8 +515,8 @@
      * @param {HTMLElement} field - Field element
      */
     clearError(field) {
-      // Remove error styling
-      field.classList.remove('border-red-500', 'focus:ring-red-500');
+      // Remove all state styling
+      field.classList.remove('border-red-500', 'focus:ring-red-500', 'border-green-500');
       field.classList.add('border-slate-700', 'focus:ring-primary-600');
 
       // Remove error message
