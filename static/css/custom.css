@@ -244,15 +244,48 @@ body {
    FOCUS STATES (Accessibility)
    ======================================================================== */
 
-.focus-ring:focus {
+/* Global focus-visible styles for all interactive elements */
+a:focus-visible,
+button:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--primary-600);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+input:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--primary-600);
+}
+
+.focus-ring:focus-visible {
   outline: none;
   box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.3);
   border-color: var(--primary-600);
 }
 
-.focus-ring-offset:focus {
+.focus-ring-offset:focus-visible {
   outline: none;
   box-shadow: 0 0 0 2px var(--bg-primary), 0 0 0 4px var(--primary-600);
+}
+
+/* Skip navigation link */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 0;
+  padding: 0.75rem 1.5rem;
+  background: var(--primary-600);
+  color: white;
+  font-weight: 600;
+  z-index: 9999;
+  transition: top 0.2s ease;
+}
+
+.skip-link:focus {
+  top: 0;
 }
 
 /* ========================================================================

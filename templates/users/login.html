@@ -7,7 +7,7 @@
 <!-- Login Section -->
 <section class="relative min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 overflow-hidden flex items-center justify-center">
     <!-- Decorative Background Elements -->
-    <div class="absolute inset-0 overflow-hidden">
+    <div class="absolute inset-0 overflow-hidden" aria-hidden="true">
         <div class="absolute -top-40 -right-40 w-80 h-80 bg-primary-600 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob"></div>
         <div class="absolute -bottom-40 -left-40 w-80 h-80 bg-secondary-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-2000"></div>
         <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-primary-700 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-4000"></div>
@@ -36,8 +36,8 @@
 
                 <!-- Form-wide errors -->
                 {% if form.non_field_errors %}
-                    <div class="bg-red-900/30 border border-red-700 rounded-lg p-4 flex items-start">
-                        <span class="text-red-400 mr-3 flex-shrink-0">✗</span>
+                    <div role="alert" class="bg-red-900/30 border border-red-700 rounded-lg p-4 flex items-start">
+                        <span class="text-red-400 mr-3 flex-shrink-0" aria-hidden="true">✗</span>
                         <div class="text-red-100 text-sm">
                             {% for error in form.non_field_errors %}
                                 <p>{{ error }}</p>
@@ -48,8 +48,8 @@
 
                 <!-- Display general form errors -->
                 {% if form.errors and not form.non_field_errors %}
-                    <div class="bg-red-900/30 border border-red-700 rounded-lg p-4 flex items-start">
-                        <span class="text-red-400 mr-3 flex-shrink-0">✗</span>
+                    <div role="alert" class="bg-red-900/30 border border-red-700 rounded-lg p-4 flex items-start">
+                        <span class="text-red-400 mr-3 flex-shrink-0" aria-hidden="true">✗</span>
                         <div class="text-red-100 text-sm">
                             <p>Por favor, corrija os erros abaixo.</p>
                         </div>

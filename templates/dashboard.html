@@ -1,5 +1,5 @@
 {% extends 'base_dashboard.html' %}
-{% load l10n %}
+{% load format_filters %}
 
 {% block dashboard_title %}Dashboard{% endblock %}
 
@@ -20,16 +20,14 @@
     <div class="bg-gradient-to-br from-primary-600 to-primary-700 rounded-xl shadow-lg border border-primary-500 p-4 sm:p-6">
         <div class="flex items-center justify-between mb-4">
             <div class="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center">
-                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="w-6 h-6 text-white" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                 </svg>
             </div>
         </div>
         <p class="text-primary-100 text-sm mb-1">Saldo Total</p>
         <p class="text-white text-2xl sm:text-3xl font-bold font-mono">
-            {% localize off %}
-                R$ {{ total_balance|floatformat:2|default:"0,00" }}
-            {% endlocalize %}
+            {{ total_balance|format_currency }}
         </p>
         <p class="text-primary-100 text-xs mt-2">
             {% if active_accounts_count > 0 %}
@@ -44,43 +42,39 @@
     <div class="bg-slate-800 rounded-xl shadow-lg border border-slate-700 p-4 sm:p-6 hover:border-green-500 transition-all duration-200">
         <div class="flex items-center justify-between mb-4">
             <div class="w-12 h-12 bg-green-500/20 rounded-lg flex items-center justify-center">
-                <svg class="w-6 h-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="w-6 h-6 text-green-400" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11l5-5m0 0l5 5m-5-5v12"></path>
                 </svg>
             </div>
         </div>
         <p class="text-slate-400 text-sm mb-1">Receitas do Mês</p>
         <p class="text-green-400 text-2xl sm:text-3xl font-bold font-mono">
-            {% localize off %}
-                R$ {{ total_income|floatformat:2|default:"0,00" }}
-            {% endlocalize %}
+            {{ total_income|format_currency }}
         </p>
-        <p class="text-slate-500 text-xs mt-2">{{ current_month_name }} {{ current_year }}</p>
+        <p class="text-slate-400 text-xs mt-2">{{ current_month_name }} {{ current_year }}</p>
     </div>
 
     <!-- Expenses Card -->
     <div class="bg-slate-800 rounded-xl shadow-lg border border-slate-700 p-4 sm:p-6 hover:border-red-500 transition-all duration-200">
         <div class="flex items-center justify-between mb-4">
             <div class="w-12 h-12 bg-red-500/20 rounded-lg flex items-center justify-center">
-                <svg class="w-6 h-6 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="w-6 h-6 text-red-400" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 13l-5 5m0 0l-5-5m5 5V6"></path>
                 </svg>
             </div>
         </div>
         <p class="text-slate-400 text-sm mb-1">Despesas do Mês</p>
         <p class="text-red-400 text-2xl sm:text-3xl font-bold font-mono">
-            {% localize off %}
-                R$ {{ total_expenses|floatformat:2|default:"0,00" }}
-            {% endlocalize %}
+            {{ total_expenses|format_currency }}
         </p>
-        <p class="text-slate-500 text-xs mt-2">{{ current_month_name }} {{ current_year }}</p>
+        <p class="text-slate-400 text-xs mt-2">{{ current_month_name }} {{ current_year }}</p>
     </div>
 
     <!-- Monthly Balance Card -->
     <div class="bg-slate-800 rounded-xl shadow-lg border border-slate-700 p-4 sm:p-6 {% if monthly_balance >= 0 %}hover:border-green-500{% else %}hover:border-red-500{% endif %} transition-all duration-200">
         <div class="flex items-center justify-between mb-4">
             <div class="w-12 h-12 {% if monthly_balance >= 0 %}bg-green-500/20{% else %}bg-red-500/20{% endif %} rounded-lg flex items-center justify-center">
-                <svg class="w-6 h-6 {% if monthly_balance >= 0 %}text-green-400{% else %}text-red-400{% endif %}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="w-6 h-6 {% if monthly_balance >= 0 %}text-green-400{% else %}text-red-400{% endif %}" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     {% if monthly_balance >= 0 %}
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     {% else %}
@@ -91,11 +85,9 @@
         </div>
         <p class="text-slate-400 text-sm mb-1">Saldo do Mês</p>
         <p class="{% if monthly_balance >= 0 %}text-green-400{% else %}text-red-400{% endif %} text-2xl sm:text-3xl font-bold font-mono">
-            {% localize off %}
-                R$ {{ monthly_balance|floatformat:2|default:"0,00" }}
-            {% endlocalize %}
+            {{ monthly_balance|format_currency }}
         </p>
-        <p class="text-slate-500 text-xs mt-2">{{ current_month_name }} {{ current_year }}</p>
+        <p class="text-slate-400 text-xs mt-2">{{ current_month_name }} {{ current_year }}</p>
     </div>
 </div>
 
@@ -131,7 +123,7 @@
                     </svg>
                 </div>
                 <p class="text-slate-400 mb-2">Sem despesas neste mês</p>
-                <p class="text-slate-500 text-sm">Adicione transações para ver os gráficos</p>
+                <p class="text-slate-400 text-sm">Adicione transações para ver os gráficos</p>
             </div>
         {% endif %}
     </div>
@@ -153,8 +145,8 @@
                 </svg>
             </div>
             <p class="text-slate-300 font-medium mb-2">Gráfico de Evolução Mensal</p>
-            <p class="text-slate-500 text-sm">Visualize a evolução das suas finanças ao longo dos meses</p>
-            <p class="text-slate-600 text-xs mt-3">Disponível em breve</p>
+            <p class="text-slate-400 text-sm">Visualize a evolução das suas finanças ao longo dos meses</p>
+            <p class="text-slate-400 text-xs mt-3">Disponível em breve</p>
         </div>
     </div>
 </div>
@@ -179,7 +171,7 @@
                         <!-- Date -->
                         <div class="flex-shrink-0 mr-4">
                             <div class="text-center">
-                                <p class="text-slate-400 text-xs">{{ transaction.date|date:"d/m" }}</p>
+                                <p class="text-slate-400 text-xs">{{ transaction.date|format_date_relative }}</p>
                             </div>
                         </div>
 
@@ -205,10 +197,7 @@
                         <!-- Amount -->
                         <div class="flex-shrink-0 ml-4 text-right">
                             <p class="font-mono font-bold text-sm sm:text-base {% if transaction.transaction_type == 'income' %}text-green-400{% else %}text-red-400{% endif %}">
-                                {% if transaction.transaction_type == 'income' %}+{% else %}-{% endif %}
-                                {% localize off %}
-                                    R$ {{ transaction.amount|floatformat:2 }}
-                                {% endlocalize %}
+                                {% if transaction.transaction_type == 'income' %}+{{ transaction.amount|format_currency }}{% else %}-{{ transaction.amount|format_currency }}{% endif %}
                             </p>
                         </div>
                     </div>

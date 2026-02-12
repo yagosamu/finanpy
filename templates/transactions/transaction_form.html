@@ -7,9 +7,9 @@
 <nav class="mb-6" aria-label="Breadcrumb">
     <ol class="flex items-center space-x-2 text-sm text-slate-400">
         <li><a href="{% url 'dashboard' %}" class="hover:text-slate-200 transition-colors">Dashboard</a></li>
-        <li><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg></li>
+        <li aria-hidden="true"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg></li>
         <li><a href="{% url 'transactions:list' %}" class="hover:text-slate-200 transition-colors">Transações</a></li>
-        <li><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg></li>
+        <li aria-hidden="true"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg></li>
         <li class="text-slate-200">{% if object %}Editar Transação{% else %}Nova Transação{% endif %}</li>
     </ol>
 </nav>
@@ -36,7 +36,7 @@
 
         <!-- Display non-field errors -->
         {% if form.non_field_errors %}
-        <div class="bg-red-900/30 border border-red-700 rounded-lg p-4 flex items-start mb-6">
+        <div role="alert" class="bg-red-900/30 border border-red-700 rounded-lg p-4 flex items-start mb-6">
             <svg class="w-5 h-5 text-red-400 mr-3 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
             </svg>

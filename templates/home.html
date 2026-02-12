@@ -34,25 +34,25 @@
 
                 <!-- Desktop Navigation -->
                 <div class="hidden md:flex items-center space-x-4">
-                    <a href="#recursos" class="text-slate-300 hover:text-primary-400 px-3 py-2 rounded-lg transition-colors">
+                    <a href="#recursos" class="text-slate-300 hover:text-primary-400 px-3 py-2 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-primary-600">
                         Recursos
                     </a>
-                    <a href="#beneficios" class="text-slate-300 hover:text-primary-400 px-3 py-2 rounded-lg transition-colors">
+                    <a href="#beneficios" class="text-slate-300 hover:text-primary-400 px-3 py-2 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-primary-600">
                         Benefícios
                     </a>
-                    <a href="#depoimentos" class="text-slate-300 hover:text-primary-400 px-3 py-2 rounded-lg transition-colors">
+                    <a href="#depoimentos" class="text-slate-300 hover:text-primary-400 px-3 py-2 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-primary-600">
                         Depoimentos
                     </a>
-                    <a href="{% url 'users:login' %}" class="text-slate-300 hover:text-primary-400 px-4 py-2 rounded-lg transition-colors">
+                    <a href="{% url 'users:login' %}" class="text-slate-300 hover:text-primary-400 px-4 py-2 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-primary-600">
                         Entrar
                     </a>
-                    <a href="{% url 'users:signup' %}" class="btn-glow px-6 py-2 bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 text-white font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-200">
+                    <a href="{% url 'users:signup' %}" class="btn-glow px-6 py-2 bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 text-white font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary-600">
                         Começar Grátis
                     </a>
                 </div>
 
                 <!-- Mobile Hamburger Button -->
-                <button id="mobile-menu-button" class="md:hidden text-slate-300 hover:text-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-600 rounded-lg p-2 transition-all duration-200">
+                <button id="mobile-menu-button" class="md:hidden text-slate-300 hover:text-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-600 rounded-lg p-2 transition-all duration-200" aria-label="Menu de navegação" aria-expanded="false" aria-controls="mobile-menu">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path id="menu-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                         <path id="close-icon" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -63,19 +63,19 @@
             <!-- Mobile Menu Dropdown -->
             <div id="mobile-menu" class="hidden md:hidden border-t border-slate-800 py-4 transition-all duration-300">
                 <div class="flex flex-col space-y-2">
-                    <a href="#recursos" class="text-slate-300 hover:text-primary-400 hover:bg-slate-800/50 px-4 py-3 rounded-lg transition-all duration-200">
+                    <a href="#recursos" class="text-slate-300 hover:text-primary-400 hover:bg-slate-800/50 px-4 py-3 rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary-600">
                         Recursos
                     </a>
-                    <a href="#beneficios" class="text-slate-300 hover:text-primary-400 hover:bg-slate-800/50 px-4 py-3 rounded-lg transition-all duration-200">
+                    <a href="#beneficios" class="text-slate-300 hover:text-primary-400 hover:bg-slate-800/50 px-4 py-3 rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary-600">
                         Benefícios
                     </a>
-                    <a href="#depoimentos" class="text-slate-300 hover:text-primary-400 hover:bg-slate-800/50 px-4 py-3 rounded-lg transition-all duration-200">
+                    <a href="#depoimentos" class="text-slate-300 hover:text-primary-400 hover:bg-slate-800/50 px-4 py-3 rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary-600">
                         Depoimentos
                     </a>
-                    <a href="{% url 'users:login' %}" class="text-slate-300 hover:text-primary-400 hover:bg-slate-800/50 px-4 py-3 rounded-lg transition-all duration-200">
+                    <a href="{% url 'users:login' %}" class="text-slate-300 hover:text-primary-400 hover:bg-slate-800/50 px-4 py-3 rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary-600">
                         Entrar
                     </a>
-                    <a href="{% url 'users:signup' %}" class="px-4 py-3 bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 text-white font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 text-center">
+                    <a href="{% url 'users:signup' %}" class="px-4 py-3 bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 text-white font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 text-center focus:outline-none focus:ring-2 focus:ring-primary-600">
                         Começar Grátis
                     </a>
                 </div>
@@ -98,17 +98,17 @@
                 Tudo que você precisa para organizar sua vida financeira.
             </p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="{% url 'users:signup' %}" class="btn-glow px-8 py-4 bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 text-lg">
+                <a href="{% url 'users:signup' %}" class="btn-glow px-8 py-4 bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 text-lg focus:outline-none focus:ring-2 focus:ring-primary-600">
                     Criar Conta Gratuita
                 </a>
-                <a href="#recursos" class="px-8 py-4 bg-slate-700/50 hover:bg-slate-600/50 text-slate-100 font-semibold rounded-lg border border-slate-600 backdrop-blur-sm transition-all duration-200 text-lg">
+                <a href="#recursos" class="px-8 py-4 bg-slate-700/50 hover:bg-slate-600/50 text-slate-100 font-semibold rounded-lg border border-slate-600 backdrop-blur-sm transition-all duration-200 text-lg focus:outline-none focus:ring-2 focus:ring-primary-600">
                     Conhecer Recursos
                 </a>
             </div>
         </div>
 
         <!-- Hero Visual Indicator -->
-        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce" aria-hidden="true">
             <svg class="w-6 h-6 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
             </svg>
@@ -132,7 +132,7 @@
             <!-- Feature 1: Accounts -->
             <div class="bg-slate-800 rounded-xl shadow-xl border border-slate-700 p-8 hover:border-primary-600 transition-all duration-300 group">
                 <div class="w-14 h-14 bg-gradient-to-br from-primary-600 to-primary-700 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
                     </svg>
                 </div>
@@ -146,7 +146,7 @@
             <!-- Feature 2: Categories -->
             <div class="bg-slate-800 rounded-xl shadow-xl border border-slate-700 p-8 hover:border-secondary-500 transition-all duration-300 group">
                 <div class="w-14 h-14 bg-gradient-to-br from-secondary-500 to-secondary-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
                     </svg>
                 </div>
@@ -160,7 +160,7 @@
             <!-- Feature 3: Transactions -->
             <div class="bg-slate-800 rounded-xl shadow-xl border border-slate-700 p-8 hover:border-green-500 transition-all duration-300 group">
                 <div class="w-14 h-14 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
                     </svg>
                 </div>
@@ -174,7 +174,7 @@
             <!-- Feature 4: Dashboard -->
             <div class="bg-slate-800 rounded-xl shadow-xl border border-slate-700 p-8 hover:border-blue-500 transition-all duration-300 group">
                 <div class="w-14 h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
                     </svg>
                 </div>
@@ -188,7 +188,7 @@
             <!-- Feature 5: Filters -->
             <div class="bg-slate-800 rounded-xl shadow-xl border border-slate-700 p-8 hover:border-amber-500 transition-all duration-300 group">
                 <div class="w-14 h-14 bg-gradient-to-br from-amber-500 to-amber-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path>
                     </svg>
                 </div>
@@ -202,7 +202,7 @@
             <!-- Feature 6: Security -->
             <div class="bg-slate-800 rounded-xl shadow-xl border border-slate-700 p-8 hover:border-purple-500 transition-all duration-300 group">
                 <div class="w-14 h-14 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
                     </svg>
                 </div>
@@ -231,7 +231,7 @@
                 <div class="space-y-6">
                     <div class="flex items-start space-x-4">
                         <div class="flex-shrink-0 w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center">
-                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                             </svg>
                         </div>
@@ -245,7 +245,7 @@
 
                     <div class="flex items-start space-x-4">
                         <div class="flex-shrink-0 w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center">
-                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                             </svg>
                         </div>
@@ -259,7 +259,7 @@
 
                     <div class="flex items-start space-x-4">
                         <div class="flex-shrink-0 w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center">
-                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                             </svg>
                         </div>
@@ -273,7 +273,7 @@
 
                     <div class="flex items-start space-x-4">
                         <div class="flex-shrink-0 w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center">
-                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                             </svg>
                         </div>
@@ -370,7 +370,7 @@
                     </div>
                 </div>
                 <div class="text-slate-300 leading-relaxed">
-                    <svg class="w-8 h-8 text-primary-600 mb-3" fill="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-8 h-8 text-primary-600 mb-3" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                         <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
                     </svg>
                     <p class="text-slate-300">
@@ -391,7 +391,7 @@
                     </div>
                 </div>
                 <div class="text-slate-300 leading-relaxed">
-                    <svg class="w-8 h-8 text-secondary-500 mb-3" fill="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-8 h-8 text-secondary-500 mb-3" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                         <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
                     </svg>
                     <p class="text-slate-300">
@@ -412,7 +412,7 @@
                     </div>
                 </div>
                 <div class="text-slate-300 leading-relaxed">
-                    <svg class="w-8 h-8 text-green-500 mb-3" fill="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-8 h-8 text-green-500 mb-3" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                         <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
                     </svg>
                     <p class="text-slate-300">
@@ -434,7 +434,7 @@
             <p class="text-xl text-primary-100 mb-8 max-w-2xl mx-auto">
                 Junte-se a milhares de usuários que já estão controlando melhor seu dinheiro
             </p>
-            <a href="{% url 'users:signup' %}" class="inline-block px-10 py-5 bg-white hover:bg-slate-100 text-primary-700 font-bold rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 text-lg">
+            <a href="{% url 'users:signup' %}" class="inline-block px-10 py-5 bg-white hover:bg-slate-100 text-primary-700 font-bold rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 text-lg focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-primary-600">
                 Começar Agora - É Grátis
             </a>
             <p class="text-primary-100 text-sm mt-4">
@@ -592,6 +592,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (mobileMenuButton && mobileMenu) {
         mobileMenuButton.addEventListener('click', function() {
+            const isExpanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
+            mobileMenuButton.setAttribute('aria-expanded', !isExpanded);
             mobileMenu.classList.toggle('hidden');
             menuIcon.classList.toggle('hidden');
             closeIcon.classList.toggle('hidden');
@@ -601,6 +603,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const mobileMenuLinks = mobileMenu.querySelectorAll('a');
         mobileMenuLinks.forEach(function(link) {
             link.addEventListener('click', function() {
+                mobileMenuButton.setAttribute('aria-expanded', 'false');
                 mobileMenu.classList.add('hidden');
                 menuIcon.classList.remove('hidden');
                 closeIcon.classList.add('hidden');
@@ -613,6 +616,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const isClickOnButton = mobileMenuButton.contains(event.target);
 
             if (!isClickInsideMenu && !isClickOnButton && !mobileMenu.classList.contains('hidden')) {
+                mobileMenuButton.setAttribute('aria-expanded', 'false');
                 mobileMenu.classList.add('hidden');
                 menuIcon.classList.remove('hidden');
                 closeIcon.classList.add('hidden');

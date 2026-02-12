@@ -1,4 +1,5 @@
 {% extends 'base_dashboard.html' %}
+{% load format_filters %}
 
 {% block dashboard_title %}Meu Perfil{% endblock %}
 
@@ -6,7 +7,7 @@
 <nav class="mb-6" aria-label="Breadcrumb">
     <ol class="flex items-center space-x-2 text-sm text-slate-400">
         <li><a href="{% url 'dashboard' %}" class="hover:text-slate-200 transition-colors">Dashboard</a></li>
-        <li><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg></li>
+        <li aria-hidden="true"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg></li>
         <li class="text-slate-200">Meu Perfil</li>
     </ol>
 </nav>
@@ -95,7 +96,7 @@
                             <svg class="w-4 h-4 mr-2 text-slate-500" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
                             </svg>
-                            {% if profile.birth_date %}{{ profile.birth_date|date:"d/m/Y" }}{% else %}<span class="text-slate-500 italic">Não informado</span>{% endif %}
+                            {% if profile.birth_date %}{{ profile.birth_date|format_date_br }}{% else %}<span class="text-slate-500 italic">Não informado</span>{% endif %}
                         </p>
                     </div>
                 </div>
@@ -143,7 +144,7 @@
                 <!-- Member Since -->
                 <div class="pb-4 border-b border-slate-700">
                     <label class="block text-sm font-medium text-slate-400 mb-2">Membro desde</label>
-                    <p class="text-slate-100">{{ profile.created_at|date:"d/m/Y" }}</p>
+                    <p class="text-slate-100">{{ profile.created_at|format_date_br }}</p>
                 </div>
 
                 <!-- Account Status Badge -->

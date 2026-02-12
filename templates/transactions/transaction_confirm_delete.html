@@ -1,5 +1,6 @@
 {% extends 'base_dashboard.html' %}
 {% load static %}
+{% load format_filters %}
 
 {% block dashboard_title %}Excluir Transação{% endblock %}
 
@@ -7,9 +8,9 @@
 <nav class="mb-6" aria-label="Breadcrumb">
     <ol class="flex items-center space-x-2 text-sm text-slate-400">
         <li><a href="{% url 'dashboard' %}" class="hover:text-slate-200 transition-colors">Dashboard</a></li>
-        <li><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg></li>
+        <li aria-hidden="true"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg></li>
         <li><a href="{% url 'transactions:list' %}" class="hover:text-slate-200 transition-colors">Transações</a></li>
-        <li><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg></li>
+        <li aria-hidden="true"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg></li>
         <li class="text-slate-200">Excluir Transação</li>
     </ol>
 </nav>
@@ -60,12 +61,12 @@
                     <div class="flex justify-between items-center border-b border-slate-700 pb-3">
                         <span class="text-slate-400 font-medium">Valor:</span>
                         <span class="text-slate-100 font-mono font-semibold {% if object.transaction_type == 'income' %}text-green-400{% else %}text-red-400{% endif %}" data-currency="{{ object.amount }}" data-currency-prefix="{% if object.transaction_type == 'income' %}+{% else %}-{% endif %}">
-                            {% if object.transaction_type == 'income' %}+{% else %}-{% endif %}R$ {{ object.amount|floatformat:2 }}
+                            {% if object.transaction_type == 'income' %}+{{ object.amount|format_currency }}{% else %}-{{ object.amount|format_currency }}{% endif %}
                         </span>
                     </div>
                     <div class="flex justify-between items-center border-b border-slate-700 pb-3">
                         <span class="text-slate-400 font-medium">Data:</span>
-                        <span class="text-slate-100">{{ object.date|date:"d/m/Y" }}</span>
+                        <span class="text-slate-100">{{ object.date|format_date_br }}</span>
                     </div>
                     <div class="flex justify-between items-center border-b border-slate-700 pb-3">
                         <span class="text-slate-400 font-medium">Categoria:</span>

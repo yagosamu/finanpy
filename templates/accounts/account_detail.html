@@ -1,5 +1,6 @@
 {% extends 'base_dashboard.html' %}
 {% load static %}
+{% load format_filters %}
 
 {% block dashboard_title %}{{ object.name }}{% endblock %}
 
@@ -7,9 +8,9 @@
 <nav class="mb-6" aria-label="Breadcrumb">
     <ol class="flex items-center space-x-2 text-sm text-slate-400">
         <li><a href="{% url 'dashboard' %}" class="hover:text-slate-200 transition-colors">Dashboard</a></li>
-        <li><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg></li>
+        <li aria-hidden="true"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg></li>
         <li><a href="{% url 'accounts:list' %}" class="hover:text-slate-200 transition-colors">Contas</a></li>
-        <li><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg></li>
+        <li aria-hidden="true"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/></svg></li>
         <li class="text-slate-200">{{ object.name }}</li>
     </ol>
 </nav>
@@ -59,7 +60,7 @@
                     <div>
                         <p class="text-white/90 text-lg font-medium mb-2">Saldo Atual</p>
                         <p class="text-white text-4xl font-bold font-mono">
-                            R$ {{ object.current_balance|floatformat:2 }}
+                            {{ object.current_balance|format_currency }}
                         </p>
                     </div>
                     <div class="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center">
@@ -129,15 +130,15 @@
                         <div class="border-b border-slate-700 pb-4">
                             <dt class="text-sm font-medium text-slate-400 mb-1">Saldo Inicial</dt>
                             <dd class="text-lg font-mono font-semibold text-slate-100">
-                                R$ {{ object.initial_balance|floatformat:2 }}
+                                {{ object.initial_balance|format_currency }}
                             </dd>
                         </div>
 
                         <!-- Current Balance -->
                         <div class="border-b border-slate-700 pb-4">
                             <dt class="text-sm font-medium text-slate-400 mb-1">Saldo Atual</dt>
-                            <dd class="text-lg font-mono font-semibold {% if object.current_balance >= 0 %}text-green-400{% else %}text-red-400{% endif %}">
-                                R$ {{ object.current_balance|floatformat:2 }}
+                            <dd class="text-lg font-mono font-semibold {{ object.current_balance|currency_class }}">
+                                {{ object.current_balance|format_currency }}
                             </dd>
                         </div>
 
@@ -145,7 +146,7 @@
                         <div class="border-b border-slate-700 pb-4">
                             <dt class="text-sm font-medium text-slate-400 mb-1">Data de Criação</dt>
                             <dd class="text-lg text-slate-100">
-                                {{ object.created_at|date:"d/m/Y \à\s H:i" }}
+                                {{ object.created_at|format_datetime_br }}
                             </dd>
                         </div>
 
@@ -153,7 +154,7 @@
                         <div>
                             <dt class="text-sm font-medium text-slate-400 mb-1">Última Atualização</dt>
                             <dd class="text-lg text-slate-100">
-                                {{ object.updated_at|date:"d/m/Y \à\s H:i" }}
+                                {{ object.updated_at|format_datetime_br }}
                             </dd>
                         </div>
                     </dl>

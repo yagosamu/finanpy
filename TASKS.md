@@ -1056,33 +1056,33 @@
   - Impedir exclusão de categoria em uso
   - Validar datas lógicas
 
-#### Tarefa 8.3: Formatações e Padronizações
-- [ ] **8.3.1** - Padronizar formatação de datas
+#### [X] Tarefa 8.3: Formatações e Padronizações
+- [X] **8.3.1** - Padronizar formatação de datas
   - Usar locale pt-BR
   - Formato DD/MM/YYYY
   - Formato relativo onde aplicável
   
-- [ ] **8.3.2** - Padronizar formatação de valores
+- [X] **8.3.2** - Padronizar formatação de valores
   - R$ 1.234,56 (padrão brasileiro)
   - Cores por valor (positivo/negativo)
   - Sinal de + ou - onde aplicável
   
-- [ ] **8.3.3** - Padronizar textos e labels
+- [X] **8.3.3** - Padronizar textos e labels
   - Revisar todos os textos da interface
   - Garantir português correto
   - Tom consistente
 
-#### Tarefa 8.4: Acessibilidade
-- [ ] **8.4.1** - Adicionar atributos ARIA
+#### [X] Tarefa 8.4: Acessibilidade
+- [X] **8.4.1** - Adicionar atributos ARIA
   - Labels descritivos
   - Roles adequados
   - Estados de elementos
-  
-- [ ] **8.4.2** - Garantir navegação por teclado
+
+- [X] **8.4.2** - Garantir navegação por teclado
   - Tab order lógica
   - Focus visible
-  
-- [ ] **8.4.3** - Contraste e legibilidade
+
+- [X] **8.4.3** - Contraste e legibilidade
   - Verificar contraste de cores
   - Tamanhos de fonte adequados
   - Espaçamento suficiente

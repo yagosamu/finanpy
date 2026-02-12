@@ -1,3 +1,4 @@
+{% load format_filters %}
 <div class="bg-slate-800 rounded-xl shadow-lg border border-slate-700 {{ border_hover }} transition-all duration-200 overflow-hidden">
   {# Card Header with Gradient #}
   <div class="bg-gradient-to-r {{ gradient_from }} {{ gradient_to }} p-6">
@@ -53,7 +54,7 @@
     <div class="mb-6">
       <p class="text-slate-400 text-sm mb-1">Saldo Atual</p>
       <p class="text-3xl font-bold text-slate-100 font-mono">
-        R$ {{ account.current_balance|floatformat:2 }}
+        {{ account.current_balance|format_currency }}
       </p>
     </div>
 
