@@ -1087,37 +1087,37 @@
   - Tamanhos de fonte adequados
   - Espaçamento suficiente
 
-#### Tarefa 8.5: Tratamento de Erros
-- [ ] **8.5.1** - Criar páginas de erro customizadas
+#### [X] Tarefa 8.5: Tratamento de Erros
+- [X] **8.5.1** - Criar páginas de erro customizadas
   - 404.html
   - 500.html
   - 403.html
   - Design consistente com tema
-  
-- [ ] **8.5.2** - Implementar logging
+
+- [X] **8.5.2** - Implementar logging
   - Configurar logging em settings.py
   - Logs de erros
   - Logs de ações críticas
-  
-- [ ] **8.5.3** - Tratamento de exceções
+
+- [X] **8.5.3** - Tratamento de exceções
   - Try-catch em views críticas
   - Mensagens amigáveis ao usuário
   - Não expor detalhes técnicos
 
-#### Tarefa 8.6: Segurança
-- [ ] **8.6.1** - Revisar configurações de segurança
+#### [X] Tarefa 8.6: Segurança
+- [X] **8.6.1** - Revisar configurações de segurança
   - DEBUG = False em produção
   - SECRET_KEY segura
   - ALLOWED_HOSTS configurado
   - CSRF_COOKIE_SECURE = True
   - SESSION_COOKIE_SECURE = True
   
-- [ ] **8.6.2** - Proteção de rotas
+- [X] **8.6.2** - Proteção de rotas
   - Todas as views autenticadas protegidas
   - Verificação de ownership em updates/deletes
   - Prevenir IDOR
   
-- [ ] **8.6.3** - Sanitização de inputs
+- [X] **8.6.3** - Sanitização de inputs
   - Escape de HTML em outputs
   - Limitar tamanho de inputs
 

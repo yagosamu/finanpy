@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.core.validators import MaxLengthValidator
 from django.db import models
 
 
@@ -43,7 +44,11 @@ class Transaction(models.Model):
         decimal_places=2
     )
     date = models.DateField('Data')
-    description = models.TextField('Descrição', blank=True)
+    description = models.TextField(
+        'Descrição',
+        blank=True,
+        validators=[MaxLengthValidator(500)]
+    )
 
     # Timestamp fields last
     created_at = models.DateTimeField('Data de Criação', auto_now_add=True)

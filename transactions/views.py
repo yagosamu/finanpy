@@ -1,6 +1,9 @@
+import logging
+
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q, Sum
+from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 
@@ -9,6 +12,8 @@ from categories.models import Category
 
 from .forms import TransactionForm
 from .models import Transaction
+
+logger = logging.getLogger(__name__)
 
 
 class TransactionListView(LoginRequiredMixin, ListView):
@@ -99,8 +104,17 @@ class TransactionCreateView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.user = self.request.user
+        try:
+            response = super().form_valid(form)
+        except Exception:
+            logger.exception('Erro ao criar transação para o usuário %s', self.request.user.email)
+            messages.error(
+                self.request,
+                'Ocorreu um erro ao criar a transação. Tente novamente.'
+            )
+            return HttpResponseRedirect(reverse_lazy('transactions:list'))
         messages.success(self.request, 'Transação criada com sucesso!')
-        return super().form_valid(form)
+        return response
 
 
 class TransactionUpdateView(LoginRequiredMixin, UpdateView):
@@ -120,8 +134,17 @@ class TransactionUpdateView(LoginRequiredMixin, UpdateView):
         return kwargs
 
     def form_valid(self, form):
+        try:
+            response = super().form_valid(form)
+        except Exception:
+            logger.exception('Erro ao atualizar transação %s', self.object.pk)
+            messages.error(
+                self.request,
+                'Ocorreu um erro ao atualizar a transação. Tente novamente.'
+            )
+            return HttpResponseRedirect(reverse_lazy('transactions:list'))
         messages.success(self.request, 'Transação atualizada com sucesso!')
-        return super().form_valid(form)
+        return response
 
 
 class TransactionDeleteView(LoginRequiredMixin, DeleteView):
@@ -133,5 +156,14 @@ class TransactionDeleteView(LoginRequiredMixin, DeleteView):
         return Transaction.objects.filter(user=self.request.user)
 
     def form_valid(self, form):
+        try:
+            response = super().form_valid(form)
+        except Exception:
+            logger.exception('Erro ao excluir transação %s', self.object.pk)
+            messages.error(
+                self.request,
+                'Ocorreu um erro ao excluir a transação. Tente novamente.'
+            )
+            return HttpResponseRedirect(reverse_lazy('transactions:list'))
         messages.success(self.request, 'Transação excluída com sucesso!')
-        return super().form_valid(form)
+        return response

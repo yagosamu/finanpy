@@ -100,7 +100,7 @@
             <span class="text-slate-400 text-sm">{{ current_month_name }} {{ current_year }}</span>
         </div>
 
-        {% if chart_data_json and chart_data_json != '[]' %}
+        {% if chart_data %}
             <!-- Chart Canvas -->
             <div class="flex flex-col lg:flex-row items-center justify-center">
                 <div class="w-full lg:w-1/2 mb-6 lg:mb-0">
@@ -326,12 +326,15 @@
 {% endblock %}
 
 {% block extra_js %}
+<!-- Safely embedded chart data -->
+{{ chart_data|json_script:"chart-data" }}
+
 <!-- Chart.js CDN -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const chartData = {{ chart_data_json|safe }};
+        const chartData = JSON.parse(document.getElementById('chart-data').textContent);
 
         if (chartData && chartData.length > 0) {
             const labels = chartData.map(item => item.category);

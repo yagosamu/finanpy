@@ -1,3 +1,5 @@
+import logging
+
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Sum
@@ -13,6 +15,8 @@ from django.views.generic import (
 
 from .forms import AccountForm, AccountUpdateForm
 from .models import Account
+
+logger = logging.getLogger(__name__)
 
 
 class AccountListView(LoginRequiredMixin, ListView):
@@ -54,7 +58,15 @@ class AccountCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         """Associate account to logged user before saving."""
         form.instance.user = self.request.user
-        response = super().form_valid(form)
+        try:
+            response = super().form_valid(form)
+        except Exception:
+            logger.exception('Erro ao criar conta para o usuário %s', self.request.user.email)
+            messages.error(
+                self.request,
+                'Ocorreu um erro ao criar a conta. Tente novamente.'
+            )
+            return HttpResponseRedirect(reverse_lazy('accounts:list'))
         messages.success(
             self.request,
             f'Conta "{self.object.name}" criada com sucesso!'
@@ -81,7 +93,15 @@ class AccountUpdateView(LoginRequiredMixin, UpdateView):
 
     def form_valid(self, form):
         """Add success message after update."""
-        response = super().form_valid(form)
+        try:
+            response = super().form_valid(form)
+        except Exception:
+            logger.exception('Erro ao atualizar conta %s', self.object.pk)
+            messages.error(
+                self.request,
+                'Ocorreu um erro ao atualizar a conta. Tente novamente.'
+            )
+            return HttpResponseRedirect(reverse_lazy('accounts:list'))
         messages.success(
             self.request,
             f'Conta "{self.object.name}" atualizada com sucesso!'
@@ -112,9 +132,17 @@ class AccountDeleteView(LoginRequiredMixin, DeleteView):
 
         success_url = self.get_success_url()
 
-        # Soft delete: set is_active to False
-        self.object.is_active = False
-        self.object.save()
+        try:
+            # Soft delete: set is_active to False
+            self.object.is_active = False
+            self.object.save()
+        except Exception:
+            logger.exception('Erro ao excluir conta %s', self.object.pk)
+            messages.error(
+                self.request,
+                'Ocorreu um erro ao excluir a conta. Tente novamente.'
+            )
+            return HttpResponseRedirect(success_url)
 
         messages.success(
             self.request,

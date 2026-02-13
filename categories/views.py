@@ -1,3 +1,5 @@
+import logging
+
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
@@ -7,6 +9,8 @@ from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 
 from .forms import CategoryForm
 from .models import Category
+
+logger = logging.getLogger(__name__)
 
 
 class CategoryListView(LoginRequiredMixin, ListView):
@@ -54,7 +58,15 @@ class CategoryCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         """Associate category to logged user before saving."""
         form.instance.user = self.request.user
-        response = super().form_valid(form)
+        try:
+            response = super().form_valid(form)
+        except Exception:
+            logger.exception('Erro ao criar categoria para o usuário %s', self.request.user.email)
+            messages.error(
+                self.request,
+                'Ocorreu um erro ao criar a categoria. Tente novamente.'
+            )
+            return HttpResponseRedirect(reverse_lazy('categories:list'))
         messages.success(
             self.request,
             f'Categoria "{self.object.name}" criada com sucesso!'
@@ -84,7 +96,15 @@ class CategoryUpdateView(LoginRequiredMixin, UpdateView):
 
     def form_valid(self, form):
         """Add success message after update."""
-        response = super().form_valid(form)
+        try:
+            response = super().form_valid(form)
+        except Exception:
+            logger.exception('Erro ao atualizar categoria %s', self.object.pk)
+            messages.error(
+                self.request,
+                'Ocorreu um erro ao atualizar a categoria. Tente novamente.'
+            )
+            return HttpResponseRedirect(reverse_lazy('categories:list'))
         messages.success(
             self.request,
             f'Categoria "{self.object.name}" atualizada com sucesso!'
@@ -126,9 +146,17 @@ class CategoryDeleteView(LoginRequiredMixin, DeleteView):
 
         success_url = self.get_success_url()
 
-        # Soft delete: set is_active to False
-        self.object.is_active = False
-        self.object.save()
+        try:
+            # Soft delete: set is_active to False
+            self.object.is_active = False
+            self.object.save()
+        except Exception:
+            logger.exception('Erro ao excluir categoria %s', self.object.pk)
+            messages.error(
+                self.request,
+                'Ocorreu um erro ao excluir a categoria. Tente novamente.'
+            )
+            return HttpResponseRedirect(success_url)
 
         messages.success(
             self.request,
