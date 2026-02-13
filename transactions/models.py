@@ -61,6 +61,8 @@ class Transaction(models.Model):
         indexes = [
             models.Index(fields=['date']),
             models.Index(fields=['transaction_type']),
+            models.Index(fields=['user', 'date']),
+            models.Index(fields=['user', 'transaction_type']),
         ]
 
     def __str__(self):

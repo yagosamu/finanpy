@@ -57,17 +57,16 @@ class DashboardView(LoginRequiredMixin, TemplateView):
             ]
 
             # 7.1.1 - Basic data
-            # Calculate total balance from all active accounts
-            total_balance = Account.objects.filter(
+            # Calculate total balance and count from all active accounts in a single query
+            account_stats = Account.objects.filter(
                 user=user,
                 is_active=True
-            ).aggregate(total=Sum('current_balance'))['total'] or Decimal('0.00')
-
-            # Count active accounts
-            active_accounts_count = Account.objects.filter(
-                user=user,
-                is_active=True
-            ).count()
+            ).aggregate(
+                total=Sum('current_balance'),
+                count=Count('id')
+            )
+            total_balance = account_stats['total'] or Decimal('0.00')
+            active_accounts_count = account_stats['count']
 
             # Get last 5 transactions with select_related
             recent_transactions = Transaction.objects.filter(

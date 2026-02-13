@@ -166,9 +166,9 @@ class AccountDetailView(LoginRequiredMixin, DetailView):
         """Add recent transactions to context."""
         context = super().get_context_data(**kwargs)
 
-        # Get last 10 transactions for this account
-        # When Transaction model is implemented, uncomment this:
-        # context['recent_transactions'] = self.object.transactions.all()[:10]
-        context['recent_transactions'] = []
+        # Get last 10 transactions for this account with related data
+        context['recent_transactions'] = self.object.transactions.select_related(
+            'category'
+        ).order_by('-date', '-created_at')[:10]
 
         return context

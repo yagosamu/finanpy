@@ -38,6 +38,10 @@ class AccountAdmin(admin.ModelAdmin):
 
     actions = ['activate_accounts', 'deactivate_accounts']
 
+    def get_queryset(self, request):
+        """Optimize admin list with select_related."""
+        return super().get_queryset(request).select_related('user')
+
     def formatted_current_balance(self, obj):
         """Format current balance as Brazilian currency."""
         value = obj.current_balance

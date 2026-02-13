@@ -22,13 +22,13 @@ O Finanpy e uma aplicacao web para controle financeiro pessoal com:
 
 ## Status Atual
 
-O projeto esta em fase inicial de desenvolvimento. A estrutura base do Django foi criada com as seguintes apps:
+O projeto esta funcional com as seguintes apps implementadas:
 
-- `users` - Gerenciamento de usuarios
-- `profiles` - Perfis de usuario
-- `accounts` - Contas bancarias
-- `categories` - Categorias de transacoes
-- `transactions` - Transacoes financeiras
+- `users` - Autenticacao baseada em email com registro e login
+- `profiles` - Perfis de usuario com dados pessoais
+- `accounts` - CRUD completo de contas bancarias (corrente, poupanca, carteira, investimentos)
+- `categories` - Categorias de receitas e despesas com categorias padrao
+- `transactions` - CRUD completo de transacoes financeiras com filtros e dashboard analitico
 
 ## Links Uteis
 

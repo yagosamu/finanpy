@@ -9,7 +9,9 @@
   "scripts": {
     "build:css": "tailwindcss -i ./static/css/input.css -o ./static/css/output.css",
     "watch:css": "tailwindcss -i ./static/css/input.css -o ./static/css/output.css --watch",
-    "build:css:minify": "tailwindcss -i ./static/css/input.css -o ./static/css/output.css --minify"
+    "build:css:minify": "tailwindcss -i ./static/css/input.css -o ./static/css/output.css --minify && cleancss -o static/css/custom.min.css static/css/custom.css",
+    "build:js:minify": "terser static/js/shared.js -o static/js/shared.min.js -c -m && terser static/js/transactions.js -o static/js/transactions.min.js -c -m && terser static/js/accounts.js -o static/js/accounts.min.js -c -m && terser static/js/categories.js -o static/js/categories.min.js -c -m && terser static/js/profile.js -o static/js/profile.min.js -c -m && terser static/js/toasts.js -o static/js/toasts.min.js -c -m",
+    "build:minify": "npm run build:css:minify && npm run build:js:minify"
   },
   "repository": {
     "type": "git",
@@ -25,6 +27,8 @@
   "homepage": "https://github.com/yagosamu/finanpy#readme",
   "devDependencies": {
     "@tailwindcss/cli": "^4.1.18",
-    "tailwindcss": "^4.1.18"
+    "clean-css-cli": "^5.6.3",
+    "tailwindcss": "^4.1.18",
+    "terser": "^5.46.0"
   }
 }

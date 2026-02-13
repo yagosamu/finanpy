@@ -1121,13 +1121,13 @@
   - Escape de HTML em outputs
   - Limitar tamanho de inputs
 
-#### Tarefa 8.7: Performance
-- [ ] **8.7.1** - Otimizar queries do banco
+#### [X] Tarefa 8.7: Performance
+- [X] **8.7.1** - Otimizar queries do banco
   - Usar select_related onde necessário
   - Usar prefetch_related
   - Adicionar índices em campos filtrados
   
-- [ ] **8.7.2** - Minificar assets
+- [X] **8.7.2** - Minificar assets
   - Minificar CSS customizado
   - Minificar JavaScript
   - Otimizar imagens

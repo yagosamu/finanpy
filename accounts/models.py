@@ -52,6 +52,9 @@ class Account(models.Model):
         ordering = ['name']
         verbose_name = 'Conta'
         verbose_name_plural = 'Contas'
+        indexes = [
+            models.Index(fields=['user', 'is_active']),
+        ]
 
     def __str__(self):
         return f'{self.name}'

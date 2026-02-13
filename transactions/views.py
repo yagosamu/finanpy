@@ -153,7 +153,9 @@ class TransactionDeleteView(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy('transactions:list')
 
     def get_queryset(self):
-        return Transaction.objects.filter(user=self.request.user)
+        return Transaction.objects.filter(
+            user=self.request.user
+        ).select_related('account', 'category')
 
     def form_valid(self, form):
         try:

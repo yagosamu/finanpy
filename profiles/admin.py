@@ -24,6 +24,10 @@ class ProfileAdmin(admin.ModelAdmin):
         })
     ]
 
+    def get_queryset(self, request):
+        """Optimize admin list with select_related."""
+        return super().get_queryset(request).select_related('user')
+
     def user_email(self, obj):
         return obj.user.email
     user_email.short_description = 'Email'
