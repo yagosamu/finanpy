@@ -7,8 +7,9 @@ Sistema de gestao de financas pessoais desenvolvido em Python/Django.
 1. [Instalacao](instalacao.md) - Como configurar o ambiente de desenvolvimento
 2. [Estrutura do Projeto](estrutura.md) - Organizacao de pastas e arquivos
 3. [Arquitetura](arquitetura.md) - Stack tecnologica e decisoes arquiteturais
-4. [Padroes de Codigo](codigo.md) - Convencoes e estilo de codigo
-5. [Design System](design-system.md) - Paleta de cores, tipografia e componentes UI
+4. [Configuracoes](configuracoes.md) - Variaveis de ambiente, banco de dados e producao
+5. [Padroes de Codigo](codigo.md) - Convencoes e estilo de codigo
+6. [Design System](design-system.md) - Paleta de cores, tipografia e componentes UI
 
 ## Sobre o Projeto
 

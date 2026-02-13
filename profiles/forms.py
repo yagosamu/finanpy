@@ -8,6 +8,8 @@ from .models import Profile
 
 
 class ProfileForm(forms.ModelForm):
+    """Form for editing user profile with Brazilian phone validation."""
+
     class Meta:
         model = Profile
         fields = ['first_name', 'last_name', 'phone', 'birth_date']

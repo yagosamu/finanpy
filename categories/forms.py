@@ -31,6 +31,8 @@ SUGGESTED_COLORS = [
 
 
 class CategoryForm(forms.ModelForm):
+    """Form for creating/editing categories with color picker and name uniqueness validation."""
+
     class Meta:
         model = Category
         fields = ['name', 'category_type', 'color']

@@ -3,6 +3,13 @@ from django.db import models
 
 
 class Category(models.Model):
+    """
+    Transaction category (income or expense).
+
+    Categories with user=None and is_default=True are system defaults
+    shared across all users. Custom categories are user-scoped.
+    """
+
     # Constants for choices at the top
     INCOME = 'income'
     EXPENSE = 'expense'

@@ -9,6 +9,14 @@ from .models import Transaction
 
 
 class TransactionForm(forms.ModelForm):
+    """
+    Form for creating/editing transactions.
+
+    Filters accounts and categories by user. Serializes category data
+    to JSON (data_categories attribute) for client-side type filtering.
+    Validates category type matches transaction type.
+    """
+
     class Meta:
         model = Transaction
         fields = ['transaction_type', 'amount', 'date', 'description', 'account', 'category']
@@ -52,6 +60,7 @@ class TransactionForm(forms.ModelForm):
         }
 
     def __init__(self, *args, **kwargs):
+        """Initialize form with user-scoped querysets and category JSON data."""
         self.user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
 

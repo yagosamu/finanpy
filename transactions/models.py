@@ -4,6 +4,14 @@ from django.db import models
 
 
 class Transaction(models.Model):
+    """
+    Financial transaction linked to an account and category.
+
+    Balance updates are handled by signals (see transactions/signals.py)
+    using atomic F() expressions to prevent race conditions.
+    ForeignKeys use PROTECT to prevent orphaned balance changes.
+    """
+
     # Constants for choices at the top
     INCOME = 'income'
     EXPENSE = 'expense'

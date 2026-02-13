@@ -8,6 +8,8 @@ from .models import Profile
 
 
 class ProfileDetailView(LoginRequiredMixin, DetailView):
+    """Display the current user's profile."""
+
     model = Profile
     template_name = 'profiles/profile.html'
     context_object_name = 'profile'
@@ -17,6 +19,8 @@ class ProfileDetailView(LoginRequiredMixin, DetailView):
 
 
 class ProfileUpdateView(LoginRequiredMixin, UpdateView):
+    """Edit the current user's profile."""
+
     model = Profile
     form_class = ProfileForm
     template_name = 'profiles/profile_edit.html'

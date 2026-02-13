@@ -3,6 +3,8 @@ from django.db import models
 
 
 class Profile(models.Model):
+    """User profile with personal data. Auto-created via signal on User creation."""
+
     # OneToOne relationship with User
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL,

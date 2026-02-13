@@ -5,6 +5,8 @@ from .models import Account
 
 
 class AccountUpdateForm(forms.ModelForm):
+    """Form for updating an account (excludes initial_balance)."""
+
     class Meta:
         model = Account
         fields = ['name', 'account_type', 'bank']
@@ -74,6 +76,8 @@ class AccountUpdateForm(forms.ModelForm):
 
 
 class AccountForm(forms.ModelForm):
+    """Form for creating an account with initial balance."""
+
     class Meta:
         model = Account
         fields = ['name', 'account_type', 'bank', 'initial_balance']

@@ -17,6 +17,8 @@ logger = logging.getLogger(__name__)
 
 
 class TransactionListView(LoginRequiredMixin, ListView):
+    """List transactions with filtering by date, category, type and account."""
+
     model = Transaction
     template_name = 'transactions/transaction_list.html'
     context_object_name = 'transactions'
@@ -92,6 +94,8 @@ class TransactionListView(LoginRequiredMixin, ListView):
 
 
 class TransactionCreateView(LoginRequiredMixin, CreateView):
+    """Create a new transaction. Triggers balance update via signal."""
+
     model = Transaction
     form_class = TransactionForm
     template_name = 'transactions/transaction_form.html'
@@ -118,6 +122,8 @@ class TransactionCreateView(LoginRequiredMixin, CreateView):
 
 
 class TransactionUpdateView(LoginRequiredMixin, UpdateView):
+    """Update a transaction. Triggers balance recalculation via signal."""
+
     model = Transaction
     form_class = TransactionForm
     template_name = 'transactions/transaction_form.html'
@@ -148,6 +154,8 @@ class TransactionUpdateView(LoginRequiredMixin, UpdateView):
 
 
 class TransactionDeleteView(LoginRequiredMixin, DeleteView):
+    """Delete a transaction. Triggers balance reversal via signal."""
+
     model = Transaction
     template_name = 'transactions/transaction_confirm_delete.html'
     success_url = reverse_lazy('transactions:list')

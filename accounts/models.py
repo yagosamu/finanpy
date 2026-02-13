@@ -3,6 +3,13 @@ from django.db import models
 
 
 class Account(models.Model):
+    """
+    Bank account with automatic balance tracking.
+
+    Balance is set from initial_balance on creation and updated
+    atomically via signals when transactions are created/edited/deleted.
+    """
+
     # Constants for choices at the top
     CHECKING = 'checking'
     SAVINGS = 'savings'

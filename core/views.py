@@ -34,7 +34,13 @@ class HomeView(TemplateView):
 
 
 class DashboardView(LoginRequiredMixin, TemplateView):
-    """Dashboard view for authenticated users."""
+    """
+    Dashboard with financial summary, charts and recent transactions.
+
+    Calculates: total balance, monthly income/expenses, top 5 category
+    distributions (expense + income) with 'Outros' grouping for charts.
+    Falls back to empty data on any error.
+    """
     template_name = 'dashboard.html'
 
     def get_context_data(self, **kwargs):
