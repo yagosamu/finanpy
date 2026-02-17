@@ -1,0 +1,135 @@
+================================================================================
+EDGE CASE TESTING - FINAL REPORT
+================================================================================
+Date: 2026-02-13 15:45:14
+Target: Finanpy - http://localhost:8000
+
+Total Tests: 12
+Passed: 6
+Failed: 6
+Success Rate: 50.0%
+
+
+================================================================================
+TEST GROUP 1
+================================================================================
+
+Test: Dashboard with no accounts
+Status: PASSED
+Details: Dashboard loaded without errors. Empty state shown: True
+Screenshot: screenshots/edge_06_dashboard_no_accounts_20260213_154238.png
+----------------------------------------
+
+Test: Accounts list with no accounts
+Status: PASSED
+Details: Accounts list loaded without errors. Empty state shown: True
+Screenshot: screenshots/edge_07_accounts_list_empty_20260213_154242.png
+----------------------------------------
+
+================================================================================
+TEST GROUP 2
+================================================================================
+
+Test: Account Without Transactions
+Status: FAILED
+Details: Error: Page.click: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator("button[type=\"submit\"]")
+    - locator resolved to <button disabled type="submit" class="px-6 py-3 bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 text-white font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 flex items-center justify-center opacity-50 cursor-not-allowed">…</button>
+  - attempting click action
+    2 × waiting for element to be visible, enabled and stable
+      - element is not enabled
+    - retrying click action
+    - waiting 20ms
+    2 × waiting for element to be visible, enabled and stable
+      - element is not enabled
+    - retrying click action
+      - waiting 100ms
+    57 × waiting for element to be visible, enabled and stable
+       - element is not enabled
+     - retrying click action
+       - waiting 500ms
+
+----------------------------------------
+
+================================================================================
+TEST GROUP 3
+================================================================================
+
+Test: Transaction with very small value (0.01)
+Status: FAILED
+Details: Expected: should_pass, Has error: False, Stayed on form: True
+Screenshot: screenshots/edge_14_transaction_very_small_value_result_20260213_154330.png
+----------------------------------------
+
+Test: Transaction with very large value (999999.99)
+Status: FAILED
+Details: Expected: should_pass, Has error: False, Stayed on form: True
+Screenshot: screenshots/edge_14_transaction_very_large_value_result_20260213_154341.png
+----------------------------------------
+
+Test: Transaction with zero value (0)
+Status: PASSED
+Details: Expected: should_fail, Has error: False, Stayed on form: True
+Screenshot: screenshots/edge_14_transaction_zero_value_result_20260213_154352.png
+----------------------------------------
+
+Test: Transaction with negative value (-100)
+Status: PASSED
+Details: Expected: should_fail, Has error: False, Stayed on form: True
+Screenshot: screenshots/edge_14_transaction_negative_value_result_20260213_154403.png
+----------------------------------------
+
+================================================================================
+TEST GROUP 4
+================================================================================
+
+Test: Transaction with today's date (2026-02-13)
+Status: FAILED
+Details: Expected: should_pass, Has error: False, URL: http://localhost:8000/transacoes/nova/
+Screenshot: screenshots/edge_16_date_today's_date_result_20260213_154413.png
+----------------------------------------
+
+Test: Transaction with past date (2020-01-01)
+Status: FAILED
+Details: Expected: should_pass, Has error: False, URL: http://localhost:8000/transacoes/nova/
+Screenshot: screenshots/edge_16_date_past_date_result_20260213_154423.png
+----------------------------------------
+
+Test: Transaction with future date (2026-03-15)
+Status: PASSED
+Details: Expected: should_fail, Has error: False, URL: http://localhost:8000/transacoes/nova/
+Screenshot: screenshots/edge_16_date_future_date_result_20260213_154433.png
+----------------------------------------
+
+================================================================================
+TEST GROUP 5
+================================================================================
+
+Test: Empty transaction form submission
+Status: PASSED
+Details: Validation errors shown: False, Stayed on form: True
+Screenshot: screenshots/edge_18_empty_transaction_submit_20260213_154439.png
+----------------------------------------
+
+Test: Empty account form
+Status: FAILED
+Details: Error: Page.click: Timeout 30000ms exceeded.
+Call log:
+  - waiting for locator("button[type=\"submit\"]")
+    - locator resolved to <button disabled type="submit" class="px-6 py-3 bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 text-white font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 flex items-center justify-center opacity-50 cursor-not-allowed">…</button>
+  - attempting click action
+    2 × waiting for element to be visible, enabled and stable
+      - element is not enabled
+    - retrying click action
+    - waiting 20ms
+    2 × waiting for element to be visible, enabled and stable
+      - element is not enabled
+    - retrying click action
+      - waiting 100ms
+    57 × waiting for element to be visible, enabled and stable
+       - element is not enabled
+     - retrying click action
+       - waiting 500ms
+
+----------------------------------------

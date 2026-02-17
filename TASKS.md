@@ -1022,7 +1022,7 @@
 
 ---
 
-### Sprint 8: Refinamentos e Preparação para MVP (1 semana)
+### [X] Sprint 8: Refinamentos e Preparação para MVP (1 semana)
 
 #### [X] Tarefa 8.1: Melhorias de UX
 - [X] **8.1.1** - Implementar mensagens de feedback
@@ -1150,34 +1150,34 @@
   - Comentários em lógicas complexas
   - TODO's para melhorias futuras
 
-#### Tarefa 8.9: Testes Finais e QA
-- [ ] **8.9.1** - Teste completo de fluxo de usuário
+#### [X] Tarefa 8.9: Testes Finais e QA
+- [X] **8.9.1** - Teste completo de fluxo de usuário
   - Cadastro > Login > Criar conta > Criar transação > Ver dashboard
   - Testar em navegadores diferentes
   - Testar em dispositivos móveis
   
-- [ ] **8.9.2** - Teste de edge cases
+- [X] **8.9.2** - Teste de edge cases
   - Contas sem transações
   - Usuários sem contas
   - Valores extremos
   - Datas limites
-  
-- [ ] **8.9.3** - Teste de carga básico
+
+- [X] **8.9.3** - Teste de carga básico
   - Criar 100+ transações
   - Verificar performance do dashboard
   - Verificar paginação
 
-#### Tarefa 8.10: Preparação para Deploy
-- [ ] **8.10.1** - Configurar settings para produção
+#### [X] Tarefa 8.10: Preparação para Deploy
+- [X] **8.10.1** - Configurar settings para produção
   - Criar settings/production.py
   - Variáveis de ambiente
   - Configurações de email
-  
-- [ ] **8.10.2** - Criar requirements.txt final
+
+- [X] **8.10.2** - Criar requirements.txt final
   - Listar todas as dependências
   - Especificar versões
-  
-- [ ] **8.10.3** - Criar guia de deploy
+
+- [X] **8.10.3** - Criar guia de deploy
   - Instruções passo a passo
   - Checklist de deploy
   - Rollback plan

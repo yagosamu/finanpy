@@ -55,27 +55,8 @@ static/css/output.css
 *.swo
 *~
 
-# Test/debug scripts and reports
-/test_*.py
-/analyze_*.py
-/cleanup_*.py
-/create_test_*.py
-/check_*.py
-/debug_*.py
-/inspect_*.py
-/run_*.py
-/verify_*.py
-*_TEST_REPORT.md
-*_SUMMARY.md
-TEST_*.md
-RELATORIO_*.md
-test_results.txt
-TEST_FLOW_DIAGRAM.txt
-
-# Screenshots and HTML exports
-/screenshot_*.png
-/screenshots/
-/*.html
+# Test screenshots (large binary files, not versioned)
+tests/screenshots/
 
 # Windows artifacts
 nul

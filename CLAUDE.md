@@ -48,6 +48,27 @@ User → Category (1:N) → Transaction (1:N)
 
 **URL Pattern:** Portuguese paths (`/transacoes/`, `/categorias/`, `/accounts/`)
 
+## Project Structure
+
+```
+finanpy/
+├── .claude/            # Claude Code configs + agents
+├── core/               # Django project settings and URLs
+├── accounts/           # Django app - bank accounts
+├── categories/         # Django app - transaction categories
+├── profiles/           # Django app - user profiles
+├── transactions/       # Django app - financial transactions
+├── users/              # Django app - custom user model
+├── templates/          # Django templates (DTL + TailwindCSS)
+├── static/             # Static files source
+├── docs/               # Project documentation
+├── tests/              # Test files (e2e, edge_cases, load, reports)
+├── manage.py
+├── requirements.txt
+├── PRD.md              # Product requirements
+└── TASKS.md            # Sprint tracking
+```
+
 ## Code Style
 
 - **PEP 8** with single quotes for strings
