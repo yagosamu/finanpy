@@ -182,6 +182,15 @@ if not DEBUG:
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
+# AI settings
+# https://platform.openai.com/api-keys
+
+OPENAI_API_KEY = os.getenv('OPENAI_API_KEY', '')
+AI_MODEL = os.getenv('AI_MODEL', 'gpt-4o-mini')
+AI_MAX_TOKENS = int(os.getenv('AI_MAX_TOKENS', '2048'))
+AI_TEMPERATURE = float(os.getenv('AI_TEMPERATURE', '0.3'))
+
+
 # Logging configuration
 # https://docs.djangoproject.com/en/5.2/topics/logging/
 

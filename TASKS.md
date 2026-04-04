@@ -1024,13 +1024,13 @@
 
 ### [ ] Sprint 8: Agente de IA Financeiro (2 semanas)
 
-#### Tarefa 8.1: Criação da App `ai` e Model AIAnalysis
-- [ ] **8.1.1** - Criar app Django `ai`
+#### [X] Tarefa 8.1: Criação da App `ai` e Model AIAnalysis
+- [X] **8.1.1** - Criar app Django `ai`
   - `python manage.py startapp ai`
   - Adicionar `'ai'` em INSTALLED_APPS
   - Criar estrutura de pastas: `agents/`, `services/`, `management/commands/`
 
-- [ ] **8.1.2** - Criar model `AIAnalysis` em `ai/models.py`
+- [X] **8.1.2** - Criar model `AIAnalysis` em `ai/models.py`
   - Campo `user` (ForeignKey para User, on_delete=CASCADE)
   - Campo `content` (TextField) — análise completa gerada pela IA
   - Campo `summary` (CharField max_length=500) — resumo curto para o dashboard
@@ -1040,24 +1040,24 @@
   - Campo `created_at` (DateTimeField, auto_now_add=True)
   - Meta: `ordering = ['-created_at']`
 
-- [ ] **8.1.3** - Registrar model no admin em `ai/admin.py`
+- [X] **8.1.3** - Registrar model no admin em `ai/admin.py`
   - `list_display`: user, summary, period_start, period_end, tokens_used, created_at
   - `list_filter`: period_start, created_at
   - `search_fields`: user__email, content
 
-- [ ] **8.1.4** - Criar e aplicar migrations
+- [X] **8.1.4** - Criar e aplicar migrations
   - `python manage.py makemigrations ai`
   - `python manage.py migrate`
   - Verificar tabela no SQLite
 
-#### Tarefa 8.2: Instalação e Configuração das Dependências de IA
-- [ ] **8.2.1** - Instalar dependências no ambiente virtual
+#### [X] Tarefa 8.2: Instalação e Configuração das Dependências de IA
+- [X] **8.2.1** - Instalar dependências no ambiente virtual
   - `pip install langchain>=1.0.0`
   - `pip install langchain-openai>=0.3.0`
   - `pip install openai>=1.0.0`
   - Atualizar `requirements.txt`
 
-- [ ] **8.2.2** - Configurar variáveis de ambiente
+- [X] **8.2.2** - Configurar variáveis de ambiente
   - Adicionar ao `.env`: `OPENAI_API_KEY`, `AI_MODEL`, `AI_MAX_TOKENS`, `AI_TEMPERATURE`
   - Adicionar leitura dessas variáveis em `core/settings.py`
   - Atualizar `.env.example` com as novas variáveis (sem valores reais)
