@@ -201,7 +201,7 @@ Criar uma view com formulário que chame `analyze_user()` diretamente e redireci
 Para implementar ou expandir agentes de IA no projeto, consulte o agente especialista:
 
 ```
-.claude/agents/ai_integration_expert.md
+.claude/agents/ai-integration-expert.md
 ```
 
 Esse documento contém padrões de código, boas práticas, checklist de implementação e instruções sobre como usar o MCP Server Context7 para buscar documentação atualizada do LangChain.

@@ -1082,8 +1082,8 @@
   - Invoca o agente com o contexto do usuário
   - Retorna dicionário com `content`, `summary` e `tokens_used`
 
-#### Tarefa 8.4: Camada de Serviço
-- [ ] **8.4.1** - Criar `ai/services/analysis_service.py`
+#### [X] Tarefa 8.4: Camada de Serviço
+- [X] **8.4.1** - Criar `ai/services/analysis_service.py`
   - Função `analyze_user(user, period_start=None, period_end=None)`
     - Usa período atual (mês corrente) como padrão
     - Chama `finance_insight_agent.run_analysis_for_user()`

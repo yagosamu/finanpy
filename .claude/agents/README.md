@@ -9,7 +9,7 @@ Agentes especializados para o desenvolvimento do Finanpy.
 | Backend Django | [django-backend-dev.md](django-backend-dev.md) | Models, views, forms, URLs, signals, migrations |
 | Frontend Tailwind | [frontend-tailwind-django.md](frontend-tailwind-django.md) | Templates DTL, TailwindCSS, componentes UI |
 | QA Tester | [qa-tester-playwright.md](qa-tester-playwright.md) | Testes E2E, validacao de UI, verificacao de fluxos |
-| AI Integration Expert | [ai_integration_expert.md](ai_integration_expert.md) | Criacao e integracao de agentes de IA com LangChain 1.0 |
+| AI Integration Expert | [ai-integration-expert.md](ai-integration-expert.md) | Criacao e integracao de agentes de IA com LangChain 1.0 |
 
 ## Quando Usar Cada Agente
 
@@ -53,7 +53,7 @@ Use para:
 - Entender o fluxo completo de geracao de analises financeiras
 - Planejar expansao futura da funcionalidade (agendamento, chat interativo, etc.)
 
-Este agente atua como **guia de referencia e automacao** para todas as futuras implementacoes de IA no sistema. Ele conhece os padroes da codebase Finanpy e as convencoes do LangChain 1.0, e sabe como usar o MCP Server Context7 para buscar documentacao atualizada das bibliotecas.
+Este agente atua como **guia de referencia e automacao** para todas as futuras implementacoes de IA no sistema. Ele conhece os padroes da codebase Finanpy e as convencoes do LangChain 1.0, sabe como usar o MCP Server Context7 para buscar documentacao atualizada, e mantém memória persistente de decisoes e padroes descobertos em `.claude/agent-memory/ai-integration-expert/`.
 
 ## MCP Servers
 
