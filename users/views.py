@@ -53,7 +53,7 @@ class CustomLoginView(LoginView):
     """
     form_class = CustomAuthenticationForm
     template_name = 'users/login.html'
-    redirect_authenticated_user = True
+    redirect_authenticated_user = False
 
     def get_success_url(self):
         """
