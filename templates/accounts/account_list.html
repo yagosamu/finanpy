@@ -5,15 +5,16 @@
 
 {% block dashboard_content %}
 <!-- Page Header -->
-<div class="mb-8">
+<div class="mb-6">
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-            <h1 class="text-3xl font-bold text-slate-100 mb-2">Minhas Contas</h1>
-            <p class="text-slate-400">Gerencie suas contas bancárias e acompanhe seus saldos</p>
+            <h1 class="text-lg font-semibold mb-0.5" style="color:#f5f5f5;">Minhas Contas</h1>
+            <p class="text-xs" style="color:#525252;">Gerencie suas contas bancárias e acompanhe seus saldos</p>
         </div>
         <a href="{% url 'accounts:create' %}"
-           class="inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-200">
-            <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+           class="inline-flex items-center justify-center px-4 py-2 rounded-lg text-sm font-medium text-black transition-all duration-150 hover:opacity-90"
+           style="background:#22c55e;">
+            <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
             </svg>
             Nova Conta
@@ -22,13 +23,13 @@
 </div>
 
 <!-- Total Balance Card -->
-<div class="mb-8">
+<div class="mb-6">
     {% include 'components/total_balance_card.html' with total_balance=total_balance %}
 </div>
 
 {% if object_list or accounts %}
 <!-- Accounts Grid -->
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
     {% for account in object_list|default:accounts %}
         {% include 'components/account_card.html' with account=account %}
     {% endfor %}
@@ -36,18 +37,19 @@
 
 {% else %}
 <!-- Empty State -->
-<div class="bg-slate-800 rounded-xl shadow-lg border border-slate-700 p-12">
+<div class="rounded-lg p-12" style="background:#111111;border:1px solid #262626;">
     <div class="text-center max-w-md mx-auto">
-        <div class="flex items-center justify-center w-20 h-20 bg-slate-700 rounded-full mx-auto mb-6">
-            <svg class="w-10 h-10 text-slate-400" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+        <div class="flex items-center justify-center w-16 h-16 rounded-full mx-auto mb-5" style="background:#1a1a1a;">
+            <svg class="w-8 h-8" style="color:#525252;" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z" />
             </svg>
         </div>
-        <h3 class="text-xl font-bold text-slate-100 mb-2">Nenhuma conta cadastrada</h3>
-        <p class="text-slate-400 mb-6">Você ainda não possui contas cadastradas. Crie sua primeira conta para começar a gerenciar suas finanças.</p>
+        <h3 class="text-base font-semibold mb-2" style="color:#f5f5f5;">Nenhuma conta cadastrada</h3>
+        <p class="text-sm font-light mb-6" style="color:#a3a3a3;">Você ainda não possui contas cadastradas. Crie sua primeira conta para começar a gerenciar suas finanças.</p>
         <a href="{% url 'accounts:create' %}"
-           class="inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-200">
-            <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+           class="inline-flex items-center justify-center px-5 py-2.5 rounded-lg text-sm font-medium text-black transition-all duration-150 hover:opacity-90"
+           style="background:#22c55e;">
+            <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
             </svg>
             Criar Primeira Conta

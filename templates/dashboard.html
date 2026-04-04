@@ -1,352 +1,294 @@
 {% extends 'base_dashboard.html' %}
-{% load format_filters %}
+{% load format_filters static %}
 
 {% block dashboard_title %}Dashboard{% endblock %}
 
 {% block dashboard_content %}
-<!-- Welcome Section -->
-<div class="mb-6 sm:mb-8">
-    <h1 class="text-2xl sm:text-3xl font-bold text-slate-100 mb-2">
-        Olá, {% if user.first_name %}{{ user.first_name }}{% else %}{{ user.email|truncatechars:20 }}{% endif %}!
-    </h1>
-    <p class="text-slate-300">
-        Bem-vindo ao seu painel financeiro. Aqui está um resumo da sua situação financeira.
-    </p>
+
+<!-- Page header -->
+<div class="mb-6">
+    <h1 class="text-lg font-semibold" style="color:#f5f5f5;">Dashboard</h1>
+    <p class="text-[11px] mt-0.5" style="color:#525252;">{{ current_month_name }} de {{ current_year }}</p>
 </div>
 
-<!-- Summary Cards -->
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6 sm:mb-8">
-    <!-- Total Balance Card -->
-    <div class="bg-gradient-to-br from-primary-600 to-primary-700 rounded-xl shadow-lg border border-primary-500 p-4 sm:p-6">
+<!-- 3 stat cards -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-5">
+
+    <!-- Receitas -->
+    <div class="stat-green rounded-lg p-5" style="background:#111111;border:1px solid #262626;">
         <div class="flex items-center justify-between mb-4">
-            <div class="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center">
-                <svg class="w-6 h-6 text-white" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            <span class="text-xs font-medium uppercase tracking-wider" style="color:#525252;">Receitas do Mês</span>
+            <div class="w-7 h-7 rounded-md flex items-center justify-center" style="background:rgba(34,197,94,0.1);">
+                <svg class="w-3.5 h-3.5" style="color:#22c55e;" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941"/>
                 </svg>
             </div>
         </div>
-        <p class="text-primary-100 text-sm mb-1">Saldo Total</p>
-        <p class="text-white text-2xl sm:text-3xl font-bold font-mono">
-            {{ total_balance|format_currency }}
-        </p>
-        <p class="text-primary-100 text-xs mt-2">
+        <p class="font-mono text-2xl font-semibold" style="color:#22c55e;">{{ total_income|format_currency }}</p>
+        <p class="text-[11px] mt-1" style="color:#525252;">{{ current_month_name }} {{ current_year }}</p>
+    </div>
+
+    <!-- Despesas -->
+    <div class="stat-red rounded-lg p-5" style="background:#111111;border:1px solid #262626;">
+        <div class="flex items-center justify-between mb-4">
+            <span class="text-xs font-medium uppercase tracking-wider" style="color:#525252;">Despesas do Mês</span>
+            <div class="w-7 h-7 rounded-md flex items-center justify-center" style="background:rgba(239,68,68,0.1);">
+                <svg class="w-3.5 h-3.5" style="color:#ef4444;" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.25 6L9 12.75l4.286-4.286a11.948 11.948 0 014.306 6.43l.776 2.898m0 0l3.182-5.511m-3.182 5.511l-5.511-3.181"/>
+                </svg>
+            </div>
+        </div>
+        <p class="font-mono text-2xl font-semibold" style="color:#ef4444;">{{ total_expenses|format_currency }}</p>
+        <p class="text-[11px] mt-1" style="color:#525252;">{{ current_month_name }} {{ current_year }}</p>
+    </div>
+
+    <!-- Saldo Total -->
+    <div class="rounded-lg p-5 glow-accent" style="background:#111111;border:1px solid #262626;">
+        <div class="flex items-center justify-between mb-4">
+            <span class="text-xs font-medium uppercase tracking-wider" style="color:#525252;">Saldo Total</span>
+            <div class="w-7 h-7 rounded-md flex items-center justify-center" style="background:rgba(34,197,94,0.1);">
+                <svg class="w-3.5 h-3.5" style="color:#22c55e;" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a2.25 2.25 0 00-2.25-2.25H15a3 3 0 11-6 0H5.25A2.25 2.25 0 003 12m18 0v6a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 18v-6m18 0V9M3 12V9m18 0a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 9m18 0V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v3"/>
+                </svg>
+            </div>
+        </div>
+        <p class="font-mono text-2xl font-semibold" style="color:#22c55e;">{{ total_balance|format_currency }}</p>
+        <p class="text-[11px] mt-1" style="color:#525252;">
             {% if active_accounts_count > 0 %}
                 {{ active_accounts_count }} conta{{ active_accounts_count|pluralize:",s" }} ativa{{ active_accounts_count|pluralize:",s" }}
             {% else %}
-                Todas as contas
+                Saldo consolidado
             {% endif %}
         </p>
     </div>
-
-    <!-- Income Card -->
-    <div class="bg-slate-800 rounded-xl shadow-lg border border-slate-700 p-4 sm:p-6 hover:border-green-500 transition-all duration-200">
-        <div class="flex items-center justify-between mb-4">
-            <div class="w-12 h-12 bg-green-500/20 rounded-lg flex items-center justify-center">
-                <svg class="w-6 h-6 text-green-400" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11l5-5m0 0l5 5m-5-5v12"></path>
-                </svg>
-            </div>
-        </div>
-        <p class="text-slate-400 text-sm mb-1">Receitas do Mês</p>
-        <p class="text-green-400 text-2xl sm:text-3xl font-bold font-mono">
-            {{ total_income|format_currency }}
-        </p>
-        <p class="text-slate-400 text-xs mt-2">{{ current_month_name }} {{ current_year }}</p>
-    </div>
-
-    <!-- Expenses Card -->
-    <div class="bg-slate-800 rounded-xl shadow-lg border border-slate-700 p-4 sm:p-6 hover:border-red-500 transition-all duration-200">
-        <div class="flex items-center justify-between mb-4">
-            <div class="w-12 h-12 bg-red-500/20 rounded-lg flex items-center justify-center">
-                <svg class="w-6 h-6 text-red-400" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 13l-5 5m0 0l-5-5m5 5V6"></path>
-                </svg>
-            </div>
-        </div>
-        <p class="text-slate-400 text-sm mb-1">Despesas do Mês</p>
-        <p class="text-red-400 text-2xl sm:text-3xl font-bold font-mono">
-            {{ total_expenses|format_currency }}
-        </p>
-        <p class="text-slate-400 text-xs mt-2">{{ current_month_name }} {{ current_year }}</p>
-    </div>
-
-    <!-- Monthly Balance Card -->
-    <div class="bg-slate-800 rounded-xl shadow-lg border border-slate-700 p-4 sm:p-6 {% if monthly_balance >= 0 %}hover:border-green-500{% else %}hover:border-red-500{% endif %} transition-all duration-200">
-        <div class="flex items-center justify-between mb-4">
-            <div class="w-12 h-12 {% if monthly_balance >= 0 %}bg-green-500/20{% else %}bg-red-500/20{% endif %} rounded-lg flex items-center justify-center">
-                <svg class="w-6 h-6 {% if monthly_balance >= 0 %}text-green-400{% else %}text-red-400{% endif %}" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    {% if monthly_balance >= 0 %}
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    {% else %}
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    {% endif %}
-                </svg>
-            </div>
-        </div>
-        <p class="text-slate-400 text-sm mb-1">Saldo do Mês</p>
-        <p class="{% if monthly_balance >= 0 %}text-green-400{% else %}text-red-400{% endif %} text-2xl sm:text-3xl font-bold font-mono">
-            {{ monthly_balance|format_currency }}
-        </p>
-        <p class="text-slate-400 text-xs mt-2">{{ current_month_name }} {{ current_year }}</p>
-    </div>
 </div>
 
-<!-- Charts Section -->
-<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6 sm:mb-8">
-    <!-- Expense Distribution by Category Chart -->
-    <div class="bg-slate-800 rounded-xl shadow-lg border border-slate-700 p-4 sm:p-6">
-        <div class="flex items-center justify-between mb-6">
-            <h2 class="text-lg sm:text-xl font-bold text-slate-100">Distribuição de Despesas</h2>
-            <span class="text-slate-400 text-sm">{{ current_month_name }} {{ current_year }}</span>
-        </div>
+<!-- 2-column grid: Transações + Análise IA -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-5">
 
-        {% if chart_data %}
-            <!-- Chart Canvas -->
-            <div class="flex flex-col lg:flex-row items-center justify-center">
-                <div class="w-full lg:w-1/2 mb-6 lg:mb-0">
-                    <canvas id="expenseDistributionChart" class="max-w-full" style="max-height: 220px;"></canvas>
-                </div>
-
-                <!-- Legend -->
-                <div class="w-full lg:w-1/2 lg:pl-6">
-                    <div id="chartLegend" class="space-y-2 max-h-64 overflow-y-auto">
-                        <!-- Legend items will be generated by JavaScript -->
-                    </div>
-                </div>
-            </div>
-        {% else %}
-            <!-- Empty State -->
-            <div class="text-center py-12">
-                <div class="w-16 h-16 bg-slate-700 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <svg class="w-8 h-8 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
-                    </svg>
-                </div>
-                <p class="text-slate-400 mb-2">Sem despesas neste mês</p>
-                <p class="text-slate-400 text-sm">Adicione transações para ver os gráficos</p>
-            </div>
-        {% endif %}
-    </div>
-
-    <!-- Monthly Evolution Chart Placeholder -->
-    <div class="bg-slate-800 rounded-xl shadow-lg border border-slate-700 p-4 sm:p-6">
-        <div class="flex items-center justify-between mb-6">
-            <h2 class="text-lg sm:text-xl font-bold text-slate-100">Evolução Mensal</h2>
-            <span class="px-3 py-1 bg-primary-600/20 text-primary-400 text-xs font-medium rounded-full border border-primary-600/30">
-                Em breve
-            </span>
-        </div>
-
-        <!-- Placeholder Content -->
-        <div class="text-center py-12">
-            <div class="w-20 h-20 bg-gradient-to-br from-primary-600/20 to-secondary-500/20 rounded-full flex items-center justify-center mx-auto mb-4 border border-primary-600/30">
-                <svg class="w-10 h-10 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"></path>
-                </svg>
-            </div>
-            <p class="text-slate-300 font-medium mb-2">Gráfico de Evolução Mensal</p>
-            <p class="text-slate-400 text-sm">Visualize a evolução das suas finanças ao longo dos meses</p>
-            <p class="text-slate-400 text-xs mt-3">Disponível em breve</p>
-        </div>
-    </div>
-</div>
-
-<!-- Quick Actions -->
-<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6 sm:mb-8">
-    <!-- Recent Transactions Card -->
-    <div class="bg-slate-800 rounded-xl shadow-lg border border-slate-700 p-4 sm:p-6">
-        <div class="flex items-center justify-between mb-6">
-            <h2 class="text-lg sm:text-xl font-bold text-slate-100">Transações Recentes</h2>
-            <a href="{% url 'transactions:list' %}" class="text-primary-400 hover:text-primary-300 text-sm font-medium transition-colors">
+    <!-- Transações Recentes -->
+    <div class="rounded-lg p-5" style="background:#111111;border:1px solid #262626;">
+        <div class="flex items-center justify-between mb-4">
+            <h2 class="text-sm font-semibold" style="color:#f5f5f5;">Transações Recentes</h2>
+            <a href="{% url 'transactions:list' %}" class="text-[11px] flex items-center gap-1 transition-colors duration-150" style="color:#525252;">
                 Ver todas
+                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                </svg>
             </a>
         </div>
 
         {% if recent_transactions %}
-            <!-- Transactions List -->
-            <div class="space-y-3 max-h-96 overflow-y-auto">
+            <div class="space-y-0">
                 {% for transaction in recent_transactions %}
-                <div class="flex items-center justify-between p-3 sm:p-4 bg-slate-700/50 rounded-lg border border-slate-600 hover:border-slate-500 transition-all duration-200">
-                    <div class="flex items-center flex-1 min-w-0">
-                        <!-- Date -->
-                        <div class="flex-shrink-0 mr-4">
-                            <div class="text-center">
-                                <p class="text-slate-400 text-xs">{{ transaction.date|format_date_relative }}</p>
-                            </div>
+                <div class="flex items-center justify-between py-2.5" style="border-bottom:1px solid rgba(38,38,38,0.6);">
+                    <div class="flex items-center gap-3 flex-1 min-w-0">
+                        <div class="w-8 h-8 rounded-md flex items-center justify-center flex-shrink-0" style="background:#1a1a1a;">
+                            {% if transaction.transaction_type == 'income' %}
+                            <svg class="w-3.5 h-3.5" style="color:#a3a3a3;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11l5-5m0 0l5 5m-5-5v12"/>
+                            </svg>
+                            {% else %}
+                            <svg class="w-3.5 h-3.5" style="color:#a3a3a3;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 13l-5 5m0 0l-5-5m5 5V6"/>
+                            </svg>
+                            {% endif %}
                         </div>
-
-                        <!-- Description and Category -->
                         <div class="flex-1 min-w-0">
-                            <p class="text-slate-100 font-medium truncate">
-                                {% if transaction.description %}
-                                    {{ transaction.description }}
-                                {% else %}
-                                    {{ transaction.category.name }}
-                                {% endif %}
+                            <p class="text-xs font-medium truncate" style="color:#f5f5f5;">
+                                {% if transaction.description %}{{ transaction.description }}{% else %}{{ transaction.category.name }}{% endif %}
                             </p>
-                            <div class="flex items-center mt-1">
-                                <span class="inline-flex items-center px-2 py-1 rounded text-xs font-medium"
-                                      style="background-color: {{ transaction.category.color }}20; color: {{ transaction.category.color }};">
-                                    <span class="w-2 h-2 rounded-full mr-1" style="background-color: {{ transaction.category.color }};"></span>
-                                    {{ transaction.category.name }}
-                                </span>
-                                <span class="text-slate-500 text-xs ml-2 hidden sm:inline">{{ transaction.account.name }}</span>
-                            </div>
+                            <span class="text-[10px] px-1.5 py-0.5 rounded inline-block mt-0.5"
+                                  style="background-color: {{ transaction.category.color }}1a; color: {{ transaction.category.color }};">
+                                {{ transaction.category.name }}
+                            </span>
                         </div>
-
-                        <!-- Amount -->
-                        <div class="flex-shrink-0 ml-4 text-right">
-                            <p class="font-mono font-bold text-sm sm:text-base {% if transaction.transaction_type == 'income' %}text-green-400{% else %}text-red-400{% endif %}">
-                                {% if transaction.transaction_type == 'income' %}+{{ transaction.amount|format_currency }}{% else %}-{{ transaction.amount|format_currency }}{% endif %}
-                            </p>
-                        </div>
+                    </div>
+                    <div class="text-right flex-shrink-0 ml-3">
+                        <p class="font-mono text-xs font-medium {% if transaction.transaction_type == 'income' %}money-positive{% else %}money-negative{% endif %}">
+                            {% if transaction.transaction_type == 'income' %}+{{ transaction.amount|format_currency }}{% else %}-{{ transaction.amount|format_currency }}{% endif %}
+                        </p>
+                        <p class="text-[10px] mt-0.5" style="color:#525252;">{{ transaction.date|format_date_relative }}</p>
                     </div>
                 </div>
                 {% endfor %}
             </div>
         {% else %}
-            <!-- Empty State -->
-            <div class="text-center py-12">
-                <div class="w-16 h-16 bg-slate-700 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <svg class="w-8 h-8 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5"></path>
+            <!-- Empty state -->
+            <div class="text-center py-10">
+                <div class="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3" style="background:#1a1a1a;">
+                    <svg class="w-6 h-6" style="color:#525252;" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5"/>
                     </svg>
                 </div>
-                <p class="text-slate-400 mb-4">Nenhuma transação cadastrada</p>
+                <p class="text-sm mb-4 font-medium" style="color:#a3a3a3;">Nenhuma transação cadastrada</p>
                 <a href="{% url 'transactions:create' %}"
-                   class="inline-block px-6 py-3 bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 text-white font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-200">
+                   class="inline-block px-5 py-2 rounded-lg text-xs font-medium text-black transition-all duration-150 hover:opacity-90"
+                   style="background:#22c55e;">
                     Adicionar Transação
                 </a>
             </div>
         {% endif %}
     </div>
 
-    <!-- Quick Actions Card -->
-    <div class="bg-slate-800 rounded-xl shadow-lg border border-slate-700 p-4 sm:p-6">
-        <h2 class="text-lg sm:text-xl font-bold text-slate-100 mb-6">Ações Rápidas</h2>
-
-        <div class="space-y-3">
-            <!-- Add Transaction -->
-            <a href="{% url 'transactions:create' %}"
-               class="flex items-center p-3 sm:p-4 bg-slate-700/50 hover:bg-slate-700 rounded-lg border border-slate-600 hover:border-primary-600 transition-all duration-200 group">
-                <div class="w-10 h-10 bg-gradient-to-br from-green-500 to-green-600 rounded-lg flex items-center justify-center mr-4">
-                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-                    </svg>
-                </div>
-                <div>
-                    <p class="text-slate-100 font-medium group-hover:text-white transition-colors">Nova Transação</p>
-                    <p class="text-slate-400 text-sm">Registre uma receita ou despesa</p>
-                </div>
-            </a>
-
-            <!-- Add Account -->
-            <a href="{% url 'accounts:create' %}"
-               class="flex items-center p-3 sm:p-4 bg-slate-700/50 hover:bg-slate-700 rounded-lg border border-slate-600 hover:border-primary-600 transition-all duration-200 group">
-                <div class="w-10 h-10 bg-gradient-to-br from-primary-600 to-primary-700 rounded-lg flex items-center justify-center mr-4">
-                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
-                    </svg>
-                </div>
-                <div>
-                    <p class="text-slate-100 font-medium group-hover:text-white transition-colors">Adicionar Conta</p>
-                    <p class="text-slate-400 text-sm">Cadastre uma conta bancária</p>
-                </div>
-            </a>
-
-            <!-- Add Category -->
-            <a href="{% url 'categories:create' %}"
-               class="flex items-center p-3 sm:p-4 bg-slate-700/50 hover:bg-slate-700 rounded-lg border border-slate-600 hover:border-primary-600 transition-all duration-200 group">
-                <div class="w-10 h-10 bg-gradient-to-br from-secondary-500 to-secondary-600 rounded-lg flex items-center justify-center mr-4">
-                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
-                    </svg>
-                </div>
-                <div>
-                    <p class="text-slate-100 font-medium group-hover:text-white transition-colors">Criar Categoria</p>
-                    <p class="text-slate-400 text-sm">Organize suas transações</p>
-                </div>
-            </a>
-
-            <!-- View Reports -->
-            <a href="{% url 'transactions:list' %}"
-               class="flex items-center p-3 sm:p-4 bg-slate-700/50 hover:bg-slate-700 rounded-lg border border-slate-600 hover:border-primary-600 transition-all duration-200 group">
-                <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center mr-4">
-                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
-                    </svg>
-                </div>
-                <div>
-                    <p class="text-slate-100 font-medium group-hover:text-white transition-colors">Ver Relatórios</p>
-                    <p class="text-slate-400 text-sm">Análise detalhada das finanças</p>
-                </div>
-            </a>
-        </div>
-    </div>
-</div>
-
-<!-- AI Analysis Card -->
-<div class="mb-6 sm:mb-8">
-    <div class="bg-slate-800 rounded-xl shadow-lg border border-slate-700 p-4 sm:p-6 hover:border-primary-600 transition-all duration-200">
-        <!-- Card Header -->
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 bg-gradient-to-br from-primary-600/30 to-secondary-500/30 rounded-lg flex items-center justify-center border border-primary-600/30">
-                    <svg class="w-5 h-5 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-                    </svg>
-                </div>
-                <div>
-                    <div class="flex items-center gap-2 mb-1">
-                        <span class="px-2 py-1 bg-gradient-to-r from-primary-600 to-secondary-500 text-white text-xs font-bold rounded-full">IA</span>
-                        <h2 class="text-lg sm:text-xl font-bold text-slate-100">Análise Financeira com IA</h2>
-                    </div>
-                    {% if latest_analysis %}
-                        <p class="text-slate-500 text-xs">Gerado em {{ latest_analysis.created_at|date:"d \d\e F \d\e Y \à\s H:i" }}</p>
-                    {% endif %}
-                </div>
+    <!-- Análise IA -->
+    <div class="rounded-lg p-5 glow-accent" style="background:#111111;border:1px solid #262626;">
+        <div class="flex items-center gap-2 mb-4">
+            <div style="width:28px;height:28px;border-radius:8px;background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                <svg class="w-3 h-3" style="color:#22c55e;" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                </svg>
             </div>
+            <div class="flex-1 min-w-0">
+                <h2 class="text-sm font-semibold" style="color:#f5f5f5;">Análise Financeira com IA</h2>
+                {% if latest_analysis %}
+                <p class="text-[10px] mt-0.5" style="color:#525252;">Gerado em {{ latest_analysis.created_at|date:"d \d\e F \d\e Y" }}</p>
+                {% endif %}
+            </div>
+            <span class="text-[9px] font-bold px-1.5 py-0.5 rounded text-black flex-shrink-0" style="background:#22c55e;">IA</span>
         </div>
 
         {% if latest_analysis %}
-            <!-- Summary Body -->
-            <div class="mb-5">
-                <p class="text-slate-300 text-sm leading-relaxed">{{ latest_analysis.summary }}</p>
-            </div>
+            <p class="text-xs font-light leading-relaxed mb-4" style="color:#a3a3a3;">{{ latest_analysis.summary }}</p>
 
-            <!-- Period info -->
             {% if latest_analysis.period_start and latest_analysis.period_end %}
-            <div class="flex items-center gap-2 mb-5">
-                <span class="text-slate-500 text-xs">Período analisado:</span>
-                <span class="text-slate-400 text-xs font-mono">{{ latest_analysis.period_start|date:"d/m/Y" }} — {{ latest_analysis.period_end|date:"d/m/Y" }}</span>
+            <div class="flex items-center gap-2 text-[11px] mb-5" style="color:#525252;">
+                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"/>
+                </svg>
+                Período: {{ latest_analysis.period_start|date:"d/m/Y" }} — {{ latest_analysis.period_end|date:"d/m/Y" }}
             </div>
             {% endif %}
 
-            <!-- Action Button -->
-            <div class="flex">
+            <div class="flex gap-2 flex-wrap">
                 <button
                     id="open-ai-modal-btn"
                     type="button"
-                    class="px-5 py-2.5 border border-primary-600 text-primary-400 hover:bg-primary-600 hover:text-white font-medium rounded-lg text-sm transition-all duration-200"
+                    class="text-xs px-4 py-2 rounded-md font-medium transition-all duration-150"
+                    style="border:1px solid rgba(34,197,94,0.3);color:#22c55e;"
                     aria-haspopup="dialog"
                     aria-controls="ai-analysis-modal">
                     Ver análise completa
                 </button>
+                <form method="post" action="{% url 'ai:run_analysis' %}">
+                    {% csrf_token %}
+                    <button type="submit"
+                            class="text-xs px-4 py-2 rounded-md font-medium text-black transition-all duration-150 hover:opacity-90"
+                            style="background:#22c55e;">
+                        Gerar nova análise
+                    </button>
+                </form>
             </div>
         {% else %}
-            <!-- Empty State -->
-            <div class="text-center py-10">
-                <div class="w-16 h-16 bg-slate-700 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <svg class="w-8 h-8 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <div class="text-center py-8">
+                <div class="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3" style="background:#1a1a1a;">
+                    <svg class="w-6 h-6" style="color:#525252;" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
                     </svg>
                 </div>
-                <p class="text-slate-400 font-medium mb-2">Nenhuma análise disponível ainda.</p>
-                <p class="text-slate-500 text-sm">Execute o comando <code class="px-1.5 py-0.5 bg-slate-700 text-secondary-400 rounded font-mono text-xs">python manage.py run_finance_analysis</code> para gerar.</p>
+                <p class="text-sm font-medium mb-1" style="color:#a3a3a3;">Nenhuma análise disponível ainda.</p>
+                <p class="text-xs mb-5 font-light" style="color:#525252;">Clique abaixo para gerar sua análise financeira personalizada.</p>
+                <form method="post" action="{% url 'ai:run_analysis' %}">
+                    {% csrf_token %}
+                    <button type="submit"
+                            class="px-5 py-2 rounded-lg text-xs font-medium text-black transition-all duration-150 hover:opacity-90"
+                            style="background:#22c55e;">
+                        Gerar análise com IA
+                    </button>
+                </form>
             </div>
         {% endif %}
     </div>
 </div>
+
+<!-- Distribuição de Despesas + Evolução Mensal -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-5">
+
+    <!-- Distribuição por Categoria -->
+    <div class="rounded-lg p-5" style="background:#111111;border:1px solid #262626;">
+        <div class="flex items-center justify-between mb-5">
+            <h2 class="text-sm font-semibold" style="color:#f5f5f5;">Distribuição de Despesas</h2>
+            <span class="text-xs" style="color:#525252;">{{ current_month_name }} {{ current_year }}</span>
+        </div>
+
+        {% if chart_data %}
+            <div class="flex flex-col lg:flex-row items-center justify-center gap-4">
+                <div class="w-full lg:w-1/2">
+                    <canvas id="expenseDistributionChart" style="max-height:200px;"></canvas>
+                </div>
+                <div class="w-full lg:w-1/2">
+                    <div id="chartLegend" class="space-y-1.5 max-h-52 overflow-y-auto"></div>
+                </div>
+            </div>
+        {% else %}
+            <div class="text-center py-10">
+                <div class="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3" style="background:#1a1a1a;">
+                    <svg class="w-6 h-6" style="color:#525252;" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                    </svg>
+                </div>
+                <p class="text-sm" style="color:#a3a3a3;">Sem despesas neste mês</p>
+                <p class="text-xs mt-1" style="color:#525252;">Adicione transações para ver os gráficos</p>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Evolução Mensal -->
+    <div class="rounded-lg p-5" style="background:#111111;border:1px solid #262626;">
+        <div class="flex items-center justify-between mb-5">
+            <h2 class="text-sm font-semibold" style="color:#f5f5f5;">Evolução Mensal</h2>
+            <div class="flex items-center gap-4 text-[11px]" style="color:#525252;">
+                <span class="flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full inline-block" style="background:#22c55e;"></span>Receitas
+                </span>
+                <span class="flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full inline-block" style="background:#ef4444;"></span>Despesas
+                </span>
+                <span class="flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full inline-block" style="background:#a78bfa;"></span>Saldo
+                </span>
+            </div>
+        </div>
+        <div class="relative h-60">
+            <canvas id="monthlyEvolutionChart" data-url="{% url 'monthly_evolution' %}"></canvas>
+        </div>
+    </div>
+</div>
+
+<!-- Getting Started Guide -->
+{% if active_accounts_count == 0 or not recent_transactions %}
+<div class="rounded-lg p-5 mb-5" style="background:#111111;border:1px solid rgba(34,197,94,0.15);box-shadow:0 0 0 1px rgba(34,197,94,0.07);">
+    <div class="flex flex-col sm:flex-row items-start gap-4">
+        <div class="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0" style="background:rgba(34,197,94,0.1);">
+            <svg class="w-5 h-5" style="color:#22c55e;" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+        </div>
+        <div class="flex-1">
+            <h3 class="text-sm font-semibold mb-1" style="color:#f5f5f5;">Comece a usar o Finanpy</h3>
+            <p class="text-xs font-light mb-3" style="color:#a3a3a3;">Para começar a controlar suas finanças, siga estes passos simples:</p>
+            <ul class="space-y-1.5 text-xs" style="color:#a3a3a3;">
+                <li class="flex items-start gap-2">
+                    <span style="color:#22c55e;" class="flex-shrink-0">1.</span>
+                    <span>Cadastre suas contas bancárias (conta corrente, poupança, carteira)</span>
+                </li>
+                <li class="flex items-start gap-2">
+                    <span style="color:#22c55e;" class="flex-shrink-0">2.</span>
+                    <span>Crie categorias para organizar suas transações</span>
+                </li>
+                <li class="flex items-start gap-2">
+                    <span style="color:#22c55e;" class="flex-shrink-0">3.</span>
+                    <span>Registre suas receitas e despesas regularmente</span>
+                </li>
+                <li class="flex items-start gap-2">
+                    <span style="color:#22c55e;" class="flex-shrink-0">4.</span>
+                    <span>Acompanhe seus relatórios e tome decisões financeiras mais inteligentes</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endif %}
 
 {% if latest_analysis %}
 <!-- AI Analysis Modal -->
@@ -355,46 +297,49 @@
     role="dialog"
     aria-modal="true"
     aria-labelledby="ai-modal-title"
-    class="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4 hidden">
-    <div class="bg-slate-800 rounded-xl border border-slate-700 max-w-2xl w-full max-h-[80vh] overflow-y-auto p-6 shadow-2xl">
+    class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden"
+    style="background:rgba(0,0,0,0.75);">
+    <div class="rounded-lg max-w-2xl w-full max-h-[80vh] overflow-y-auto p-6 shadow-2xl" style="background:#111111;border:1px solid #262626;">
         <!-- Modal Header -->
-        <div class="flex items-start justify-between mb-6">
+        <div class="flex items-start justify-between mb-5">
             <div class="flex items-center gap-3">
-                <div class="w-9 h-9 bg-gradient-to-br from-primary-600/30 to-secondary-500/30 rounded-lg flex items-center justify-center border border-primary-600/30 flex-shrink-0">
-                    <svg class="w-4 h-4 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <div class="w-8 h-8 rounded-lg flex items-center justify-center border flex-shrink-0" style="background:rgba(34,197,94,0.08);border-color:rgba(34,197,94,0.15);">
+                    <svg class="w-4 h-4" style="color:#22c55e;" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
                     </svg>
                 </div>
                 <div>
                     <div class="flex items-center gap-2 mb-0.5">
-                        <span class="px-2 py-0.5 bg-gradient-to-r from-primary-600 to-secondary-500 text-white text-xs font-bold rounded-full">IA</span>
-                        <h3 id="ai-modal-title" class="text-lg font-bold text-slate-100">Análise Financeira Completa</h3>
+                        <span class="text-[9px] font-bold px-1.5 py-0.5 rounded text-black" style="background:#22c55e;">IA</span>
+                        <h3 id="ai-modal-title" class="text-sm font-semibold" style="color:#f5f5f5;">Análise Financeira Completa</h3>
                     </div>
-                    <p class="text-slate-500 text-xs">{{ latest_analysis.created_at|date:"d \d\e F \d\e Y \à\s H:i" }}</p>
+                    <p class="text-[10px]" style="color:#525252;">{{ latest_analysis.created_at|date:"d \d\e F \d\e Y \à\s H:i" }}</p>
                 </div>
             </div>
             <button
                 id="close-ai-modal-btn"
                 type="button"
-                class="flex-shrink-0 ml-4 p-2 text-slate-400 hover:text-slate-100 hover:bg-slate-700 rounded-lg transition-all duration-200"
+                class="flex-shrink-0 ml-4 p-1.5 rounded-lg transition-all duration-150"
+                style="color:#525252;"
                 aria-label="Fechar análise">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                 </svg>
             </button>
         </div>
 
         <!-- Modal Content -->
-        <div class="text-slate-300 text-sm leading-relaxed">
+        <div class="text-xs font-light leading-relaxed" style="color:#a3a3a3;">
             {{ latest_analysis.content|linebreaksbr }}
         </div>
 
         <!-- Modal Footer -->
-        <div class="mt-6 pt-4 border-t border-slate-700 flex justify-end">
+        <div class="mt-5 pt-4 flex justify-end" style="border-top:1px solid #262626;">
             <button
                 id="close-ai-modal-footer-btn"
                 type="button"
-                class="px-5 py-2.5 bg-slate-700 hover:bg-slate-600 text-slate-100 font-medium rounded-lg border border-slate-600 text-sm transition-all duration-200">
+                class="px-4 py-2 rounded-lg text-xs font-medium transition-all duration-150"
+                style="background:#1a1a1a;color:#f5f5f5;border:1px solid #262626;">
                 Fechar
             </button>
         </div>
@@ -402,44 +347,6 @@
 </div>
 {% endif %}
 
-<!-- Getting Started Guide -->
-{% if active_accounts_count == 0 or not recent_transactions %}
-<div class="bg-gradient-to-r from-primary-600/20 to-secondary-500/20 border border-primary-600/30 rounded-xl shadow-lg p-4 sm:p-6">
-    <div class="flex flex-col sm:flex-row items-start">
-        <div class="flex-shrink-0 mb-4 sm:mb-0 hidden sm:block">
-            <div class="w-12 h-12 bg-gradient-to-br from-primary-600 to-primary-700 rounded-xl flex items-center justify-center">
-                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                </svg>
-            </div>
-        </div>
-        <div class="sm:ml-4 flex-1">
-            <h3 class="text-lg font-bold text-slate-100 mb-2">Comece a usar o Finanpy</h3>
-            <p class="text-slate-300 mb-4">
-                Para começar a controlar suas finanças, siga estes passos simples:
-            </p>
-            <ul class="space-y-2 text-slate-300">
-                <li class="flex items-start">
-                    <span class="text-primary-400 mr-2">1.</span>
-                    <span>Cadastre suas contas bancárias (conta corrente, poupança, carteira)</span>
-                </li>
-                <li class="flex items-start">
-                    <span class="text-primary-400 mr-2">2.</span>
-                    <span>Crie categorias para organizar suas transações</span>
-                </li>
-                <li class="flex items-start">
-                    <span class="text-primary-400 mr-2">3.</span>
-                    <span>Registre suas receitas e despesas regularmente</span>
-                </li>
-                <li class="flex items-start">
-                    <span class="text-primary-400 mr-2">4.</span>
-                    <span>Acompanhe seus relatórios e tome decisões financeiras mais inteligentes</span>
-                </li>
-            </ul>
-        </div>
-    </div>
-</div>
-{% endif %}
 {% endblock %}
 
 {% block extra_js %}
@@ -448,6 +355,7 @@
 
 <!-- Chart.js CDN -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="{% static 'js/dashboard.js' %}"></script>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -459,10 +367,8 @@
             const colors = chartData.map(item => item.color);
             const percentages = chartData.map(item => item.percentage);
 
-            // Calculate total for center text
             const total = data.reduce((sum, val) => sum + val, 0);
 
-            // Format currency in Brazilian Real
             function formatCurrency(value) {
                 return 'R$ ' + value.toLocaleString('pt-BR', {
                     minimumFractionDigits: 2,
@@ -470,35 +376,26 @@
                 });
             }
 
-            // Center text plugin
             const centerTextPlugin = {
                 id: 'centerText',
                 afterDraw(chart) {
                     const { ctx, chartArea } = chart;
                     if (!chartArea) return;
-
                     const centerX = (chartArea.left + chartArea.right) / 2;
                     const centerY = (chartArea.top + chartArea.bottom) / 2;
-
                     ctx.save();
-
-                    // Label text
-                    ctx.font = '12px Inter, sans-serif';
-                    ctx.fillStyle = '#94A3B8';
+                    ctx.font = '11px Inter, sans-serif';
+                    ctx.fillStyle = '#525252';
                     ctx.textAlign = 'center';
                     ctx.textBaseline = 'middle';
-                    ctx.fillText('Total', centerX, centerY - 12);
-
-                    // Value text
-                    ctx.font = 'bold 16px "JetBrains Mono", monospace';
-                    ctx.fillStyle = '#F1F5F9';
+                    ctx.fillText('Total', centerX, centerY - 10);
+                    ctx.font = 'bold 13px "JetBrains Mono", monospace';
+                    ctx.fillStyle = '#f5f5f5';
                     ctx.fillText(formatCurrency(total), centerX, centerY + 10);
-
                     ctx.restore();
                 }
             };
 
-            // Create the donut chart
             const ctx = document.getElementById('expenseDistributionChart');
             if (ctx) {
                 new Chart(ctx, {
@@ -508,9 +405,9 @@
                         datasets: [{
                             data: data,
                             backgroundColor: colors,
-                            borderColor: '#1E293B',
-                            borderWidth: 3,
-                            hoverOffset: 12,
+                            borderColor: '#111111',
+                            borderWidth: 2,
+                            hoverOffset: 8,
                             hoverBorderWidth: 0
                         }]
                     },
@@ -518,35 +415,19 @@
                         responsive: true,
                         maintainAspectRatio: true,
                         cutout: '65%',
-                        animation: {
-                            duration: 800,
-                            easing: 'easeOutQuart'
-                        },
+                        animation: { duration: 600, easing: 'easeOutQuart' },
                         plugins: {
-                            legend: {
-                                display: false
-                            },
+                            legend: { display: false },
                             tooltip: {
-                                backgroundColor: '#0F172A',
-                                titleColor: '#F1F5F9',
-                                titleFont: {
-                                    family: 'Inter, sans-serif',
-                                    size: 13,
-                                    weight: 'bold'
-                                },
-                                bodyColor: '#CBD5E1',
-                                bodyFont: {
-                                    family: '"JetBrains Mono", monospace',
-                                    size: 12
-                                },
-                                borderColor: '#334155',
+                                backgroundColor: '#111111',
+                                titleColor: '#f5f5f5',
+                                titleFont: { family: 'Inter, sans-serif', size: 12, weight: 'bold' },
+                                bodyColor: '#a3a3a3',
+                                bodyFont: { family: '"JetBrains Mono", monospace', size: 11 },
+                                borderColor: '#262626',
                                 borderWidth: 1,
-                                padding: 14,
-                                cornerRadius: 8,
-                                displayColors: true,
-                                boxWidth: 12,
-                                boxHeight: 12,
-                                boxPadding: 4,
+                                padding: 12,
+                                cornerRadius: 6,
                                 callbacks: {
                                     label: function(context) {
                                         const value = context.parsed || 0;
@@ -561,18 +442,17 @@
                 });
             }
 
-            // Generate custom legend
             const legendContainer = document.getElementById('chartLegend');
             if (legendContainer) {
                 legendContainer.innerHTML = chartData.map(item => `
-                    <div class="flex items-center justify-between p-3 bg-slate-700/50 rounded-lg border border-slate-600 hover:border-slate-500 transition-all duration-200">
-                        <div class="flex items-center flex-1 min-w-0">
-                            <span class="w-3 h-3 rounded-full flex-shrink-0 mr-3" style="background-color: ${item.color};"></span>
-                            <span class="text-slate-200 text-sm truncate">${item.category}</span>
+                    <div class="flex items-center justify-between py-1.5 px-2 rounded" style="border:1px solid #262626;background:#0a0a0a;">
+                        <div class="flex items-center gap-2 flex-1 min-w-0">
+                            <span class="w-2.5 h-2.5 rounded-full flex-shrink-0" style="background-color: ${item.color};"></span>
+                            <span class="text-xs truncate" style="color:#a3a3a3;">${item.category}</span>
                         </div>
-                        <div class="flex items-center flex-shrink-0 ml-3">
-                            <span class="text-slate-100 font-mono font-medium text-sm mr-2">${formatCurrency(item.amount)}</span>
-                            <span class="text-slate-400 text-xs font-mono">${item.percentage}%</span>
+                        <div class="flex items-center gap-2 flex-shrink-0 ml-2">
+                            <span class="font-mono text-xs font-medium" style="color:#f5f5f5;">${formatCurrency(item.amount)}</span>
+                            <span class="text-[10px] font-mono" style="color:#525252;">${item.percentage}%</span>
                         </div>
                     </div>
                 `).join('');
@@ -592,7 +472,7 @@
         function openModal() {
             modal.classList.remove('hidden');
             document.body.style.overflow = 'hidden';
-            closeBtn.focus();
+            if (closeBtn) closeBtn.focus();
         }
 
         function closeModal() {
@@ -605,14 +485,12 @@
         if (closeBtn) closeBtn.addEventListener('click', closeModal);
         if (closeFooterBtn) closeFooterBtn.addEventListener('click', closeModal);
 
-        // Close on overlay click (outside the card)
         if (modal) {
             modal.addEventListener('click', function (e) {
                 if (e.target === modal) closeModal();
             });
         }
 
-        // Close on Escape key
         document.addEventListener('keydown', function (e) {
             if (e.key === 'Escape' && modal && !modal.classList.contains('hidden')) {
                 closeModal();

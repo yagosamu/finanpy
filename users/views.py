@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
 from django.contrib.auth.views import LoginView, LogoutView
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
@@ -54,6 +54,11 @@ class CustomLoginView(LoginView):
     form_class = CustomAuthenticationForm
     template_name = 'users/login.html'
     redirect_authenticated_user = False
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            logout(request)
+        return super().dispatch(request, *args, **kwargs)
 
     def get_success_url(self):
         """

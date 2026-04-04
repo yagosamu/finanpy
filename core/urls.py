@@ -9,7 +9,7 @@ from django.contrib import admin
 from django.urls import include, path
 from django.views.generic import TemplateView
 
-from core.views import DashboardView, HomeView
+from core.views import DashboardView, HomeView, MonthlyEvolutionView
 
 handler403 = 'core.views.custom_403'
 handler404 = 'core.views.custom_404'
@@ -18,12 +18,14 @@ handler500 = 'core.views.custom_500'
 urlpatterns = [
     path('', HomeView.as_view(), name='home'),
     path('dashboard/', DashboardView.as_view(), name='dashboard'),
+    path('dashboard/evolucao-mensal/', MonthlyEvolutionView.as_view(), name='monthly_evolution'),
     path('admin/', admin.site.urls),
     path('usuarios/', include('users.urls')),
     path('', include('profiles.urls')),
     path('accounts/', include('accounts.urls', namespace='accounts')),
     path('categorias/', include('categories.urls', namespace='categories')),
     path('transacoes/', include('transactions.urls', namespace='transactions')),
+    path('ai/', include('ai.urls', namespace='ai')),
 ]
 
 # Debug-only routes

@@ -27,31 +27,27 @@
 
       const colors = {
         success: {
-          bg: 'bg-green-900/95',
-          border: 'border-green-700',
-          text: 'text-green-100',
-          icon: 'text-green-400',
+          bg: '#111111',
+          border: 'rgba(34,197,94,0.3)',
+          text: '#22c55e',
           iconPath: 'M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z'
         },
         error: {
-          bg: 'bg-red-900/95',
-          border: 'border-red-700',
-          text: 'text-red-100',
-          icon: 'text-red-400',
+          bg: '#111111',
+          border: 'rgba(239,68,68,0.3)',
+          text: '#ef4444',
           iconPath: 'M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z'
         },
         warning: {
-          bg: 'bg-yellow-900/95',
-          border: 'border-yellow-700',
-          text: 'text-yellow-100',
-          icon: 'text-yellow-400',
+          bg: '#111111',
+          border: 'rgba(245,158,11,0.3)',
+          text: '#f59e0b',
           iconPath: 'M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z'
         },
         info: {
-          bg: 'bg-blue-900/95',
-          border: 'border-blue-700',
-          text: 'text-blue-100',
-          icon: 'text-blue-400',
+          bg: '#111111',
+          border: 'rgba(59,130,246,0.3)',
+          text: '#60a5fa',
           iconPath: 'M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z'
         }
       };
@@ -59,14 +55,15 @@
       const color = colors[type] || colors.info;
 
       const toast = document.createElement('div');
-      toast.className = `${color.bg} border ${color.border} rounded-lg shadow-2xl p-4 flex items-start transform transition-all duration-300 ease-out translate-x-full opacity-0`;
+      toast.className = 'rounded-lg shadow-2xl p-4 flex items-start transform transition-all duration-300 ease-out translate-x-full opacity-0';
+      toast.style.cssText = `background:${color.bg};border:1px solid ${color.border};`;
       toast.innerHTML = `
-        <svg class="w-6 h-6 ${color.icon} mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+        <svg class="w-5 h-5 mr-3 flex-shrink-0" style="color:${color.text};" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" d="${color.iconPath}" />
         </svg>
-        <p class="${color.text} flex-1 text-sm font-medium">${this.escapeHtml(message)}</p>
-        <button class="ml-3 ${color.text} hover:opacity-75 transition-opacity" aria-label="Fechar">
-          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+        <p class="flex-1 text-sm font-medium" style="color:#f5f5f5;">${this.escapeHtml(message)}</p>
+        <button class="ml-3 transition-opacity hover:opacity-75" style="color:#525252;" aria-label="Fechar">
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
           </svg>
         </button>

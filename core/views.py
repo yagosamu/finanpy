@@ -1,9 +1,12 @@
 import logging
+from datetime import date
 from decimal import Decimal
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Sum, Count, Q
+from django.http import JsonResponse
 from django.shortcuts import render
 from django.utils import timezone
+from django.views import View
 from django.views.generic import TemplateView
 
 from accounts.models import Account
@@ -245,3 +248,45 @@ class DashboardView(LoginRequiredMixin, TemplateView):
             })
 
         return context
+
+
+_MONTH_LABELS_PT = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun',
+                    'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']
+
+
+class MonthlyEvolutionView(LoginRequiredMixin, View):
+    """Returns JSON with income, expense and balance for the last 6 months."""
+
+    http_method_names = ['get']
+
+    def get(self, request, *args, **kwargs):
+        today = date.today()
+        data = []
+
+        for i in range(5, -1, -1):
+            total_months = today.year * 12 + today.month - 1 - i
+            year = total_months // 12
+            month = total_months % 12 + 1
+
+            agg = Transaction.objects.filter(
+                user=request.user,
+                date__year=year,
+                date__month=month,
+            ).values('transaction_type').annotate(total=Sum('amount'))
+
+            income = Decimal('0')
+            expense = Decimal('0')
+            for row in agg:
+                if row['transaction_type'] == Transaction.INCOME:
+                    income = row['total'] or Decimal('0')
+                elif row['transaction_type'] == Transaction.EXPENSE:
+                    expense = row['total'] or Decimal('0')
+
+            data.append({
+                'month': _MONTH_LABELS_PT[month - 1],
+                'income': float(income),
+                'expense': float(expense),
+                'balance': float(income - expense),
+            })
+
+        return JsonResponse(data, safe=False)

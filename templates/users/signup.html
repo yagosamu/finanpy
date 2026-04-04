@@ -5,278 +5,221 @@
 
 {% block content %}
 <!-- Signup Section -->
-<section class="relative min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 overflow-hidden flex items-center justify-center">
-    <!-- Decorative Background Elements -->
-    <div class="absolute inset-0 overflow-hidden" aria-hidden="true">
-        <div class="absolute -top-40 -right-40 w-80 h-80 bg-primary-600 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob"></div>
-        <div class="absolute -bottom-40 -left-40 w-80 h-80 bg-secondary-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-2000"></div>
-        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-primary-700 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-4000"></div>
-    </div>
+<section class="min-h-screen flex items-center justify-center px-4 py-12" style="background:#0a0a0a;">
 
-    <!-- Signup Card -->
-    <div class="relative z-10 w-full max-w-md px-4 sm:px-6 lg:px-8 py-12">
+    <div class="w-full max-w-md">
         <!-- Logo -->
         <div class="text-center mb-8">
-            <a href="{% url 'home' %}" class="inline-flex items-center justify-center">
-                <div class="w-12 h-12 bg-gradient-to-br from-primary-600 to-primary-800 rounded-xl flex items-center justify-center shadow-lg">
-                    <span class="text-white font-bold text-2xl">F</span>
-                </div>
-                <span class="ml-3 text-3xl font-bold bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
-                    Finanpy
-                </span>
+            <a href="{% url 'home' %}" class="inline-flex items-center justify-center gap-1 font-bold text-2xl tracking-tight select-none">
+                <span style="color:#22c55e;">F</span><span style="color:#f5f5f5;">inanpy</span>
             </a>
-            <h1 class="mt-6 text-3xl font-bold text-slate-100">Criar sua conta</h1>
-            <p class="mt-2 text-slate-300">Comece a controlar suas finanças gratuitamente</p>
+            <h1 class="mt-6 text-2xl font-semibold" style="color:#f5f5f5;">Criar sua conta</h1>
+            <p class="mt-2 text-sm font-light" style="color:#a3a3a3;">Comece a controlar suas finanças gratuitamente</p>
         </div>
 
         <!-- Signup Form Card -->
-        <div class="bg-slate-800 rounded-xl shadow-2xl border border-slate-700 p-8">
-            <form method="post" action="{% url 'users:signup' %}" class="space-y-6">
+        <div class="rounded-lg p-7" style="background:#111111;border:1px solid #262626;">
+            <form method="post" action="{% url 'users:signup' %}" class="space-y-5">
                 {% csrf_token %}
 
                 <!-- Form-wide errors -->
                 {% if form.non_field_errors %}
-                    <div role="alert" class="bg-red-900/30 border border-red-700 rounded-lg p-4 flex items-start">
-                        <span class="text-red-400 mr-3 flex-shrink-0" aria-hidden="true">✗</span>
-                        <div class="text-red-100 text-sm">
-                            {% for error in form.non_field_errors %}
-                                <p>{{ error }}</p>
-                            {% endfor %}
-                        </div>
+                <div role="alert" class="rounded-lg p-4 flex items-start" style="background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);">
+                    <span style="color:#ef4444;margin-right:8px;flex-shrink:0;" aria-hidden="true">✗</span>
+                    <div class="text-sm font-light" style="color:#ef4444;">
+                        {% for error in form.non_field_errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
                     </div>
+                </div>
                 {% endif %}
 
-                <!-- Email Field -->
+                <!-- Email -->
                 <div>
-                    <label for="{{ form.email.id_for_label }}" class="block text-sm font-medium text-slate-100 mb-2">
-                        E-mail
-                    </label>
+                    <label for="{{ form.email.id_for_label }}" class="block text-xs font-medium mb-1.5" style="color:#a3a3a3;">E-mail</label>
                     <div class="relative">
                         <input type="email"
                                name="{{ form.email.name }}"
                                id="{{ form.email.id_for_label }}"
                                value="{{ form.email.value|default:'' }}"
-                               class="w-full px-4 py-3 bg-slate-900 border {% if form.email.errors %}border-red-500{% else %}border-slate-700{% endif %} rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent transition-all duration-200"
+                               class="w-full px-4 py-2.5 rounded-lg text-sm transition-all duration-150"
+                               style="background:#0a0a0a;border:1px solid {% if form.email.errors %}#ef4444{% else %}#262626{% endif %};color:#f5f5f5;"
                                placeholder="seu@email.com"
-                               required>
-                        <div id="email-success" class="hidden absolute right-3 top-1/2 transform -translate-y-1/2">
-                            <span class="text-green-500 text-xl">✓</span>
+                               required autofocus>
+                        <div id="email-success" class="hidden absolute right-3 top-1/2 -translate-y-1/2">
+                            <span style="color:#22c55e;" aria-hidden="true">✓</span>
                         </div>
                     </div>
                     {% if form.email.errors %}
-                        <div class="mt-2 text-red-400 text-sm">
-                            {% for error in form.email.errors %}
-                                <p>{{ error }}</p>
-                            {% endfor %}
-                        </div>
+                    <div class="mt-1.5 text-xs" style="color:#ef4444;">
+                        {% for error in form.email.errors %}<p>{{ error }}</p>{% endfor %}
+                    </div>
                     {% endif %}
-                    <div id="email-error" class="hidden mt-2 text-red-400 text-sm"></div>
+                    <div id="email-error" class="hidden mt-1.5 text-xs" style="color:#ef4444;"></div>
                 </div>
 
-                <!-- Password Field -->
+                <!-- Password -->
                 <div>
-                    <label for="{{ form.password1.id_for_label }}" class="block text-sm font-medium text-slate-100 mb-2">
-                        Senha
-                    </label>
+                    <label for="{{ form.password1.id_for_label }}" class="block text-xs font-medium mb-1.5" style="color:#a3a3a3;">Senha</label>
                     <input type="password"
                            name="{{ form.password1.name }}"
                            id="{{ form.password1.id_for_label }}"
-                           class="w-full px-4 py-3 bg-slate-900 border {% if form.password1.errors %}border-red-500{% else %}border-slate-700{% endif %} rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent transition-all duration-200"
+                           class="w-full px-4 py-2.5 rounded-lg text-sm transition-all duration-150"
+                           style="background:#0a0a0a;border:1px solid {% if form.password1.errors %}#ef4444{% else %}#262626{% endif %};color:#f5f5f5;"
                            placeholder="Digite sua senha"
                            required>
                     {% if form.password1.errors %}
-                        <div class="mt-2 text-red-400 text-sm">
-                            {% for error in form.password1.errors %}
-                                <p>{{ error }}</p>
-                            {% endfor %}
-                        </div>
+                    <div class="mt-1.5 text-xs" style="color:#ef4444;">
+                        {% for error in form.password1.errors %}<p>{{ error }}</p>{% endfor %}
+                    </div>
                     {% endif %}
 
                     <!-- Password Requirements -->
-                    <div id="password-requirements" class="hidden mt-3 space-y-2">
-                        <div id="req-length" class="flex items-center text-sm transition-colors duration-200">
-                            <span class="mr-2 text-slate-500">○</span>
-                            <span class="text-slate-400">Mínimo de 8 caracteres</span>
+                    <div id="password-requirements" class="hidden mt-3 space-y-1.5">
+                        <div id="req-length" class="flex items-center text-xs transition-colors duration-150">
+                            <span class="mr-2 flex-shrink-0" id="req-length-icon" style="color:#525252;">○</span>
+                            <span id="req-length-text" style="color:#525252;">Mínimo de 8 caracteres</span>
                         </div>
-                        <div id="req-number" class="flex items-center text-sm transition-colors duration-200">
-                            <span class="mr-2 text-slate-500">○</span>
-                            <span class="text-slate-400">Pelo menos um número</span>
+                        <div id="req-number" class="flex items-center text-xs transition-colors duration-150">
+                            <span class="mr-2 flex-shrink-0" id="req-number-icon" style="color:#525252;">○</span>
+                            <span id="req-number-text" style="color:#525252;">Pelo menos um número</span>
                         </div>
-                        <div id="req-letter" class="flex items-center text-sm transition-colors duration-200">
-                            <span class="mr-2 text-slate-500">○</span>
-                            <span class="text-slate-400">Pelo menos uma letra</span>
+                        <div id="req-letter" class="flex items-center text-xs transition-colors duration-150">
+                            <span class="mr-2 flex-shrink-0" id="req-letter-icon" style="color:#525252;">○</span>
+                            <span id="req-letter-text" style="color:#525252;">Pelo menos uma letra</span>
                         </div>
                     </div>
 
                     <!-- Password Strength Indicator -->
                     <div id="password-strength" class="hidden mt-3">
                         <div class="flex items-center justify-between mb-1">
-                            <span class="text-xs text-slate-400">Força da senha:</span>
+                            <span class="text-xs" style="color:#525252;">Força da senha:</span>
                             <span id="strength-text" class="text-xs font-medium"></span>
                         </div>
-                        <div class="w-full h-2 bg-slate-700 rounded-full overflow-hidden">
-                            <div id="strength-bar" class="h-full transition-all duration-300 rounded-full"></div>
+                        <div class="w-full h-1.5 rounded-full overflow-hidden" style="background:#262626;">
+                            <div id="strength-bar" class="h-full transition-all duration-300 rounded-full" style="width:0%;background:#ef4444;"></div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Password Confirmation Field -->
+                <!-- Password Confirmation -->
                 <div>
-                    <label for="{{ form.password2.id_for_label }}" class="block text-sm font-medium text-slate-100 mb-2">
-                        Confirmar Senha
-                    </label>
+                    <label for="{{ form.password2.id_for_label }}" class="block text-xs font-medium mb-1.5" style="color:#a3a3a3;">Confirmar Senha</label>
                     <div class="relative">
                         <input type="password"
                                name="{{ form.password2.name }}"
                                id="{{ form.password2.id_for_label }}"
-                               class="w-full px-4 py-3 bg-slate-900 border {% if form.password2.errors %}border-red-500{% else %}border-slate-700{% endif %} rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent transition-all duration-200"
+                               class="w-full px-4 py-2.5 rounded-lg text-sm transition-all duration-150"
+                               style="background:#0a0a0a;border:1px solid {% if form.password2.errors %}#ef4444{% else %}#262626{% endif %};color:#f5f5f5;"
                                placeholder="Digite sua senha novamente"
                                required>
-                        <div id="password2-success" class="hidden absolute right-3 top-1/2 transform -translate-y-1/2">
-                            <span class="text-green-500 text-xl">✓</span>
+                        <div id="password2-success" class="hidden absolute right-3 top-1/2 -translate-y-1/2">
+                            <span style="color:#22c55e;" aria-hidden="true">✓</span>
                         </div>
                     </div>
                     {% if form.password2.errors %}
-                        <div class="mt-2 text-red-400 text-sm">
-                            {% for error in form.password2.errors %}
-                                <p>{{ error }}</p>
-                            {% endfor %}
-                        </div>
+                    <div class="mt-1.5 text-xs" style="color:#ef4444;">
+                        {% for error in form.password2.errors %}<p>{{ error }}</p>{% endfor %}
+                    </div>
                     {% endif %}
-                    <div id="password2-error" class="hidden mt-2 text-red-400 text-sm"></div>
+                    <div id="password2-error" class="hidden mt-1.5 text-xs" style="color:#ef4444;"></div>
                 </div>
 
-                <!-- Submit Button -->
+                <!-- Submit -->
                 <button type="submit"
-                        class="w-full px-6 py-3 bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary-600 focus:ring-offset-2 focus:ring-offset-slate-800">
+                        class="w-full px-6 py-2.5 rounded-lg text-sm font-medium text-black transition-all duration-150 hover:opacity-90"
+                        style="background:#22c55e;">
                     Criar Conta
                 </button>
             </form>
 
             <!-- Divider -->
-            <div class="relative my-6">
+            <div class="relative my-5">
                 <div class="absolute inset-0 flex items-center">
-                    <div class="w-full border-t border-slate-700"></div>
+                    <div class="w-full" style="border-top:1px solid #262626;"></div>
                 </div>
-                <div class="relative flex justify-center text-sm">
-                    <span class="px-4 bg-slate-800 text-slate-400">Já tem uma conta?</span>
+                <div class="relative flex justify-center text-xs">
+                    <span class="px-3 text-xs" style="background:#111111;color:#525252;">Já tem uma conta?</span>
                 </div>
             </div>
 
-            <!-- Login Link -->
-            <div class="text-center">
-                <a href="{% url 'users:login' %}"
-                   class="inline-block px-6 py-3 bg-slate-700 hover:bg-slate-600 text-slate-100 font-medium rounded-lg border border-slate-600 transition-all duration-200 w-full text-center">
-                    Fazer Login
-                </a>
-            </div>
+            <!-- Login link -->
+            <a href="{% url 'users:login' %}"
+               class="block w-full text-center px-6 py-2.5 rounded-lg text-sm font-medium transition-all duration-150"
+               style="background:#1a1a1a;color:#a3a3a3;border:1px solid #262626;">
+                Fazer Login
+            </a>
         </div>
 
-        <!-- Back to Home Link -->
-        <div class="text-center mt-6">
-            <a href="{% url 'home' %}" class="text-slate-400 hover:text-primary-400 transition-colors text-sm">
-                ← Voltar para a página inicial
+        <!-- Back to home -->
+        <div class="text-center mt-5">
+            <a href="{% url 'home' %}" class="text-xs transition-colors duration-150" style="color:#525252;">
+                &larr; Voltar para a página inicial
             </a>
         </div>
     </div>
 </section>
 
-<!-- Custom Animations -->
-<style>
-@keyframes blob {
-    0% {
-        transform: translate(0px, 0px) scale(1);
-    }
-    33% {
-        transform: translate(30px, -50px) scale(1.1);
-    }
-    66% {
-        transform: translate(-20px, 20px) scale(0.9);
-    }
-    100% {
-        transform: translate(0px, 0px) scale(1);
-    }
-}
-
-.animate-blob {
-    animation: blob 7s infinite;
-}
-
-.animation-delay-2000 {
-    animation-delay: 2s;
-}
-
-.animation-delay-4000 {
-    animation-delay: 4s;
-}
-</style>
-
 <!-- Real-time Form Validation -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Get form elements
     const emailInput = document.getElementById('{{ form.email.id_for_label }}');
     const password1Input = document.getElementById('{{ form.password1.id_for_label }}');
     const password2Input = document.getElementById('{{ form.password2.id_for_label }}');
 
-    // Get validation containers
     const emailError = document.getElementById('email-error');
     const emailSuccess = document.getElementById('email-success');
     const password2Error = document.getElementById('password2-error');
     const password2Success = document.getElementById('password2-success');
 
-    // Get password requirement elements
     const passwordRequirements = document.getElementById('password-requirements');
-    const passwordStrength = document.getElementById('password-strength');
-    const reqLength = document.getElementById('req-length');
-    const reqNumber = document.getElementById('req-number');
-    const reqLetter = document.getElementById('req-letter');
+    const passwordStrengthEl = document.getElementById('password-strength');
     const strengthBar = document.getElementById('strength-bar');
     const strengthText = document.getElementById('strength-text');
 
-    // Email validation
+    const reqLengthIcon = document.getElementById('req-length-icon');
+    const reqLengthText = document.getElementById('req-length-text');
+    const reqNumberIcon = document.getElementById('req-number-icon');
+    const reqNumberText = document.getElementById('req-number-text');
+    const reqLetterIcon = document.getElementById('req-letter-icon');
+    const reqLetterText = document.getElementById('req-letter-text');
+
+    const BORDER_DEFAULT = '1px solid #262626';
+    const BORDER_ERROR = '1px solid #ef4444';
+    const BORDER_SUCCESS = '1px solid #22c55e';
+
     function validateEmail(email) {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailRegex.test(email);
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     }
 
     function updateEmailValidation() {
         const email = emailInput.value.trim();
 
         if (email.length === 0) {
-            // Reset state when empty
-            emailInput.classList.remove('border-red-500', 'border-green-500');
-            emailInput.classList.add('border-slate-700');
+            emailInput.style.border = BORDER_DEFAULT;
             emailError.classList.add('hidden');
             emailSuccess.classList.add('hidden');
             return;
         }
 
         if (validateEmail(email)) {
-            // Valid email
-            emailInput.classList.remove('border-red-500', 'border-slate-700');
-            emailInput.classList.add('border-green-500');
+            emailInput.style.border = BORDER_SUCCESS;
             emailError.classList.add('hidden');
             emailSuccess.classList.remove('hidden');
         } else {
-            // Invalid email
-            emailInput.classList.remove('border-green-500', 'border-slate-700');
-            emailInput.classList.add('border-red-500');
+            emailInput.style.border = BORDER_ERROR;
             emailError.textContent = 'Por favor, digite um e-mail válido.';
             emailError.classList.remove('hidden');
             emailSuccess.classList.add('hidden');
         }
     }
 
-    // Password validation
     function validatePassword(password) {
-        const checks = {
+        return {
             length: password.length >= 8,
             number: /\d/.test(password),
             letter: /[a-zA-Z]/.test(password)
         };
-
-        return checks;
     }
 
     function calculatePasswordStrength(password, checks) {
@@ -284,156 +227,117 @@ document.addEventListener('DOMContentLoaded', function() {
 
         let strength = 0;
         const validChecks = Object.values(checks).filter(v => v).length;
-
-        // Base strength on requirements met
         strength += validChecks * 33.33;
 
-        // Bonus for length
         if (password.length >= 12) strength += 10;
         if (password.length >= 16) strength += 10;
-
-        // Bonus for complexity
         if (/[A-Z]/.test(password) && /[a-z]/.test(password)) strength += 5;
         if (/[!@#$%^&*(),.?":{}|<>]/.test(password)) strength += 10;
 
         return Math.min(strength, 100);
     }
 
+    function updateRequirement(iconEl, textEl, isValid) {
+        if (isValid) {
+            iconEl.textContent = '✓';
+            iconEl.style.color = '#22c55e';
+            textEl.style.color = '#22c55e';
+        } else {
+            iconEl.textContent = '○';
+            iconEl.style.color = '#525252';
+            textEl.style.color = '#525252';
+        }
+    }
+
+    function updateStrengthIndicator(strength) {
+        if (strength < 40) {
+            strengthBar.style.width = strength + '%';
+            strengthBar.style.background = '#ef4444';
+            strengthText.textContent = 'Fraca';
+            strengthText.style.color = '#ef4444';
+        } else if (strength < 70) {
+            strengthBar.style.width = strength + '%';
+            strengthBar.style.background = '#f59e0b';
+            strengthText.textContent = 'Média';
+            strengthText.style.color = '#f59e0b';
+        } else {
+            strengthBar.style.width = strength + '%';
+            strengthBar.style.background = '#22c55e';
+            strengthText.textContent = 'Forte';
+            strengthText.style.color = '#22c55e';
+        }
+    }
+
     function updatePasswordValidation() {
         const password = password1Input.value;
 
         if (password.length === 0) {
-            // Hide all indicators when empty
             passwordRequirements.classList.add('hidden');
-            passwordStrength.classList.add('hidden');
-            password1Input.classList.remove('border-red-500', 'border-green-500');
-            password1Input.classList.add('border-slate-700');
+            passwordStrengthEl.classList.add('hidden');
+            password1Input.style.border = BORDER_DEFAULT;
             return;
         }
 
-        // Show requirements and strength indicator
         passwordRequirements.classList.remove('hidden');
-        passwordStrength.classList.remove('hidden');
+        passwordStrengthEl.classList.remove('hidden');
 
-        // Validate password requirements
         const checks = validatePassword(password);
 
-        // Update requirement indicators
-        updateRequirement(reqLength, checks.length);
-        updateRequirement(reqNumber, checks.number);
-        updateRequirement(reqLetter, checks.letter);
+        updateRequirement(reqLengthIcon, reqLengthText, checks.length);
+        updateRequirement(reqNumberIcon, reqNumberText, checks.number);
+        updateRequirement(reqLetterIcon, reqLetterText, checks.letter);
 
-        // Calculate and display strength
         const strength = calculatePasswordStrength(password, checks);
-        updateStrengthIndicator(strength, checks);
+        updateStrengthIndicator(strength);
 
-        // Update border color
         const allValid = checks.length && checks.number && checks.letter;
-        if (allValid) {
-            password1Input.classList.remove('border-red-500', 'border-slate-700');
-            password1Input.classList.add('border-green-500');
-        } else {
-            password1Input.classList.remove('border-green-500', 'border-slate-700');
-            password1Input.classList.add('border-red-500');
-        }
+        password1Input.style.border = allValid ? BORDER_SUCCESS : BORDER_ERROR;
 
-        // Trigger password confirmation validation if it has a value
         if (password2Input.value.length > 0) {
             updatePassword2Validation();
         }
     }
 
-    function updateRequirement(element, isValid) {
-        const circle = element.querySelector('span:first-child');
-        const text = element.querySelector('span:last-child');
-
-        if (isValid) {
-            circle.textContent = '✓';
-            circle.classList.remove('text-slate-500');
-            circle.classList.add('text-green-500');
-            text.classList.remove('text-slate-400');
-            text.classList.add('text-green-400');
-        } else {
-            circle.textContent = '○';
-            circle.classList.remove('text-green-500');
-            circle.classList.add('text-slate-500');
-            text.classList.remove('text-green-400');
-            text.classList.add('text-slate-400');
-        }
-    }
-
-    function updateStrengthIndicator(strength, checks) {
-        const allValid = checks.length && checks.number && checks.letter;
-
-        if (strength < 40) {
-            strengthBar.style.width = strength + '%';
-            strengthBar.className = 'h-full transition-all duration-300 rounded-full bg-red-500';
-            strengthText.textContent = 'Fraca';
-            strengthText.className = 'text-xs font-medium text-red-400';
-        } else if (strength < 70) {
-            strengthBar.style.width = strength + '%';
-            strengthBar.className = 'h-full transition-all duration-300 rounded-full bg-yellow-500';
-            strengthText.textContent = 'Média';
-            strengthText.className = 'text-xs font-medium text-yellow-400';
-        } else {
-            strengthBar.style.width = strength + '%';
-            strengthBar.className = 'h-full transition-all duration-300 rounded-full bg-green-500';
-            strengthText.textContent = 'Forte';
-            strengthText.className = 'text-xs font-medium text-green-400';
-        }
-    }
-
-    // Password confirmation validation
     function updatePassword2Validation() {
         const password1 = password1Input.value;
         const password2 = password2Input.value;
 
         if (password2.length === 0) {
-            // Reset state when empty
-            password2Input.classList.remove('border-red-500', 'border-green-500');
-            password2Input.classList.add('border-slate-700');
+            password2Input.style.border = BORDER_DEFAULT;
             password2Error.classList.add('hidden');
             password2Success.classList.add('hidden');
             return;
         }
 
         if (password1 === password2) {
-            // Passwords match
-            password2Input.classList.remove('border-red-500', 'border-slate-700');
-            password2Input.classList.add('border-green-500');
+            password2Input.style.border = BORDER_SUCCESS;
             password2Error.classList.add('hidden');
             password2Success.classList.remove('hidden');
         } else {
-            // Passwords don't match
-            password2Input.classList.remove('border-green-500', 'border-slate-700');
-            password2Input.classList.add('border-red-500');
+            password2Input.style.border = BORDER_ERROR;
             password2Error.textContent = 'As senhas não correspondem.';
             password2Error.classList.remove('hidden');
             password2Success.classList.add('hidden');
         }
     }
 
-    // Form submit validation - prevent invalid submissions
     const signupForm = document.querySelector('form[method="post"]');
     if (signupForm) {
         signupForm.addEventListener('submit', function(e) {
             let isValid = true;
 
-            // Validate email
             const email = emailInput.value.trim();
             if (!email || !validateEmail(email)) {
                 updateEmailValidation();
                 isValid = false;
             }
 
-            // Validate password
             const password = password1Input.value;
             if (!password || password.length < 8) {
                 updatePasswordValidation();
                 isValid = false;
             }
 
-            // Validate password confirmation
             const password2 = password2Input.value;
             if (!password2 || password !== password2) {
                 updatePassword2Validation();
@@ -446,7 +350,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Attach event listeners
     emailInput.addEventListener('input', updateEmailValidation);
     emailInput.addEventListener('blur', updateEmailValidation);
 
