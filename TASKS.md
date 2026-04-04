@@ -1022,7 +1022,7 @@
 
 ---
 
-### [ ] Sprint 8: Agente de IA Financeiro (2 semanas)
+### [X] Sprint 8: Agente de IA Financeiro (2 semanas)
 
 #### [X] Tarefa 8.1: Criação da App `ai` e Model AIAnalysis
 - [X] **8.1.1** - Criar app Django `ai`
@@ -1111,30 +1111,30 @@
   - `python manage.py run_finance_analysis --month 2026-03` (mês específico)
   - Verificar registro no banco de dados
 
-#### Tarefa 8.6: Integração com o Dashboard
-- [ ] **8.6.1** - Atualizar `DashboardView` para incluir última análise
+#### [X] Tarefa 8.6: Integração com o Dashboard
+- [X] **8.6.1** - Atualizar `DashboardView` para incluir última análise
   - Buscar `AIAnalysis.objects.filter(user=self.request.user).first()`
   - Adicionar `latest_analysis` ao context
 
-- [ ] **8.6.2** - Atualizar template `dashboard.html`
+- [X] **8.6.2** - Atualizar template `dashboard.html`
   - Adicionar card de "Análise de IA" no dashboard
   - Exibir `summary` da última análise
   - Mostrar data de geração
   - Exibir badge "IA" com ícone identificador
   - Link para ver análise completa (modal ou página separada)
 
-#### Tarefa 8.7: Documentação Técnica
-- [ ] **8.7.1** - Criar `ai/agents/ai_integration_expert.md`
+#### [X] Tarefa 8.7: Documentação Técnica
+- [X] **8.7.1** - Criar `ai/agents/ai_integration_expert.md`
   - Referência técnica para criação de agentes com LangChain 1.0
   - Padrões de integração com Django
   - Boas práticas e configurações
   - Como usar MCP Server Context7 para documentação atualizada
 
-- [ ] **8.7.2** - Criar `docs/ai_agent.md`
+- [X] **8.7.2** - Criar `docs/ai_agent.md`
   - Documentação da funcionalidade para desenvolvedores e usuários
   - Fluxo completo, como executar, como expandir
 
-- [ ] **8.7.3** - Atualizar `docs/README.md` com referência ao novo documento
+- [X] **8.7.3** - Atualizar `docs/README.md` com referência ao novo documento
 
 ---
 

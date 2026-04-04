@@ -7,8 +7,9 @@ from django.utils import timezone
 from django.views.generic import TemplateView
 
 from accounts.models import Account
-from transactions.models import Transaction
+from ai.models import AIAnalysis
 from categories.models import Category
+from transactions.models import Transaction
 
 logger = logging.getLogger(__name__)
 
@@ -192,6 +193,9 @@ class DashboardView(LoginRequiredMixin, TemplateView):
 
             # income_chart_data is passed as Python list; use json_script in template
 
+            # Latest AI analysis for this user
+            latest_analysis = AIAnalysis.objects.filter(user=user).first()
+
             # Add all data to context
             context.update({
                 # Basic data
@@ -211,6 +215,9 @@ class DashboardView(LoginRequiredMixin, TemplateView):
                 'expense_by_category': expense_by_category,
                 'chart_data': chart_data,
                 'income_chart_data': income_chart_data,
+
+                # AI analysis
+                'latest_analysis': latest_analysis,
             })
 
         except Exception:
@@ -233,6 +240,7 @@ class DashboardView(LoginRequiredMixin, TemplateView):
                 'expense_by_category': [],
                 'chart_data': [],
                 'income_chart_data': [],
+                'latest_analysis': None,
                 'dashboard_error': True,
             })
 

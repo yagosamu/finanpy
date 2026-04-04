@@ -10,6 +10,7 @@ Sistema de gestao de financas pessoais desenvolvido em Python/Django.
 4. [Configuracoes](configuracoes.md) - Variaveis de ambiente, banco de dados e producao
 5. [Padroes de Codigo](codigo.md) - Convencoes e estilo de codigo
 6. [Design System](design-system.md) - Paleta de cores, tipografia e componentes UI
+7. [Agente de IA Financeiro](ai_agent.md) - Analises com IA, como executar e expandir
 
 ## Sobre o Projeto
 
@@ -20,6 +21,7 @@ O Finanpy e uma aplicacao web para controle financeiro pessoal com:
 - Categorizacao de transacoes
 - Controle de receitas e despesas
 - Dashboard analitico
+- Analises financeiras personalizadas com IA (LangChain + OpenAI)
 
 ## Status Atual
 
@@ -30,7 +32,9 @@ O projeto esta funcional com as seguintes apps implementadas:
 - `accounts` - CRUD completo de contas bancarias (corrente, poupanca, carteira, investimentos)
 - `categories` - Categorias de receitas e despesas com categorias padrao
 - `transactions` - CRUD completo de transacoes financeiras com filtros e dashboard analitico
+- `ai` - Agente de IA financeiro com analises personalizadas via LangChain e OpenAI
 
 ## Links Uteis
 
 - [PRD.md](../PRD.md) - Documento de requisitos completo do produto
+- [TASKS.md](../TASKS.md) - Acompanhamento de sprints e tarefas

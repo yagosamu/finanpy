@@ -285,6 +285,123 @@
     </div>
 </div>
 
+<!-- AI Analysis Card -->
+<div class="mb-6 sm:mb-8">
+    <div class="bg-slate-800 rounded-xl shadow-lg border border-slate-700 p-4 sm:p-6 hover:border-primary-600 transition-all duration-200">
+        <!-- Card Header -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-primary-600/30 to-secondary-500/30 rounded-lg flex items-center justify-center border border-primary-600/30">
+                    <svg class="w-5 h-5 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                    </svg>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="px-2 py-1 bg-gradient-to-r from-primary-600 to-secondary-500 text-white text-xs font-bold rounded-full">IA</span>
+                        <h2 class="text-lg sm:text-xl font-bold text-slate-100">Análise Financeira com IA</h2>
+                    </div>
+                    {% if latest_analysis %}
+                        <p class="text-slate-500 text-xs">Gerado em {{ latest_analysis.created_at|date:"d \d\e F \d\e Y \à\s H:i" }}</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        {% if latest_analysis %}
+            <!-- Summary Body -->
+            <div class="mb-5">
+                <p class="text-slate-300 text-sm leading-relaxed">{{ latest_analysis.summary }}</p>
+            </div>
+
+            <!-- Period info -->
+            {% if latest_analysis.period_start and latest_analysis.period_end %}
+            <div class="flex items-center gap-2 mb-5">
+                <span class="text-slate-500 text-xs">Período analisado:</span>
+                <span class="text-slate-400 text-xs font-mono">{{ latest_analysis.period_start|date:"d/m/Y" }} — {{ latest_analysis.period_end|date:"d/m/Y" }}</span>
+            </div>
+            {% endif %}
+
+            <!-- Action Button -->
+            <div class="flex">
+                <button
+                    id="open-ai-modal-btn"
+                    type="button"
+                    class="px-5 py-2.5 border border-primary-600 text-primary-400 hover:bg-primary-600 hover:text-white font-medium rounded-lg text-sm transition-all duration-200"
+                    aria-haspopup="dialog"
+                    aria-controls="ai-analysis-modal">
+                    Ver análise completa
+                </button>
+            </div>
+        {% else %}
+            <!-- Empty State -->
+            <div class="text-center py-10">
+                <div class="w-16 h-16 bg-slate-700 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-8 h-8 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                    </svg>
+                </div>
+                <p class="text-slate-400 font-medium mb-2">Nenhuma análise disponível ainda.</p>
+                <p class="text-slate-500 text-sm">Execute o comando <code class="px-1.5 py-0.5 bg-slate-700 text-secondary-400 rounded font-mono text-xs">python manage.py run_finance_analysis</code> para gerar.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+{% if latest_analysis %}
+<!-- AI Analysis Modal -->
+<div
+    id="ai-analysis-modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="ai-modal-title"
+    class="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-slate-800 rounded-xl border border-slate-700 max-w-2xl w-full max-h-[80vh] overflow-y-auto p-6 shadow-2xl">
+        <!-- Modal Header -->
+        <div class="flex items-start justify-between mb-6">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 bg-gradient-to-br from-primary-600/30 to-secondary-500/30 rounded-lg flex items-center justify-center border border-primary-600/30 flex-shrink-0">
+                    <svg class="w-4 h-4 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                    </svg>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2 mb-0.5">
+                        <span class="px-2 py-0.5 bg-gradient-to-r from-primary-600 to-secondary-500 text-white text-xs font-bold rounded-full">IA</span>
+                        <h3 id="ai-modal-title" class="text-lg font-bold text-slate-100">Análise Financeira Completa</h3>
+                    </div>
+                    <p class="text-slate-500 text-xs">{{ latest_analysis.created_at|date:"d \d\e F \d\e Y \à\s H:i" }}</p>
+                </div>
+            </div>
+            <button
+                id="close-ai-modal-btn"
+                type="button"
+                class="flex-shrink-0 ml-4 p-2 text-slate-400 hover:text-slate-100 hover:bg-slate-700 rounded-lg transition-all duration-200"
+                aria-label="Fechar análise">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Modal Content -->
+        <div class="text-slate-300 text-sm leading-relaxed">
+            {{ latest_analysis.content|linebreaksbr }}
+        </div>
+
+        <!-- Modal Footer -->
+        <div class="mt-6 pt-4 border-t border-slate-700 flex justify-end">
+            <button
+                id="close-ai-modal-footer-btn"
+                type="button"
+                class="px-5 py-2.5 bg-slate-700 hover:bg-slate-600 text-slate-100 font-medium rounded-lg border border-slate-600 text-sm transition-all duration-200">
+                Fechar
+            </button>
+        </div>
+    </div>
+</div>
+{% endif %}
+
 <!-- Getting Started Guide -->
 {% if active_accounts_count == 0 or not recent_transactions %}
 <div class="bg-gradient-to-r from-primary-600/20 to-secondary-500/20 border border-primary-600/30 rounded-xl shadow-lg p-4 sm:p-6">
@@ -463,4 +580,45 @@
         }
     });
 </script>
+
+{% if latest_analysis %}
+<script>
+    (function () {
+        var modal = document.getElementById('ai-analysis-modal');
+        var openBtn = document.getElementById('open-ai-modal-btn');
+        var closeBtn = document.getElementById('close-ai-modal-btn');
+        var closeFooterBtn = document.getElementById('close-ai-modal-footer-btn');
+
+        function openModal() {
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+            closeBtn.focus();
+        }
+
+        function closeModal() {
+            modal.classList.add('hidden');
+            document.body.style.overflow = '';
+            if (openBtn) openBtn.focus();
+        }
+
+        if (openBtn) openBtn.addEventListener('click', openModal);
+        if (closeBtn) closeBtn.addEventListener('click', closeModal);
+        if (closeFooterBtn) closeFooterBtn.addEventListener('click', closeModal);
+
+        // Close on overlay click (outside the card)
+        if (modal) {
+            modal.addEventListener('click', function (e) {
+                if (e.target === modal) closeModal();
+            });
+        }
+
+        // Close on Escape key
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && modal && !modal.classList.contains('hidden')) {
+                closeModal();
+            }
+        });
+    })();
+</script>
+{% endif %}
 {% endblock %}
