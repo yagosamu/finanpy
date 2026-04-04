@@ -865,6 +865,171 @@ shadow-2xl: muito grande
 
 
 
+## 13. Agente de IA Financeiro
+
+### 13.1. Objetivo e Motivação
+
+O **Agente de IA Financeiro** é uma funcionalidade de análise inteligente que utiliza modelos de linguagem para gerar insights personalizados sobre a saúde financeira de cada usuário. O objetivo é transformar dados brutos de transações em recomendações práticas e contextualizadas, elevando o Finanpy de um simples sistema de controle para um verdadeiro assistente financeiro pessoal.
+
+**Motivação:**
+- Usuários têm dados financeiros ricos, mas dificuldade em extrair padrões e conclusões
+- Análises manuais são trabalhosas e propensas a vieses cognitivos
+- IA permite personalização em escala, entregando valor único a cada usuário
+- Diferencial competitivo relevante frente a outros sistemas de finanças pessoais
+
+### 13.2. Escopo da Funcionalidade
+
+- Um **agente de IA especializado** analisa os dados financeiros do usuário e gera insights personalizados
+- Cada usuário recebe **análises exclusivas e individuais** baseadas em seu próprio histórico
+- A **última análise** é exibida no **dashboard** para acesso imediato
+- **Análises anteriores** são armazenadas em banco de dados com histórico completo
+- Execução manual via **Django Command** (`python manage.py run_finance_analysis`)
+- Nenhum endpoint HTTP ou agendamento automático nesta fase inicial
+
+### 13.3. Fluxo de Funcionamento
+
+```mermaid
+flowchart TD
+    A[Django Command: run_finance_analysis] --> B[AnalysisService]
+    B --> C[Buscar todos os usuários ativos]
+    C --> D[Para cada usuário]
+    D --> E[Coletar dados financeiros via Tools]
+    E --> F[Transações do mês atual]
+    E --> G[Receitas e despesas por categoria]
+    E --> H[Saldo das contas]
+    F & G & H --> I[LangChain Agent - GPT-5-mini]
+    I --> J[Gerar análise e insights personalizados]
+    J --> K[Salvar AIAnalysis no banco de dados]
+    K --> L[Exibir última análise no Dashboard]
+```
+
+### 13.4. Modelo de Dados — AIAnalysis
+
+```python
+class AIAnalysis(models.Model):
+    user          = ForeignKey(User, on_delete=CASCADE)
+    content       = TextField()           # texto completo gerado pela IA
+    summary       = CharField(max_length=500)  # resumo curto para o dashboard
+    period_start  = DateField()           # início do período analisado
+    period_end    = DateField()           # fim do período analisado
+    tokens_used   = IntegerField()        # custo em tokens da chamada
+    created_at    = DateTimeField(auto_now_add=True)
+```
+
+**Relações:**
+```
+User (1) ──── (N) AIAnalysis
+```
+
+**Diagrama ER atualizado:**
+```mermaid
+erDiagram
+    User ||--o{ AIAnalysis : receives
+    AIAnalysis {
+        int id PK
+        int user_id FK
+        text content
+        string summary
+        date period_start
+        date period_end
+        int tokens_used
+        datetime created_at
+    }
+```
+
+### 13.5. Stack Tecnológica da Funcionalidade
+
+| Componente | Tecnologia | Versão |
+|------------|-----------|--------|
+| Framework de agente | LangChain | 1.0 |
+| Modelo de linguagem | OpenAI GPT | gpt-4o-mini |
+| Integração Django | Python-dotenv + settings | — |
+| Persistência | SQLite3 via Django ORM | — |
+| Execução | Django Management Command | — |
+
+**Dependências adicionais:**
+```
+langchain>=1.0.0
+langchain-openai>=0.3.0
+openai>=1.0.0
+```
+
+### 13.6. Estrutura da App `ai`
+
+```
+ai/
+├── __init__.py
+├── apps.py
+├── models.py                          # modelo AIAnalysis
+├── admin.py                           # registro no admin
+├── agents/
+│   ├── finance_insight_agent.py       # agente LangChain com tools financeiras
+│   └── ai_integration_expert.md      # referência técnica para criação de agentes
+├── services/
+│   └── analysis_service.py           # orquestra a análise e chama o agente
+└── management/
+    └── commands/
+        └── run_finance_analysis.py    # Django Command para execução
+```
+
+**Responsabilidades de cada módulo:**
+
+- **`models.py`** — Define `AIAnalysis` e sua relação com `User`
+- **`agents/finance_insight_agent.py`** — Configura o agente LangChain com tools de acesso ao banco (transações, categorias, contas) e faz a chamada ao GPT
+- **`agents/ai_integration_expert.md`** — Documento de referência técnica (agente de código) com padrões e boas práticas para criação de agentes no projeto
+- **`services/analysis_service.py`** — Camada de serviço que busca usuários, chama o agente e persiste a análise
+- **`management/commands/run_finance_analysis.py`** — Ponto de entrada para execução manual ou futura automação
+
+### 13.7. Tools do Agente
+
+O agente terá acesso a tools específicas que consultam o banco de dados relacional:
+
+| Tool | Descrição |
+|------|-----------|
+| `get_user_transactions` | Busca transações do usuário em um período |
+| `get_category_summary` | Agrega gastos e receitas por categoria |
+| `get_account_balances` | Retorna saldo atual de todas as contas |
+| `get_monthly_comparison` | Compara mês atual com mês anterior |
+
+### 13.8. Execução via Django Command
+
+```bash
+# Analisar todos os usuários ativos
+python manage.py run_finance_analysis
+
+# Analisar um usuário específico (por email)
+python manage.py run_finance_analysis --user usuario@email.com
+
+# Analisar período específico
+python manage.py run_finance_analysis --month 2026-03
+```
+
+### 13.9. Integração com o Dashboard
+
+A última análise de cada usuário será exibida no dashboard em um card dedicado:
+- **Resumo** curto (campo `summary`) visível imediatamente no card
+- **Link** para ver a análise completa
+- **Data** da última análise
+- **Indicador** visual de "IA" para diferenciar do conteúdo manual
+
+### 13.10. Requisitos Funcionais Adicionais
+
+- **RF40:** Sistema deve gerar análises financeiras personalizadas via IA
+- **RF41:** A última análise deve ser exibida no dashboard do usuário
+- **RF42:** O histórico de análises deve ser armazenado e acessível
+- **RF43:** O Django Command deve aceitar parâmetros de usuário e período
+
+### 13.11. Variáveis de Ambiente Necessárias
+
+```env
+OPENAI_API_KEY=sk-...
+AI_MODEL=gpt-4o-mini
+AI_MAX_TOKENS=2048
+AI_TEMPERATURE=0.3
+```
+
+---
+
 ## 15. Conclusão
 
 Este PRD define um roadmap claro e detalhado para o desenvolvimento do **Finanpy**, um sistema de gestão de finanças pessoais moderno e eficiente. O projeto está estruturado em 8 sprints principais que cobrem desde a configuração inicial até o refinamento final do MVP.

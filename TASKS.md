@@ -1022,162 +1022,278 @@
 
 ---
 
-### [X] Sprint 8: Refinamentos e Preparação para MVP (1 semana)
+### [ ] Sprint 8: Agente de IA Financeiro (2 semanas)
 
-#### [X] Tarefa 8.1: Melhorias de UX
-- [X] **8.1.1** - Implementar mensagens de feedback
+#### Tarefa 8.1: Criação da App `ai` e Model AIAnalysis
+- [ ] **8.1.1** - Criar app Django `ai`
+  - `python manage.py startapp ai`
+  - Adicionar `'ai'` em INSTALLED_APPS
+  - Criar estrutura de pastas: `agents/`, `services/`, `management/commands/`
+
+- [ ] **8.1.2** - Criar model `AIAnalysis` em `ai/models.py`
+  - Campo `user` (ForeignKey para User, on_delete=CASCADE)
+  - Campo `content` (TextField) — análise completa gerada pela IA
+  - Campo `summary` (CharField max_length=500) — resumo curto para o dashboard
+  - Campo `period_start` (DateField) — início do período analisado
+  - Campo `period_end` (DateField) — fim do período analisado
+  - Campo `tokens_used` (IntegerField, default=0) — custo em tokens da chamada
+  - Campo `created_at` (DateTimeField, auto_now_add=True)
+  - Meta: `ordering = ['-created_at']`
+
+- [ ] **8.1.3** - Registrar model no admin em `ai/admin.py`
+  - `list_display`: user, summary, period_start, period_end, tokens_used, created_at
+  - `list_filter`: period_start, created_at
+  - `search_fields`: user__email, content
+
+- [ ] **8.1.4** - Criar e aplicar migrations
+  - `python manage.py makemigrations ai`
+  - `python manage.py migrate`
+  - Verificar tabela no SQLite
+
+#### Tarefa 8.2: Instalação e Configuração das Dependências de IA
+- [ ] **8.2.1** - Instalar dependências no ambiente virtual
+  - `pip install langchain>=1.0.0`
+  - `pip install langchain-openai>=0.3.0`
+  - `pip install openai>=1.0.0`
+  - Atualizar `requirements.txt`
+
+- [ ] **8.2.2** - Configurar variáveis de ambiente
+  - Adicionar ao `.env`: `OPENAI_API_KEY`, `AI_MODEL`, `AI_MAX_TOKENS`, `AI_TEMPERATURE`
+  - Adicionar leitura dessas variáveis em `core/settings.py`
+  - Atualizar `.env.example` com as novas variáveis (sem valores reais)
+
+#### Tarefa 8.3: Criação do Agente LangChain
+- [ ] **8.3.1** - Criar `ai/agents/finance_insight_agent.py`
+  - Configurar `ChatOpenAI` com o modelo e parâmetros das settings
+  - Definir tool `get_user_transactions(user_id, start_date, end_date)` — busca transações do período
+  - Definir tool `get_category_summary(user_id, start_date, end_date)` — agrega por categoria
+  - Definir tool `get_account_balances(user_id)` — retorna saldos das contas
+  - Definir tool `get_monthly_comparison(user_id)` — compara mês atual vs anterior
+  - Cada tool deve filtrar por `user_id` para garantir isolamento entre usuários
+
+- [ ] **8.3.2** - Criar agente com `create_react_agent` ou `AgentExecutor`
+  - Associar as 4 tools ao agente
+  - Definir system prompt em português com contexto de finanças pessoais brasileiras
+  - Configurar `max_iterations` para evitar loops infinitos
+  - Retornar análise estruturada: `content` (completo) e `summary` (resumo de até 500 chars)
+
+- [ ] **8.3.3** - Criar função `run_analysis_for_user(user, period_start, period_end)`
+  - Recebe o objeto User e o período
+  - Invoca o agente com o contexto do usuário
+  - Retorna dicionário com `content`, `summary` e `tokens_used`
+
+#### Tarefa 8.4: Camada de Serviço
+- [ ] **8.4.1** - Criar `ai/services/analysis_service.py`
+  - Função `analyze_user(user, period_start=None, period_end=None)`
+    - Usa período atual (mês corrente) como padrão
+    - Chama `finance_insight_agent.run_analysis_for_user()`
+    - Persiste o resultado em `AIAnalysis`
+    - Retorna o objeto `AIAnalysis` criado
+
+  - Função `analyze_all_active_users(period_start=None, period_end=None)`
+    - Busca todos os usuários com `is_active=True`
+    - Chama `analyze_user()` para cada um
+    - Registra logs de sucesso/erro por usuário
+    - Retorna resumo: quantidade de análises geradas, erros
+
+#### Tarefa 8.5: Django Management Command
+- [ ] **8.5.1** - Criar `ai/management/commands/run_finance_analysis.py`
+  - Herdar de `BaseCommand`
+  - Argumento opcional `--user` (email do usuário)
+  - Argumento opcional `--month` (formato YYYY-MM, padrão: mês atual)
+  - Lógica: se `--user` informado, analisa apenas aquele; caso contrário, todos ativos
+  - Exibir progresso no stdout com `self.stdout.write()`
+  - Tratar erros de API (OpenAI) graciosamente sem abortar execução dos demais usuários
+
+- [ ] **8.5.2** - Testar comando manualmente
+  - `python manage.py run_finance_analysis` (todos os usuários)
+  - `python manage.py run_finance_analysis --user email@teste.com` (usuário específico)
+  - `python manage.py run_finance_analysis --month 2026-03` (mês específico)
+  - Verificar registro no banco de dados
+
+#### Tarefa 8.6: Integração com o Dashboard
+- [ ] **8.6.1** - Atualizar `DashboardView` para incluir última análise
+  - Buscar `AIAnalysis.objects.filter(user=self.request.user).first()`
+  - Adicionar `latest_analysis` ao context
+
+- [ ] **8.6.2** - Atualizar template `dashboard.html`
+  - Adicionar card de "Análise de IA" no dashboard
+  - Exibir `summary` da última análise
+  - Mostrar data de geração
+  - Exibir badge "IA" com ícone identificador
+  - Link para ver análise completa (modal ou página separada)
+
+#### Tarefa 8.7: Documentação Técnica
+- [ ] **8.7.1** - Criar `ai/agents/ai_integration_expert.md`
+  - Referência técnica para criação de agentes com LangChain 1.0
+  - Padrões de integração com Django
+  - Boas práticas e configurações
+  - Como usar MCP Server Context7 para documentação atualizada
+
+- [ ] **8.7.2** - Criar `docs/ai_agent.md`
+  - Documentação da funcionalidade para desenvolvedores e usuários
+  - Fluxo completo, como executar, como expandir
+
+- [ ] **8.7.3** - Atualizar `docs/README.md` com referência ao novo documento
+
+---
+
+### [X] Sprint 9: Refinamentos e Preparação para MVP (1 semana)
+
+#### [X] Tarefa 9.1: Melhorias de UX
+- [X] **9.1.1** - Implementar mensagens de feedback
   - Toast notifications para ações
   - Mensagens de sucesso/erro consistentes
   - Timeout automático
   - Posicionamento fixo
   
-- [X] **8.1.2** - Adicionar confirmações de ações críticas
+- [X] **9.1.2** - Adicionar confirmações de ações críticas
   - Modal de confirmação de exclusão
   - Aviso antes de perder dados não salvos
   - Loading states em botões de ação
   
-- [X] **8.1.3** - Melhorar navegação
+- [X] **9.1.3** - Melhorar navegação
   - Breadcrumbs em páginas internas
   - Active state em menu lateral
   - Botão de voltar onde aplicável
 
-#### [X] Tarefa 8.2: Validações Avançadas
-- [X] **8.2.1** - Validações frontend
+#### [X] Tarefa 9.2: Validações Avançadas
+- [X] **9.2.1** - Validações frontend
   - Validação em tempo real de formulários
   - Feedback visual de erros
   - Prevenir submit de formulários inválidos
 
-- [X] **8.2.2** - Validações backend robustas
+- [X] **9.2.2** - Validações backend robustas
   - Validar todos os inputs
   - Tratar casos extremos
   - Mensagens de erro claras
 
-- [X] **8.2.3** - Validações de negócio
+- [X] **9.2.3** - Validações de negócio
   - Impedir exclusão de categoria em uso
   - Validar datas lógicas
 
-#### [X] Tarefa 8.3: Formatações e Padronizações
-- [X] **8.3.1** - Padronizar formatação de datas
+#### [X] Tarefa 9.3: Formatações e Padronizações
+- [X] **9.3.1** - Padronizar formatação de datas
   - Usar locale pt-BR
   - Formato DD/MM/YYYY
   - Formato relativo onde aplicável
   
-- [X] **8.3.2** - Padronizar formatação de valores
+- [X] **9.3.2** - Padronizar formatação de valores
   - R$ 1.234,56 (padrão brasileiro)
   - Cores por valor (positivo/negativo)
   - Sinal de + ou - onde aplicável
   
-- [X] **8.3.3** - Padronizar textos e labels
+- [X] **9.3.3** - Padronizar textos e labels
   - Revisar todos os textos da interface
   - Garantir português correto
   - Tom consistente
 
-#### [X] Tarefa 8.4: Acessibilidade
-- [X] **8.4.1** - Adicionar atributos ARIA
+#### [X] Tarefa 9.4: Acessibilidade
+- [X] **9.4.1** - Adicionar atributos ARIA
   - Labels descritivos
   - Roles adequados
   - Estados de elementos
 
-- [X] **8.4.2** - Garantir navegação por teclado
+- [X] **9.4.2** - Garantir navegação por teclado
   - Tab order lógica
   - Focus visible
 
-- [X] **8.4.3** - Contraste e legibilidade
+- [X] **9.4.3** - Contraste e legibilidade
   - Verificar contraste de cores
   - Tamanhos de fonte adequados
   - Espaçamento suficiente
 
-#### [X] Tarefa 8.5: Tratamento de Erros
-- [X] **8.5.1** - Criar páginas de erro customizadas
+#### [X] Tarefa 9.5: Tratamento de Erros
+- [X] **9.5.1** - Criar páginas de erro customizadas
   - 404.html
   - 500.html
   - 403.html
   - Design consistente com tema
 
-- [X] **8.5.2** - Implementar logging
+- [X] **9.5.2** - Implementar logging
   - Configurar logging em settings.py
   - Logs de erros
   - Logs de ações críticas
 
-- [X] **8.5.3** - Tratamento de exceções
+- [X] **9.5.3** - Tratamento de exceções
   - Try-catch em views críticas
   - Mensagens amigáveis ao usuário
   - Não expor detalhes técnicos
 
-#### [X] Tarefa 8.6: Segurança
-- [X] **8.6.1** - Revisar configurações de segurança
+#### [X] Tarefa 9.6: Segurança
+- [X] **9.6.1** - Revisar configurações de segurança
   - DEBUG = False em produção
   - SECRET_KEY segura
   - ALLOWED_HOSTS configurado
   - CSRF_COOKIE_SECURE = True
   - SESSION_COOKIE_SECURE = True
   
-- [X] **8.6.2** - Proteção de rotas
+- [X] **9.6.2** - Proteção de rotas
   - Todas as views autenticadas protegidas
   - Verificação de ownership em updates/deletes
   - Prevenir IDOR
   
-- [X] **8.6.3** - Sanitização de inputs
+- [X] **9.6.3** - Sanitização de inputs
   - Escape de HTML em outputs
   - Limitar tamanho de inputs
 
-#### [X] Tarefa 8.7: Performance
-- [X] **8.7.1** - Otimizar queries do banco
+#### [X] Tarefa 9.7: Performance
+- [X] **9.7.1** - Otimizar queries do banco
   - Usar select_related onde necessário
   - Usar prefetch_related
   - Adicionar índices em campos filtrados
   
-- [X] **8.7.2** - Minificar assets
+- [X] **9.7.2** - Minificar assets
   - Minificar CSS customizado
   - Minificar JavaScript
   - Otimizar imagens
 
-#### [X] Tarefa 8.8: Documentação
-- [X] **8.8.1** - Criar README.md completo
+#### [X] Tarefa 9.8: Documentação
+- [X] **9.8.1** - Criar README.md completo
   - Descrição do projeto
   - Instruções de instalação
   - Como executar
   - Tecnologias usadas
   - Estrutura do projeto
   
-- [X] **8.8.2** - Documentar configurações
+- [X] **9.8.2** - Documentar configurações
   - Variáveis de ambiente
   - Configurações de banco
   - Configurações de produção
   
-- [X] **8.8.3** - Comentar código complexo
+- [X] **9.8.3** - Comentar código complexo
   - Docstrings em classes e métodos
   - Comentários em lógicas complexas
   - TODO's para melhorias futuras
 
-#### [X] Tarefa 8.9: Testes Finais e QA
-- [X] **8.9.1** - Teste completo de fluxo de usuário
+#### [X] Tarefa 9.9: Testes Finais e QA
+- [X] **9.9.1** - Teste completo de fluxo de usuário
   - Cadastro > Login > Criar conta > Criar transação > Ver dashboard
   - Testar em navegadores diferentes
   - Testar em dispositivos móveis
   
-- [X] **8.9.2** - Teste de edge cases
+- [X] **9.9.2** - Teste de edge cases
   - Contas sem transações
   - Usuários sem contas
   - Valores extremos
   - Datas limites
 
-- [X] **8.9.3** - Teste de carga básico
+- [X] **9.9.3** - Teste de carga básico
   - Criar 100+ transações
   - Verificar performance do dashboard
   - Verificar paginação
 
-#### [X] Tarefa 8.10: Preparação para Deploy
-- [X] **8.10.1** - Configurar settings para produção
+#### [X] Tarefa 9.10: Preparação para Deploy
+- [X] **9.10.1** - Configurar settings para produção
   - Criar settings/production.py
   - Variáveis de ambiente
   - Configurações de email
 
-- [X] **8.10.2** - Criar requirements.txt final
+- [X] **9.10.2** - Criar requirements.txt final
   - Listar todas as dependências
   - Especificar versões
 
-- [X] **8.10.3** - Criar guia de deploy
+- [X] **9.10.3** - Criar guia de deploy
   - Instruções passo a passo
   - Checklist de deploy
   - Rollback plan
@@ -1186,13 +1302,14 @@
 
 ### Sprints Futuras
 
-#### Sprint 9: Testes Automatizados
+#### Sprint 10: Testes Automatizados
 - Setup de testes (pytest, pytest-django)
 - Testes unitários (models, forms, signals)
 - Testes de integração (views, fluxos completos)
 - Testes E2E com Selenium
+- Testes específicos para a app `ai` (mocking de chamadas OpenAI)
 
-#### Sprint 10: Containerização e CI/CD
+#### Sprint 11: Containerização e CI/CD
 - Criar Dockerfile e docker-compose.yml
 - Configurar volumes e redes
 - Setup de GitHub Actions ou GitLab CI
@@ -1213,7 +1330,8 @@
 | Sprint 5 | 1 semana | Views e Templates de Categorias | CRUD completo de categorias |
 | Sprint 6 | 2 semanas | Transações | CRUD completo de transações com signals |
 | Sprint 7 | 2 semanas | Dashboard e Visualizações | Dashboard com gráficos e estatísticas |
-| Sprint 8 | 1 semana | Refinamentos e MVP | Melhorias de UX, segurança e preparação |
-| **Total** | **10 semanas** | **MVP Completo** | Sistema funcional e testado |
+| Sprint 8 | 2 semanas | Agente de IA Financeiro | App `ai`, modelo AIAnalysis, agente LangChain, Django Command |
+| Sprint 9 | 1 semana | Refinamentos e MVP | Melhorias de UX, segurança e preparação |
+| **Total** | **12 semanas** | **MVP Completo com IA** | Sistema funcional, testado e com insights de IA |
 
 ---
