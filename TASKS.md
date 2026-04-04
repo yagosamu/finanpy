@@ -1096,8 +1096,8 @@
     - Registra logs de sucesso/erro por usuário
     - Retorna resumo: quantidade de análises geradas, erros
 
-#### Tarefa 8.5: Django Management Command
-- [ ] **8.5.1** - Criar `ai/management/commands/run_finance_analysis.py`
+#### [X] Tarefa 8.5: Django Management Command
+- [X] **8.5.1** - Criar `ai/management/commands/run_finance_analysis.py`
   - Herdar de `BaseCommand`
   - Argumento opcional `--user` (email do usuário)
   - Argumento opcional `--month` (formato YYYY-MM, padrão: mês atual)
@@ -1105,7 +1105,7 @@
   - Exibir progresso no stdout com `self.stdout.write()`
   - Tratar erros de API (OpenAI) graciosamente sem abortar execução dos demais usuários
 
-- [ ] **8.5.2** - Testar comando manualmente
+- [X] **8.5.2** - Testar comando manualmente
   - `python manage.py run_finance_analysis` (todos os usuários)
   - `python manage.py run_finance_analysis --user email@teste.com` (usuário específico)
   - `python manage.py run_finance_analysis --month 2026-03` (mês específico)
