@@ -1062,8 +1062,8 @@
   - Adicionar leitura dessas variáveis em `core/settings.py`
   - Atualizar `.env.example` com as novas variáveis (sem valores reais)
 
-#### Tarefa 8.3: Criação do Agente LangChain
-- [ ] **8.3.1** - Criar `ai/agents/finance_insight_agent.py`
+#### [X] Tarefa 8.3: Criação do Agente LangChain
+- [X] **8.3.1** - Criar `ai/agents/finance_insight_agent.py`
   - Configurar `ChatOpenAI` com o modelo e parâmetros das settings
   - Definir tool `get_user_transactions(user_id, start_date, end_date)` — busca transações do período
   - Definir tool `get_category_summary(user_id, start_date, end_date)` — agrega por categoria
@@ -1071,13 +1071,13 @@
   - Definir tool `get_monthly_comparison(user_id)` — compara mês atual vs anterior
   - Cada tool deve filtrar por `user_id` para garantir isolamento entre usuários
 
-- [ ] **8.3.2** - Criar agente com `create_react_agent` ou `AgentExecutor`
+- [X] **8.3.2** - Criar agente com `create_react_agent` ou `AgentExecutor`
   - Associar as 4 tools ao agente
   - Definir system prompt em português com contexto de finanças pessoais brasileiras
   - Configurar `max_iterations` para evitar loops infinitos
   - Retornar análise estruturada: `content` (completo) e `summary` (resumo de até 500 chars)
 
-- [ ] **8.3.3** - Criar função `run_analysis_for_user(user, period_start, period_end)`
+- [X] **8.3.3** - Criar função `run_analysis_for_user(user, period_start, period_end)`
   - Recebe o objeto User e o período
   - Invoca o agente com o contexto do usuário
   - Retorna dicionário com `content`, `summary` e `tokens_used`
