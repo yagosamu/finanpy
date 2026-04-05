@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'accounts',
     'ai',
     'categories',
+    'goals',
     'profiles',
     'transactions',
     'users',

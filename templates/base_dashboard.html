@@ -70,14 +70,16 @@
 
             <div class="my-3" style="border-top:1px solid #262626;"></div>
 
-            <!-- Metas (desabilitado) -->
-            <span class="flex items-center gap-3 px-4 py-2.5 rounded-lg cursor-not-allowed" style="color:#525252;" aria-disabled="true">
+            <!-- Metas -->
+            <a href="{% url 'goals:list' %}"
+               data-nav="metas"
+               class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg transition-all duration-150"
+               style="color:#a3a3a3;">
                 <svg class="w-4 h-4 flex-shrink-0" aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
                 </svg>
                 <span class="font-medium">Metas</span>
-                <span class="ml-auto text-[10px] px-1.5 py-0.5 rounded font-medium" style="background:#1a1a1a;color:#525252;border:1px solid #262626;">Em breve</span>
-            </span>
+            </a>
 
             <!-- Relatórios (desabilitado) -->
             <span class="flex items-center gap-3 px-4 py-2.5 rounded-lg cursor-not-allowed" style="color:#525252;" aria-disabled="true">
@@ -326,7 +328,8 @@
             'dashboard': /^\/dashboard\/?$/,
             'accounts':  /^\/accounts\//,
             'categorias': /^\/categorias\//,
-            'transacoes': /^\/transacoes\//
+            'transacoes': /^\/transacoes\//,
+            'metas': /^\/metas\//
         };
 
         document.querySelectorAll('.sidebar-link').forEach(function(link) {

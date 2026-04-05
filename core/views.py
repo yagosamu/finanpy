@@ -12,6 +12,7 @@ from django.views.generic import TemplateView
 from accounts.models import Account
 from ai.models import AIAnalysis
 from categories.models import Category
+from goals.models import Goal
 from transactions.models import Transaction
 
 logger = logging.getLogger(__name__)
@@ -199,6 +200,15 @@ class DashboardView(LoginRequiredMixin, TemplateView):
             # Latest AI analysis for this user
             latest_analysis = AIAnalysis.objects.filter(user=user).first()
 
+            # Goals summary
+            user_goals = Goal.objects.filter(user=user)
+            active_goals = user_goals.filter(is_completed=False)
+            upcoming_goals = active_goals.filter(
+                deadline__isnull=False
+            ).order_by('deadline')[:3]
+            goals_active_count = active_goals.count()
+            goals_total_count = user_goals.count()
+
             # Add all data to context
             context.update({
                 # Basic data
@@ -221,6 +231,11 @@ class DashboardView(LoginRequiredMixin, TemplateView):
 
                 # AI analysis
                 'latest_analysis': latest_analysis,
+
+                # Goals
+                'upcoming_goals': upcoming_goals,
+                'goals_active_count': goals_active_count,
+                'goals_total_count': goals_total_count,
             })
 
         except Exception:
@@ -244,6 +259,9 @@ class DashboardView(LoginRequiredMixin, TemplateView):
                 'chart_data': [],
                 'income_chart_data': [],
                 'latest_analysis': None,
+                'upcoming_goals': [],
+                'goals_active_count': 0,
+                'goals_total_count': 0,
                 'dashboard_error': True,
             })
 

@@ -8,23 +8,22 @@
   - Criar venv: `python -m venv venv`
   - Ativar ambiente virtual
   - Documentar comandos no README
-  
+
 - [X] **0.1.2** - Instalar Django e dependências
   - Instalar Django 5.0+: `pip install django`
   - Instalar Pillow (se necessário para imagens)
   - Gerar requirements.txt: `pip freeze > requirements.txt`
-  
+
 - [X] **0.1.3** - Criar projeto Django
   - Executar: `django-admin startproject core .`
   - Verificar estrutura criada
   - Testar servidor: `python manage.py runserver`
-  
+
 - [X] **0.1.4** - Configurar settings.py
   - Criar arquivo .env na raiz do projeto
   - Mover SECRET_KEY para arquivo .env
   - Configurar DEBUG através de variável de ambiente
   - Configurar ALLOWED_HOSTS
-  - Adicionar configuração para usar aspas simples no código
   - Configurar LANGUAGE_CODE = 'pt-br'
   - Configurar TIME_ZONE = 'America/Sao_Paulo'
   - Configurar STATIC_URL e STATIC_ROOT
@@ -35,1303 +34,1281 @@
 
 #### Tarefa 0.2: Criação das Apps Django
 - [X] **0.2.1** - Criar app users
-  - Executar: `python manage.py startapp users`
-  - Adicionar em INSTALLED_APPS
-  - Criar arquivo urls.py dentro da app
-  
 - [X] **0.2.2** - Criar app profiles
-  - Executar: `python manage.py startapp profiles`
-  - Adicionar em INSTALLED_APPS
-  - Criar arquivo urls.py dentro da app
-  
 - [X] **0.2.3** - Criar app accounts
-  - Executar: `python manage.py startapp accounts`
-  - Adicionar em INSTALLED_APPS
-  - Criar arquivo urls.py dentro da app
-  
 - [X] **0.2.4** - Criar app categories
-  - Executar: `python manage.py startapp categories`
-  - Adicionar em INSTALLED_APPS
-  - Criar arquivo urls.py dentro da app
-  
 - [X] **0.2.5** - Criar app transactions
-  - Executar: `python manage.py startapp transactions`
-  - Adicionar em INSTALLED_APPS
-  - Criar arquivo urls.py dentro da app
 
 #### Tarefa 0.3: Configuração do TailwindCSS
 - [X] **0.3.1** - Instalar Node.js e npm
-  - Verificar instalação: `node --version`
-  - Verificar npm: `npm --version`
-
 - [X] **0.3.2** - Configurar TailwindCSS via CDN (temporário)
-  - Criar arquivo base.html
-  - Adicionar CDN do Tailwind no <head>
-  - Testar classes básicas
-  
-- [X] **0.3.3** - Configurar TailwindCSS local (opcional posterior)
-  - Instalar: `npm install -D tailwindcss`
-  - Executar: `npx tailwindcss init`
-  - Configurar tailwind.config.js
-  - Criar arquivo CSS de entrada
-  - Configurar script de build
+- [X] **0.3.3** - Configurar TailwindCSS local
 
 #### Tarefa 0.4: Estrutura de Templates Base
 - [X] **0.4.1** - Criar diretório de templates
-  - Criar: `templates/` na raiz do projeto
-  - Configurar TEMPLATES em settings.py
-  - Adicionar DIRS: [BASE_DIR / 'templates']
-
 - [X] **0.4.2** - Criar template base.html
-  - Estrutura HTML5 básica
-  - Inclusão do TailwindCSS
-  - Blocks: title, extra_css, content, extra_js
-  - Meta tags responsivas
-
 - [X] **0.4.3** - Criar template base_dashboard.html
-  - Herdar de base.html
-  - Adicionar navbar
-  - Adicionar sidebar
-  - Estrutura de conteúdo principal
-  - Footer
 
 #### Tarefa 0.5: Configuração de Arquivos Estáticos
 - [X] **0.5.1** - Criar estrutura de pastas static
-  - Criar: `static/css/`
-  - Criar: `static/js/`
-  - Criar: `static/images/`
-
 - [X] **0.5.2** - Configurar collectstatic
-  - Definir STATIC_ROOT em settings.py
-  - Testar: `python manage.py collectstatic`
-
 - [X] **0.5.3** - Criar arquivo CSS customizado
-  - Criar: `static/css/custom.css`
-  - Adicionar estilos complementares ao Tailwind
-  - Importar no base.html
 
 #### Tarefa 0.6: Configuração do Git
 - [X] **0.6.1** - Inicializar repositório Git
-  - Executar: `git init`
-  - Criar arquivo .gitignore
-  - Adicionar padrões Python/Django ao .gitignore
-  
 - [X] **0.6.2** - Configurar .gitignore
-  - Adicionar venv/
-  - Adicionar __pycache__/
-  - Adicionar *.pyc
-  - Adicionar db.sqlite3
-  - Adicionar .env
-  - Adicionar node_modules/ (se usar npm local)
-  
 - [X] **0.6.3** - Primeiro commit
-  - `git add .`
-  - `git commit -m "Initial project setup"`
+
+---
 
 ### [X] Sprint 1: Autenticação e Sistema de Usuários (1 semana)
 
 #### Tarefa 1.1: Model de Usuário Customizado
-- [X] **1.1.1** - Criar CustomUser model em users/models.py
-  - Herdar de AbstractUser
-  - Definir USERNAME_FIELD = 'email'
-  - Adicionar campo email como único
-  - Adicionar campos created_at e updated_at
-  - Remover campo username dos REQUIRED_FIELDS
-
+- [X] **1.1.1** - Criar CustomUser model (email-based)
 - [X] **1.1.2** - Criar CustomUserManager
-  - Sobrescrever create_user para usar email
-  - Sobrescrever create_superuser para usar email
-  - Validar formato de email
-
 - [X] **1.1.3** - Configurar AUTH_USER_MODEL
-  - Adicionar em settings.py: AUTH_USER_MODEL = 'users.CustomUser'
-  - Verificar configuração
-
 - [X] **1.1.4** - Criar e aplicar migrations
-  - `python manage.py makemigrations`
-  - `python manage.py migrate`
-  - Verificar tabela no SQLite
 
 #### Tarefa 1.2: Model de Profile
-- [X] **1.2.1** - Criar Profile model em profiles/models.py
-  - Campo user (OneToOneField para User)
-  - Campo first_name (CharField)
-  - Campo last_name (CharField)
-  - Campo phone (CharField, opcional)
-  - Campo birth_date (DateField, opcional)
-  - Campos created_at e updated_at
-
+- [X] **1.2.1** - Criar Profile model (1:1 com User)
 - [X] **1.2.2** - Criar signal para criar Profile automaticamente
-  - Criar arquivo profiles/signals.py
-  - Signal post_save no User para criar Profile
-  - Importar signals no apps.py
-
 - [X] **1.2.3** - Registrar Profile no admin
-  - Criar ProfileAdmin em profiles/admin.py
-  - Configurar list_display
-  - Configurar campos de busca
-
 - [X] **1.2.4** - Criar e aplicar migrations
-  - `python manage.py makemigrations profiles`
-  - `python manage.py migrate`
 
 #### Tarefa 1.3: Views de Autenticação
-- [X] **1.3.1** - Criar SignUpView (Class Based View)
-  - Herdar de CreateView
-  - Form para cadastro com email e senha
-  - Validação de email único
-  - Validação de força de senha
-  - Redirecionar para dashboard após cadastro
-  - Fazer login automático após cadastro
-
+- [X] **1.3.1** - Criar SignUpView
 - [X] **1.3.2** - Criar LoginView customizada
-  - Usar LoginView do Django
-  - Customizar template
-  - Configurar LOGIN_URL e LOGIN_REDIRECT_URL
-  - Usar email ao invés de username
-
-- [X] **1.3.3** - Criar LogoutView
-  - Usar LogoutView do Django
-  - Configurar LOGOUT_REDIRECT_URL
-  - Mensagem de sucesso
-
-- [X] **1.3.4** - Criar PasswordResetView (opcional)
-  - Configurar fluxo de recuperação de senha
-  - Templates de email
-  - Views de confirmação
+- [X] **1.3.3** - Criar LogoutView com redirecionamento para landing page
+- [X] **1.3.4** - Corrigir logout para encerrar sessão e permitir novo login
 
 #### Tarefa 1.4: Forms de Autenticação
-- [X] **1.4.1** - Criar SignUpForm em users/forms.py
-  - Campos: email, password1, password2
-  - Validação de email único
-  - Validação de senha forte
-  - Clean methods customizados
-
+- [X] **1.4.1** - Criar SignUpForm
 - [X] **1.4.2** - Criar CustomAuthenticationForm
-  - Herdar de AuthenticationForm
-  - Usar email ao invés de username
-  - Mensagens de erro customizadas
-
-- [X] **1.4.3** - Criar ProfileForm em profiles/forms.py
-  - Campos do Profile
-  - Validações de data de nascimento
-  - Validação de telefone (formato brasileiro)
+- [X] **1.4.3** - Criar ProfileForm
 
 #### Tarefa 1.5: Templates de Autenticação
 - [X] **1.5.1** - Criar template signup.html
-  - Formulário de cadastro estilizado
-  - Validações em tempo real (JavaScript)
-  - Link para página de login
-  - Design com gradientes e tema escuro
-
 - [X] **1.5.2** - Criar template login.html
-  - Formulário de login estilizado
-  - Link para cadastro
-  - Link para recuperar senha (se implementado)
-  - Mensagens de erro claras
-
 - [X] **1.5.3** - Criar template profile.html
-  - Exibição de dados do perfil
-  - Botão para editar perfil
-  - Layout consistente com dashboard
-
 - [X] **1.5.4** - Criar template profile_edit.html
-  - Formulário de edição de perfil
-  - Campos preenchidos com dados atuais
-  - Botão para alterar senha
-  - Validações visuais
 
 #### Tarefa 1.6: URLs de Autenticação
 - [X] **1.6.1** - Configurar users/urls.py
-  - Rota para signup
-  - Rota para login
-  - Rota para logout
-  - Rota para recuperar senha (se implementado)
-
 - [X] **1.6.2** - Configurar profiles/urls.py
-  - Rota para visualizar perfil
-  - Rota para editar perfil
-  - Rota para alterar senha
-
 - [X] **1.6.3** - Incluir URLs no core/urls.py
-  - Include de users.urls
-  - Include de profiles.urls
-  - Configurar namespace se necessário
-
-#### Tarefa 1.7: Testes Manuais de Autenticação
-- [X] **1.7.1** - Testar fluxo de cadastro
-  - Cadastrar novo usuário
-  - Verificar criação de Profile
-  - Verificar redirecionamento
-  
-- [X] **1.7.2** - Testar fluxo de login
-  - Login com email
-  - Verificar sessão mantida
-  - Testar credenciais inválidas
-  
-- [X] **1.7.3** - Testar proteção de rotas
-  - Tentar acessar rotas autenticadas sem login
-  - Verificar redirecionamento para login
 
 ---
 
 ### [X] Sprint 2: Site Público e Landing Page (1 semana)
 
 #### Tarefa 2.1: Estrutura da Landing Page
-- [X] **2.1.1** - Criar app home (opcional) ou views no core
-  - Criar view para landing page
-  - Configurar como página inicial (/)
-
+- [X] **2.1.1** - Criar view para landing page
 - [X] **2.1.2** - Criar template home.html
-  - Header com logo e navegação
-  - Hero section com call-to-action
-  - Seção de benefícios/features
-  - Seção de depoimentos (mockup)
-  - Footer com links e informações
-
 - [X] **2.1.3** - Implementar navegação responsiva
-  - Menu hamburguer para mobile
-  - Transições suaves
-  - Links para cadastro e login destacados
 
 #### Tarefa 2.2: Seções da Landing Page
-- [X] **2.2.1** - Hero Section
-  - Título impactante
-  - Subtítulo explicativo
-  - Botões CTA (Cadastre-se, Login)
-  - Imagem ou ilustração (mockup)
-  - Gradientes e animações sutis
-
+- [X] **2.2.1** - Hero Section com CTAs
 - [X] **2.2.2** - Features Section
-  - Cards com principais funcionalidades
-  - Ícones representativos
-  - Descrições curtas e objetivas
-  - Grid responsivo (3 colunas desktop, 1 mobile)
-
 - [X] **2.2.3** - Benefits Section
-  - Lista de benefícios
-  - Visual atrativo com ícones
-  - Texto persuasivo
-
 - [X] **2.2.4** - CTA Section
-  - Chamada final para ação
-  - Botão grande de cadastro
-  - Argumento de valor
 
-#### Tarefa 2.3: Estilização Avançada
-- [X] **2.3.1** - Implementar gradientes no hero
-  - Gradiente de fundo animado
-  - Efeito de brilho nos botões
-  - Sombras e profundidade
-
+#### Tarefa 2.3: Estilização e Responsividade
+- [X] **2.3.1** - Implementar gradientes e efeitos visuais
 - [X] **2.3.2** - Adicionar animações CSS
-  - Fade in ao carregar seções
-  - Hover effects nos cards
-  - Transições suaves
-  - Usar classes Tailwind de transição
-
 - [X] **2.3.3** - Otimizar responsividade
-  - Testar em diferentes resoluções
-  - Ajustar espaçamentos mobile
-  - Reordenar elementos se necessário
-
-#### Tarefa 2.4: Componentes Reutilizáveis
-- [X] **2.4.1** - Criar componente de navbar
-  - Template include navbar.html
-  - Logo com gradiente
-  - Links de navegação
-  - Botões de ação
-
-- [X] **2.4.2** - Criar componente de footer
-  - Template include footer.html
-  - Links úteis
-  - Informações de contato (mockup)
-  - Copyright
-
-- [X] **2.4.3** - Criar componente de card
-  - Template include card.html
-  - Parâmetros: título, descrição, ícone
-  - Estilo consistente com design system
-
-#### Tarefa 2.5: Conteúdo e Copywriting
-- [X] **2.5.1** - Escrever textos da landing page
-  - Título principal impactante
-  - Descrição de funcionalidades
-  - Benefícios claros
-  - Chamadas para ação persuasivas
-
-- [X] **2.5.2** - Preparar assets visuais
-  - Ícones (usar biblioteca como Heroicons)
-  - Imagens placeholder (ou ilustrações)
-  - Logo do Finanpy
-
-#### Tarefa 2.6: SEO Básico
-- [X] **2.6.1** - Configurar meta tags
-  - Meta description
-  - Meta keywords
-  - Open Graph tags (Facebook)
-  - Twitter cards
-
-- [X] **2.6.2** - Otimizar performance
-  - Minificar CSS (postergar se necessário)
-  - Otimizar imagens
-  - Lazy loading de imagens
 
 ---
 
 ### [X] Sprint 3: Models e Admin de Contas e Categorias (1 semana)
 
-#### Tarefa 3.1: Model de Account
-- [X] **3.1.1** - Criar Account model em accounts/models.py
-  - Campo user (ForeignKey para User)
-  - Campo name (CharField, max_length=100)
-  - Campo account_type (CharField com choices)
-  - Campo bank (CharField, max_length=100, opcional)
-  - Campo initial_balance (DecimalField)
-  - Campo current_balance (DecimalField)
-  - Campo is_active (BooleanField, default=True)
-  - Campos created_at e updated_at
-
-- [X] **3.1.2** - Definir choices para account_type
-  - CHECKING = 'checking' - Conta Corrente
-  - SAVINGS = 'savings' - Poupança
-  - WALLET = 'wallet' - Carteira
-  - INVESTMENT = 'investment' - Investimentos
-
-- [X] **3.1.3** - Implementar método __str__
-  - Retornar nome da conta
-
-- [X] **3.1.4** - Implementar método get_balance
-  - Calcular saldo baseado em transações
-  - Considerar tipo de transação (receita/despesa)
-
-- [X] **3.1.5** - Criar migrations e aplicar
-  - `python manage.py makemigrations accounts`
-  - `python manage.py migrate`
-
-#### Tarefa 3.2: Model de Category
-- [X] **3.2.1** - Criar Category model em categories/models.py
-  - Campo user (ForeignKey para User, null=True para categorias padrão)
-  - Campo name (CharField, max_length=50)
-  - Campo category_type (CharField com choices)
-  - Campo color (CharField, max_length=7, hex color)
-  - Campo is_default (BooleanField, default=False)
-  - Campo is_active (BooleanField, default=True)
-  - Campos created_at e updated_at
-
-- [X] **3.2.2** - Definir choices para category_type
-  - INCOME = 'income' - Receita
-  - EXPENSE = 'expense' - Despesa
-
-- [X] **3.2.3** - Implementar método __str__
-  - Retornar nome da categoria
-
-- [X] **3.2.4** - Implementar Meta class
-  - unique_together = ['user', 'name']
-  - ordering = ['name']
-
-- [X] **3.2.5** - Criar migrations e aplicar
-  - `python manage.py makemigrations categories`
-  - `python manage.py migrate`
-
-#### Tarefa 3.3: Categorias Padrão
-- [X] **3.3.1** - Criar management command
-  - Criar arquivo: categories/management/commands/create_default_categories.py
-
-- [X] **3.3.2** - Implementar lógica do command
-  - Lista de categorias padrão de despesas: Alimentação, Transporte, Moradia, Saúde, Educação, Lazer, Vestuário, Outros
-  - Lista de categorias padrão de receitas: Salário, Freelance, Investimentos, Outros
-  - Verificar se já existem antes de criar
-  - Criar com user=None e is_default=True
-
-- [X] **3.3.3** - Executar command
-  - `python manage.py create_default_categories`
-  - Verificar criação no admin
-
-#### Tarefa 3.4: Admin de Accounts
-- [X] **3.4.1** - Criar AccountAdmin em accounts/admin.py
-  - Registrar model Account
-  - Configurar list_display
-  - Configurar list_filter
-  - Configurar search_fields
-  - Configurar readonly_fields (current_balance)
-
-- [X] **3.4.2** - Customizar formulário do admin
-  - Organizar fieldsets
-  - Adicionar help_text nos campos
-
-- [X] **3.4.3** - Adicionar ações personalizadas
-  - Ação para ativar/desativar múltiplas contas
-
-#### Tarefa 3.5: Admin de Categories
-- [X] **3.5.1** - Criar CategoryAdmin em categories/admin.py
-  - Registrar model Category
-  - Configurar list_display com cor visual
-  - Configurar list_filter (type, is_default)
-  - Configurar search_fields
-
-- [X] **3.5.2** - Adicionar widget de cor no admin
-  - Usar widget de input color HTML5
-  - Preview da cor selecionada
-
-- [X] **3.5.3** - Configurar ordering e filtros
-  - Ordenar por tipo e nome
-  - Filtrar categorias padrão vs personalizadas
-
-#### Tarefa 3.6: Testes Manuais no Admin
-- [X] **3.6.1** - Criar superusuário
-  - `python manage.py createsuperuser`
-  - Usar email como identificador
-  
-- [X] **3.6.2** - Testar CRUD de Accounts
-  - Criar conta via admin ✓
-  - Editar conta ✓
-  - Verificar campos obrigatórios ✓
-  - Testar filtros e busca ✓
-  - Status: APROVADO (100% - 10/10 testes)
-
-- [X] **3.6.3** - Testar CRUD de Categories
-  - Visualizar categorias padrão ✓
-  - Criar categoria personalizada ✓
-  - Editar cor ✓ (funcional, teste automatizado com problema menor)
-  - Testar filtros ✓
-  - Status: APROVADO (90% - 9/10 testes)
+- [X] **3.x** - Model Account com choices (checking, savings, wallet, investment)
+- [X] **3.x** - Model Category com choices (income, expense) e categorias padrão
+- [X] **3.x** - Admin configurado para ambos os models
+- [X] **3.x** - Management command create_default_categories
 
 ---
 
 ### [X] Sprint 4: Views e Templates de Contas (1 semana)
 
-#### Tarefa 4.1: Views de Account
-- [X] **4.1.1** - Criar AccountListView em accounts/views.py
-  - Herdar de LoginRequiredMixin e ListView
-  - Filtrar contas do usuário logado
-  - Ordenar por nome
-  - Adicionar saldo total no context
-
-- [X] **4.1.2** - Criar AccountCreateView
-  - Herdar de LoginRequiredMixin e CreateView
-  - Associar automaticamente ao user logado
-  - Validar dados
-  - Redirecionar para lista após criar
-  - Mensagem de sucesso
-
-- [X] **4.1.3** - Criar AccountUpdateView
-  - Herdar de LoginRequiredMixin e UpdateView
-  - Garantir que apenas dono pode editar
-  - Campos editáveis (exceto current_balance)
-  - Mensagem de sucesso
-
-- [X] **4.1.4** - Criar AccountDeleteView
-  - Herdar de LoginRequiredMixin e DeleteView
-  - Soft delete (is_active = False)
-  - Confirmação obrigatória
-  - Mensagem de sucesso
-
-- [X] **4.1.5** - Criar AccountDetailView
-  - Herdar de LoginRequiredMixin e DetailView
-  - Mostrar detalhes da conta
-  - Listar últimas transações da conta
-  - Mostrar gráfico de evolução (postergar)
-
-#### Tarefa 4.2: Forms de Account
-- [X] **4.2.1** - Criar AccountForm em accounts/forms.py
-  - Campos: name, account_type, bank, initial_balance
-  - Validação de initial_balance (decimal positivo ou negativo)
-  - Choices traduzidas para português
-  - Help texts claros
-
-- [X] **4.2.2** - Customizar widgets dos campos
-  - Input com classes Tailwind
-  - Select estilizado
-  - Placeholder nos campos
-
-#### Tarefa 4.3: Templates de Account
-- [X] **4.3.1** - Criar account_list.html
-  - Herdar de base_dashboard.html
-  - Cards para cada conta
-  - Informações: nome, banco, tipo, saldo
-  - Botões de ação (editar, excluir, ver detalhes)
-  - Card de saldo total destacado
-  - Botão para criar nova conta
-  - Grid responsivo
-
-- [X] **4.3.2** - Criar account_form.html
-  - Formulário estilizado
-  - Labels em português
-  - Validações visuais
-  - Botão de salvar com loading state
-  - Botão de cancelar
-  - Usar componentes do design system
-
-- [X] **4.3.3** - Criar account_confirm_delete.html
-  - Mensagem de confirmação clara
-  - Avisos sobre consequências
-  - Botões de confirmar e cancelar
-  - Design alinhado com tema
-
-- [X] **4.3.4** - Criar account_detail.html
-  - Informações completas da conta
-  - Histórico de transações
-  - Estatísticas da conta
-  - Botões de ação
-
-#### Tarefa 4.4: URLs de Account
-- [X] **4.4.1** - Configurar accounts/urls.py
-  - Path para list: 'accounts/'
-  - Path para create: 'accounts/nova/'
-  - Path para update: 'accounts/<pk>/editar/'
-  - Path para delete: 'accounts/<pk>/excluir/'
-  - Path para detail: 'accounts/<pk>/'
-  - Nomear URLs adequadamente
-
-- [X] **4.4.2** - Incluir em core/urls.py
-  - Include de accounts.urls
-  - Configurar namespace 'accounts'
-
-#### Tarefa 4.5: Componentes de UI para Contas
-- [X] **4.5.1** - Criar componente de card de conta
-  - Template include: components/account_card.html
-  - Parâmetros: account
-  - Cor baseada no tipo de conta
-  - Ícone por tipo de conta
-
-- [X] **4.5.2** - Criar componente de saldo total
-  - Destaque visual
-  - Formatação monetária
-  - Indicador de crescimento (postergar)
-
-#### Tarefa 4.6: JavaScript para Interações
-- [X] **4.6.1** - Criar accounts.js em static/js/
-  - Confirmação de exclusão com modal
-  - Validação de formulário em tempo real
-  - Formatação de valores monetários
-
-- [X] **4.6.2** - Implementar feedback visual
-  - Loading states nos botões
-  - Transições suaves
-  - Mensagens toast/alert
-
-#### Tarefa 4.7: Testes Manuais de Accounts
-- [X] **4.7.1** - Testar criação de conta
-  - Preencher formulário
-  - Verificar validações
-  - Confirmar criação no banco
-
-- [X] **4.7.2** - Testar listagem
-  - Verificar exibição de contas
-  - Testar responsividade
-  - Verificar cálculo de saldo total
-
-- [X] **4.7.3** - Testar edição e exclusão
-  - Editar dados de conta
-  - Soft delete
-  - Verificar redirecionamentos
+- [X] **4.x** - CRUD completo de contas (List, Create, Update, Delete, Detail)
+- [X] **4.x** - AccountForm com validações
+- [X] **4.x** - Templates estilizados com tema escuro
+- [X] **4.x** - URLs configuradas com namespace 'accounts'
 
 ---
 
 ### [X] Sprint 5: Views e Templates de Categorias (1 semana)
 
-#### Tarefa 5.1: Views de Category
-- [X] **5.1.1** - Criar CategoryListView em categories/views.py
-  - Herdar de LoginRequiredMixin e ListView
-  - Listar categorias padrão + personalizadas do usuário
-  - Separar por tipo (receita/despesa) no context
-  - Ordenar por nome
-
-- [X] **5.1.2** - Criar CategoryCreateView
-  - Herdar de LoginRequiredMixin e CreateView
-  - Associar ao user logado
-  - Validar nome único por usuário
-  - Mensagem de sucesso
-
-- [X] **5.1.3** - Criar CategoryUpdateView
-  - Apenas categorias não-padrão podem ser editadas
-  - Validação de permissão
-  - Atualizar informações
-  - Mensagem de sucesso
-
-- [X] **5.1.4** - Criar CategoryDeleteView
-  - Apenas categorias sem transações
-  - Verificar uso antes de excluir
-  - Soft delete (is_active = False)
-  - Mensagem de erro se em uso
-
-#### Tarefa 5.2: Forms de Category
-- [X] **5.2.1** - Criar CategoryForm em categories/forms.py
-  - Campos: name, category_type, color
-  - Validação de nome único
-  - Widget de cor (color picker)
-  - Choices de tipo traduzidas
-
-- [X] **5.2.2** - Implementar validação de cor
-  - Formato hexadecimal (#RRGGBB)
-  - Sugestões de cores padrão
-
-- [X] **5.2.3** - Adicionar preview de cor
-  - JavaScript para mostrar cor selecionada
-  - Atualização em tempo real
-
-#### Tarefa 5.3: Templates de Category
-- [X] **5.3.1** - Criar category_list.html
-  - Herdar de base_dashboard.html
-  - Duas seções: Receitas e Despesas
-  - Cards/badges para cada categoria
-  - Mostrar cor, nome e tipo
-  - Indicador de categoria padrão
-  - Botões de ação (editar/excluir) apenas para personalizadas
-  - Botão para criar nova categoria
-
-- [X] **5.3.2** - Criar category_form.html
-  - Formulário estilizado
-  - Color picker integrado
-  - Preview da cor selecionada
-  - Paleta de cores sugeridas
-  - Validações visuais
-
-- [X] **5.3.3** - Criar category_confirm_delete.html
-  - Confirmação de exclusão
-  - Aviso se categoria estiver em uso
-  - Botões estilizados
-
-#### Tarefa 5.4: URLs de Category
-- [X] **5.4.1** - Configurar categories/urls.py
-  - Path para list: 'categorias/'
-  - Path para create: 'categorias/nova/'
-  - Path para update: 'categorias/<pk>/editar/'
-  - Path para delete: 'categorias/<pk>/excluir/'
-
-- [X] **5.4.2** - Incluir em core/urls.py
-  - Include de categories.urls
-  - Namespace 'categories'
-
-#### Tarefa 5.5: Componentes de UI para Categorias
-- [X] **5.5.1** - Criar badge de categoria
-  - Template include: components/category_badge.html
-  - Parâmetros: category
-  - Cor de fundo baseada em category.color
-  - Ícone por tipo (receita/despesa)
-  
-- [X] **5.5.2** - Criar seletor de categoria
-  - Componente para usar em formulários
-  - Visual com cores
-  - Filtro por tipo
-
-#### Tarefa 5.6: JavaScript para Categorias
-- [X] **5.6.1** - Criar categories.js
-  - Color picker customizado
-  - Preview de cor em tempo real
-  - Validação de formato hexadecimal
-  
-- [X] **5.6.2** - Implementar paleta de cores
-  - Cores pré-definidas clicáveis
-  - Aplicar cor ao clicar
-
-#### Tarefa 5.7: Testes Manuais de Categories
-- [X] **5.7.1** - Testar listagem
-  - Verificar categorias padrão
-  - Verificar separação por tipo
-  - Testar responsividade
-  
-- [X] **5.7.2** - Testar criação de categoria
-  - Criar categoria de receita
-  - Criar categoria de despesa
-  - Testar validação de nome único
-  - Testar color picker
-  
-- [X] **5.7.3** - Testar edição e exclusão
-  - Tentar editar categoria padrão (deve falhar)
-  - Editar categoria personalizada
-  - Tentar excluir categoria em uso
+- [X] **5.x** - CRUD completo de categorias
+- [X] **5.x** - CategoryForm com color picker
+- [X] **5.x** - Templates com separação receita/despesa
+- [X] **5.x** - URLs configuradas com namespace 'categories'
 
 ---
 
 ### [X] Sprint 6: Model e Views de Transações (2 semanas)
 
-#### Tarefa 6.1: Model de Transaction
-- [X] **6.1.1** - Criar Transaction model em transactions/models.py
-  - Campo user (ForeignKey para User)
-  - Campo account (ForeignKey para Account)
-  - Campo category (ForeignKey para Category)
-  - Campo transaction_type (CharField com choices)
-  - Campo amount (DecimalField, max_digits=10, decimal_places=2)
-  - Campo date (DateField)
-  - Campo description (TextField, opcional)
-  - Campos created_at e updated_at
-
-- [X] **6.1.2** - Definir choices para transaction_type
-  - INCOME = 'income' - Receita
-  - EXPENSE = 'expense' - Despesa
-
-- [X] **6.1.3** - Implementar método __str__
-  - Retornar descrição resumida
-
-- [X] **6.1.4** - Implementar Meta class
-  - ordering = ['-date', '-created_at']
-  - indexes para otimização
-
-- [X] **6.1.5** - Criar migrations e aplicar
-  - `python manage.py makemigrations transactions`
-  - `python manage.py migrate`
-
-#### Tarefa 6.2: Signals para Atualizar Saldo
-- [X] **6.2.1** - Criar transactions/signals.py
-  - Signal post_save para criar/editar transação
-  - Signal pre_delete para excluir transação
-  - Signal pre_save para guardar valor antigo
-
-- [X] **6.2.2** - Implementar lógica de atualização de saldo
-  - Calcular diferença ao editar
-  - Adicionar valor em receitas
-  - Subtrair valor em despesas
-  - Atualizar Account.current_balance
-
-- [X] **6.2.3** - Importar signals no apps.py
-  - Garantir que signals sejam registrados
-
-- [X] **6.2.4** - Testar signals manualmente
-  - Criar transação e verificar saldo
-  - Editar transação e verificar recálculo
-  - Excluir transação e verificar ajuste
-
-#### Tarefa 6.3: Admin de Transactions
-- [X] **6.3.1** - Criar TransactionAdmin em transactions/admin.py
-  - Registrar model
-  - Configurar list_display
-  - Configurar list_filter (tipo, categoria, data)
-  - Configurar search_fields
-  - Configurar date_hierarchy
-
-- [X] **6.3.2** - Customizar formulário
-  - Organizar fieldsets
-  - Filtrar categorias por tipo
-  - Readonly field para created_at/updated_at
-
-#### Tarefa 6.4: Views de Transaction
-- [X] **6.4.1** - Criar TransactionListView
-  - Herdar de LoginRequiredMixin e ListView
-  - Filtrar transações do usuário
-  - Implementar paginação (20 por página)
-  - Adicionar totais no context
-
-- [X] **6.4.2** - Implementar filtros na ListView
-  - Filtro por período (data inicial e final)
-  - Filtro por categoria
-  - Filtro por tipo (receita/despesa)
-  - Filtro por conta
-  - Usar query parameters GET
-
-- [X] **6.4.3** - Criar TransactionCreateView
-  - Associar ao user logado
-  - Validar data (não pode ser futura)
-  - Validar categoria compatível com tipo
-  - Redirecionar para lista
-  - Mensagem de sucesso
-
-- [X] **6.4.4** - Criar TransactionUpdateView
-  - Garantir permissão de edição
-  - Recalcular saldo ao editar
-  - Validações
-
-- [X] **6.4.5** - Criar TransactionDeleteView
-  - Confirmação obrigatória
-  - Ajustar saldo ao excluir
-  - Mensagem de sucesso
-
-#### Tarefa 6.5: Forms de Transaction
-- [X] **6.5.1** - Criar TransactionForm em transactions/forms.py
-  - Campos: transaction_type, amount, date, category, account, description
-  - Validação de valor positivo
-  - Validação de data
-  - Filtrar categorias por tipo
-  
-- [X] **6.5.2** - Implementar lógica de filtro de categorias
-  - JavaScript para mostrar apenas categorias do tipo selecionado
-  - Atualização dinâmica do select
-  
-- [X] **6.5.3** - Adicionar máscaras e formatação
-  - Máscara para valor monetário
-  - Date picker para campo data
-  - Placeholder nos campos
-
-#### Tarefa 6.6: Templates de Transaction
-- [X] **6.6.1** - Criar transaction_list.html
-  - Herdar de base_dashboard.html
-  - Filtros no topo (formulário de filtro)
-  - Tabela de transações responsiva
-  - Colunas: Data, Descrição, Categoria, Conta, Valor
-  - Cores diferentes para receita/despesa
-  - Ações por linha (editar, excluir)
-  - Paginação no rodapé
-  - Cards de resumo (total receitas, despesas, saldo)
-  
-- [X] **6.6.2** - Criar transaction_form.html
-  - Formulário estilizado
-  - Campos organizados logicamente
-  - Validações visuais
-  - Botões de ação
-  - Select de categoria dinâmico
-  
-- [X] **6.6.3** - Criar transaction_confirm_delete.html
-  - Confirmação de exclusão
-  - Mostrar detalhes da transação
-  - Aviso sobre ajuste de saldo
-
-#### Tarefa 6.7: URLs de Transaction
-- [X] **6.7.1** - Configurar transactions/urls.py
-  - Path para list: 'transacoes/'
-  - Path para create: 'transacoes/nova/'
-  - Path para update: 'transacoes/<pk>/editar/'
-  - Path para delete: 'transacoes/<pk>/excluir/'
-
-- [X] **6.7.2** - Incluir em core/urls.py
-  - Include de transactions.urls
-  - Namespace 'transactions'
-
-#### Tarefa 6.8: JavaScript para Transações
-- [X] **6.8.1** - Criar transactions.js
-  - Filtro dinâmico de categorias por tipo
-  - Máscara de valor monetário
-  - Validações em tempo real
-  - Confirmação de exclusão
-
-- [X] **6.8.2** - Implementar formatação de moeda
-  - Formatar valores para real brasileiro
-  - Casas decimais fixas
-  - Separador de milhares
-
-#### Tarefa 6.9: Testes Manuais de Transactions
-- [X] **6.9.1** - Testar criação de transação
-  - Criar receita
-  - Criar despesa
-  - Verificar atualização de saldo
-  - Testar validações
-  
-- [X] **6.9.2** - Testar listagem e filtros
-  - Aplicar filtro por data
-  - Aplicar filtro por categoria
-  - Testar paginação
-  - Verificar responsividade
-  
-- [X] **6.9.3** - Testar edição e exclusão
-  - Editar valor de transação
-  - Verificar recálculo de saldo
-  - Excluir transação
-  - Confirmar ajuste de saldo
+- [X] **6.x** - Transaction model com FKs para Account e Category
+- [X] **6.x** - Signals para atualizar saldo automaticamente (post_save, pre_delete)
+- [X] **6.x** - CRUD completo com filtros (data, categoria, tipo, conta)
+- [X] **6.x** - Paginação e formatação brasileira
 
 ---
 
 ### [X] Sprint 7: Dashboard e Visualizações (2 semanas)
 
-#### Tarefa 7.1: View do Dashboard
-- [X] **7.1.1** - Criar DashboardView em core
-  - Herdar de LoginRequiredMixin e TemplateView
-  - Calcular saldo total de todas as contas
-  - Calcular totais do mês atual (receitas e despesas)
-  - Buscar últimas 5 transações
-  - Buscar distribuição por categorias
-
-- [X] **7.1.2** - Implementar cálculos estatísticos
-  - Total de receitas do mês
-  - Total de despesas do mês
-  - Diferença (economia ou déficit)
-  - Comparação com mês anterior (postergar)
-
-- [X] **7.1.3** - Preparar dados para gráficos
-  - Agregação por categoria
-  - Percentual de cada categoria
-  - Top 5 categorias de despesas
-
-#### Tarefa 7.2: Template do Dashboard
-- [X] **7.2.1** - Criar dashboard.html
-  - Herdar de base_dashboard.html
-  - Grid de cards no topo
-  - Seção de gráficos
-  - Lista de transações recentes
-  - Atalhos rápidos
-
-- [X] **7.2.2** - Criar cards de resumo financeiro
-  - Card de saldo total (destaque)
-  - Card de receitas do mês
-  - Card de despesas do mês
-  - Card de economia/déficit
-  - Gradientes e cores por tipo
-  - Ícones representativos
-
-- [X] **7.2.3** - Implementar seção de gráficos
-  - Placeholder para gráfico de pizza (categorias)
-  - Placeholder para gráfico de linha (evolução)
-  - Usar biblioteca de charts
-
-#### Tarefa 7.3: Gráfico de Categorias (Donut/Pizza)
-- [X] **7.3.1** - Escolher biblioteca de gráficos
-  - Avaliar: Chart.js, ApexCharts, ou Plotly
-  - Priorizar leveza e responsividade
-  - Instalar/configurar biblioteca escolhida
-  
-- [X] **7.3.2** - Preparar dados no backend
-  - Agregação de transações por categoria
-  - Filtrar por período (mês atual)
-  - Calcular percentuais
-  - Serializar para JSON
-  
-- [X] **7.3.3** - Implementar gráfico no frontend
-  - Canvas/elemento para renderização
-  - JavaScript para criar gráfico
-  - Cores baseadas nas categorias
-  - Tooltips informativos
-  - Responsivo
-
-#### Tarefa 7.4: Atalhos Rápidos no Dashboard
-- [X] **7.4.1** - Criar seção de ações rápidas
-  - Botão grande: Nova Transação
-  - Botão: Nova Conta
-  - Botão: Nova Categoria
-  - Grid responsivo de botões
-
-#### Tarefa 7.5: Responsividade do Dashboard
-- [X] **7.5.1** - Otimizar layout mobile
-  - Cards empilhados
-  - Gráficos redimensionados
-  - Tabela rolável horizontalmente
-
-- [X] **7.5.2** - Testar em diferentes resoluções
-  - Mobile (375px)
-  - Tablet (768px)
-  - Desktop (1280px+)
-  - Ajustar espaçamentos
-
-#### Tarefa 7.6: Configurar URL do Dashboard
-- [X] **7.6.1** - Definir rota do dashboard
-  - Path: 'dashboard/'
-  - Redirecionar após login para dashboard
-
-- [X] **7.6.2** - Proteger rota
-  - LoginRequiredMixin
-  - Redirecionar não autenticados
-
-#### Tarefa 7.7: Testes Manuais do Dashboard
-- [X] **7.7.1** - Testar cálculos
-  - Verificar saldo total correto
-  - Verificar totais mensais
-  - Criar transações e ver atualização
-
-- [X] **7.7.2** - Testar gráficos
-  - Verificar renderização
-  - Testar interatividade
-  - Verificar responsividade
+- [X] **7.x** - DashboardView com cálculos mensais (receitas, despesas, saldo)
+- [X] **7.x** - Gráfico de pizza por categoria (Chart.js)
+- [X] **7.x** - Gráfico de evolução mensal — últimos 6 meses (Chart.js, 3 séries)
+- [X] **7.x** - MonthlyEvolutionView com endpoint JSON /dashboard/evolucao-mensal/
+- [X] **7.x** - static/js/dashboard.js com fetch e renderização de gráfico de linhas
+- [X] **7.x** - Cards de resumo financeiro e atalhos rápidos
 
 ---
 
 ### [X] Sprint 8: Agente de IA Financeiro (2 semanas)
 
-#### [X] Tarefa 8.1: Criação da App `ai` e Model AIAnalysis
-- [X] **8.1.1** - Criar app Django `ai`
-  - `python manage.py startapp ai`
-  - Adicionar `'ai'` em INSTALLED_APPS
-  - Criar estrutura de pastas: `agents/`, `services/`, `management/commands/`
-
-- [X] **8.1.2** - Criar model `AIAnalysis` em `ai/models.py`
-  - Campo `user` (ForeignKey para User, on_delete=CASCADE)
-  - Campo `content` (TextField) — análise completa gerada pela IA
-  - Campo `summary` (CharField max_length=500) — resumo curto para o dashboard
-  - Campo `period_start` (DateField) — início do período analisado
-  - Campo `period_end` (DateField) — fim do período analisado
-  - Campo `tokens_used` (IntegerField, default=0) — custo em tokens da chamada
-  - Campo `created_at` (DateTimeField, auto_now_add=True)
-  - Meta: `ordering = ['-created_at']`
-
-- [X] **8.1.3** - Registrar model no admin em `ai/admin.py`
-  - `list_display`: user, summary, period_start, period_end, tokens_used, created_at
-  - `list_filter`: period_start, created_at
-  - `search_fields`: user__email, content
-
-- [X] **8.1.4** - Criar e aplicar migrations
-  - `python manage.py makemigrations ai`
-  - `python manage.py migrate`
-  - Verificar tabela no SQLite
-
-#### [X] Tarefa 8.2: Instalação e Configuração das Dependências de IA
-- [X] **8.2.1** - Instalar dependências no ambiente virtual
-  - `pip install langchain>=1.0.0`
-  - `pip install langchain-openai>=0.3.0`
-  - `pip install openai>=1.0.0`
-  - Atualizar `requirements.txt`
-
-- [X] **8.2.2** - Configurar variáveis de ambiente
-  - Adicionar ao `.env`: `OPENAI_API_KEY`, `AI_MODEL`, `AI_MAX_TOKENS`, `AI_TEMPERATURE`
-  - Adicionar leitura dessas variáveis em `core/settings.py`
-  - Atualizar `.env.example` com as novas variáveis (sem valores reais)
-
-#### [X] Tarefa 8.3: Criação do Agente LangChain
-- [X] **8.3.1** - Criar `ai/agents/finance_insight_agent.py`
-  - Configurar `ChatOpenAI` com o modelo e parâmetros das settings
-  - Definir tool `get_user_transactions(user_id, start_date, end_date)` — busca transações do período
-  - Definir tool `get_category_summary(user_id, start_date, end_date)` — agrega por categoria
-  - Definir tool `get_account_balances(user_id)` — retorna saldos das contas
-  - Definir tool `get_monthly_comparison(user_id)` — compara mês atual vs anterior
-  - Cada tool deve filtrar por `user_id` para garantir isolamento entre usuários
-
-- [X] **8.3.2** - Criar agente com `create_react_agent` ou `AgentExecutor`
-  - Associar as 4 tools ao agente
-  - Definir system prompt em português com contexto de finanças pessoais brasileiras
-  - Configurar `max_iterations` para evitar loops infinitos
-  - Retornar análise estruturada: `content` (completo) e `summary` (resumo de até 500 chars)
-
-- [X] **8.3.3** - Criar função `run_analysis_for_user(user, period_start, period_end)`
-  - Recebe o objeto User e o período
-  - Invoca o agente com o contexto do usuário
-  - Retorna dicionário com `content`, `summary` e `tokens_used`
-
-#### [X] Tarefa 8.4: Camada de Serviço
-- [X] **8.4.1** - Criar `ai/services/analysis_service.py`
-  - Função `analyze_user(user, period_start=None, period_end=None)`
-    - Usa período atual (mês corrente) como padrão
-    - Chama `finance_insight_agent.run_analysis_for_user()`
-    - Persiste o resultado em `AIAnalysis`
-    - Retorna o objeto `AIAnalysis` criado
-
-  - Função `analyze_all_active_users(period_start=None, period_end=None)`
-    - Busca todos os usuários com `is_active=True`
-    - Chama `analyze_user()` para cada um
-    - Registra logs de sucesso/erro por usuário
-    - Retorna resumo: quantidade de análises geradas, erros
-
-#### [X] Tarefa 8.5: Django Management Command
-- [X] **8.5.1** - Criar `ai/management/commands/run_finance_analysis.py`
-  - Herdar de `BaseCommand`
-  - Argumento opcional `--user` (email do usuário)
-  - Argumento opcional `--month` (formato YYYY-MM, padrão: mês atual)
-  - Lógica: se `--user` informado, analisa apenas aquele; caso contrário, todos ativos
-  - Exibir progresso no stdout com `self.stdout.write()`
-  - Tratar erros de API (OpenAI) graciosamente sem abortar execução dos demais usuários
-
-- [X] **8.5.2** - Testar comando manualmente
-  - `python manage.py run_finance_analysis` (todos os usuários)
-  - `python manage.py run_finance_analysis --user email@teste.com` (usuário específico)
-  - `python manage.py run_finance_analysis --month 2026-03` (mês específico)
-  - Verificar registro no banco de dados
-
-#### [X] Tarefa 8.6: Integração com o Dashboard
-- [X] **8.6.1** - Atualizar `DashboardView` para incluir última análise
-  - Buscar `AIAnalysis.objects.filter(user=self.request.user).first()`
-  - Adicionar `latest_analysis` ao context
-
-- [X] **8.6.2** - Atualizar template `dashboard.html`
-  - Adicionar card de "Análise de IA" no dashboard
-  - Exibir `summary` da última análise
-  - Mostrar data de geração
-  - Exibir badge "IA" com ícone identificador
-  - Link para ver análise completa (modal ou página separada)
-
-#### [X] Tarefa 8.7: Documentação Técnica
-- [X] **8.7.1** - Criar `ai/agents/ai_integration_expert.md`
-  - Referência técnica para criação de agentes com LangChain 1.0
-  - Padrões de integração com Django
-  - Boas práticas e configurações
-  - Como usar MCP Server Context7 para documentação atualizada
-
-- [X] **8.7.2** - Criar `docs/ai_agent.md`
-  - Documentação da funcionalidade para desenvolvedores e usuários
-  - Fluxo completo, como executar, como expandir
-
-- [X] **8.7.3** - Atualizar `docs/README.md` com referência ao novo documento
+- [X] **8.x** - App `ai` com model AIAnalysis
+- [X] **8.x** - Agente LangChain com 4 tools (transações, categorias, contas, comparação)
+- [X] **8.x** - analysis_service.py com analyze_user() e analyze_all_active_users()
+- [X] **8.x** - Management command run_finance_analysis
+- [X] **8.x** - RunAnalysisView (POST, login_required) com tratamento de erro amigável
+- [X] **8.x** - ai/urls.py e registro em core/urls.py
+- [X] **8.x** - Dashboard integrado: botão "Gerar análise" e exibição de summary + modal
 
 ---
 
-### [X] Sprint 9: Refinamentos e Preparação para MVP (1 semana)
+### [X] Sprint 9: Refinamentos e MVP (1 semana)
 
-#### [X] Tarefa 9.1: Melhorias de UX
-- [X] **9.1.1** - Implementar mensagens de feedback
-  - Toast notifications para ações
-  - Mensagens de sucesso/erro consistentes
-  - Timeout automático
-  - Posicionamento fixo
-  
-- [X] **9.1.2** - Adicionar confirmações de ações críticas
-  - Modal de confirmação de exclusão
-  - Aviso antes de perder dados não salvos
-  - Loading states em botões de ação
-  
-- [X] **9.1.3** - Melhorar navegação
-  - Breadcrumbs em páginas internas
-  - Active state em menu lateral
-  - Botão de voltar onde aplicável
+- [X] **9.x** - Toast notifications e mensagens de feedback
+- [X] **9.x** - Validações frontend e backend robustas
+- [X] **9.x** - Formatação de moeda (R$ 1.234,56) e datas (DD/MM/YYYY) padronizadas
+- [X] **9.x** - Páginas de erro customizadas (404, 500, 403)
+- [X] **9.x** - Logging configurado
+- [X] **9.x** - Proteção de rotas e verificação de ownership
+- [X] **9.x** - Otimização de queries (select_related, prefetch_related)
+- [X] **9.x** - README.md completo
+- [X] **9.x** - Seed de dados (management command seed_data com 2 usuários e ~40 transações)
 
-#### [X] Tarefa 9.2: Validações Avançadas
-- [X] **9.2.1** - Validações frontend
-  - Validação em tempo real de formulários
-  - Feedback visual de erros
-  - Prevenir submit de formulários inválidos
+---
 
-- [X] **9.2.2** - Validações backend robustas
-  - Validar todos os inputs
-  - Tratar casos extremos
-  - Mensagens de erro claras
+### [X] Sprint 10: Redesign Visual Completo — Finova (1 semana)
 
-- [X] **9.2.3** - Validações de negócio
-  - Impedir exclusão de categoria em uso
-  - Validar datas lógicas
+> Rebranding de Finanpy para **Finova**. Redesign completo com nova identidade visual.
 
-#### [X] Tarefa 9.3: Formatações e Padronizações
-- [X] **9.3.1** - Padronizar formatação de datas
-  - Usar locale pt-BR
-  - Formato DD/MM/YYYY
-  - Formato relativo onde aplicável
-  
-- [X] **9.3.2** - Padronizar formatação de valores
-  - R$ 1.234,56 (padrão brasileiro)
-  - Cores por valor (positivo/negativo)
-  - Sinal de + ou - onde aplicável
-  
-- [X] **9.3.3** - Padronizar textos e labels
-  - Revisar todos os textos da interface
-  - Garantir português correto
-  - Tom consistente
+#### Tarefa 10.1: Nova Paleta e Design System
+- [X] **10.1.1** - Definir paleta oficial
+  - Fundo principal: #0a0a0a
+  - Cards/surfaces: #111111
+  - Elementos elevados: #1a1a1a
+  - Bordas: #262626
+  - Primária/destaque: #22c55e (verde)
+  - Verde hover: #16a34a
+  - Verde sutil: rgba(34,197,94,0.08)
+  - Texto principal: #f5f5f5
+  - Texto secundário: #a3a3a3
+  - Texto terciário: #525252
 
-#### [X] Tarefa 9.4: Acessibilidade
-- [X] **9.4.1** - Adicionar atributos ARIA
-  - Labels descritivos
-  - Roles adequados
-  - Estados de elementos
+- [X] **10.1.2** - Adicionar tokens de cor no Tailwind config
+  - Cores nomeadas: bg-card, bg-elevated, border-subtle, accent, text-secondary, etc.
 
-- [X] **9.4.2** - Garantir navegação por teclado
-  - Tab order lógica
-  - Focus visible
+- [X] **10.1.3** - Criar preview estático aprovado (preview_redesign.html)
+  - Landing page, dashboard, componentes isolados
+  - Aprovado antes de aplicar nos templates reais
 
-- [X] **9.4.3** - Contraste e legibilidade
-  - Verificar contraste de cores
-  - Tamanhos de fonte adequados
-  - Espaçamento suficiente
+#### Tarefa 10.2: Aplicar Redesign nos Templates
+- [X] **10.2.1** - base.html e base_dashboard.html (sidebar, navbar, estrutura)
+- [X] **10.2.2** - Landing page (hero, features, footer)
+- [X] **10.2.3** - dashboard.html (cards, gráficos, transações recentes, análise IA)
+- [X] **10.2.4** - accounts/ templates
+- [X] **10.2.5** - categories/ templates
+- [X] **10.2.6** - transactions/ templates
+- [X] **10.2.7** - profiles/ templates
+- [X] **10.2.8** - Componentes globais (botões, inputs, badges, mensagens Django)
 
-#### [X] Tarefa 9.5: Tratamento de Erros
-- [X] **9.5.1** - Criar páginas de erro customizadas
-  - 404.html
-  - 500.html
-  - 403.html
-  - Design consistente com tema
+#### Tarefa 10.3: Rebranding para Finova
+- [X] **10.3.1** - Substituir todas as ocorrências de "Finanpy" por "Finova"
+  - Templates, <title>, rodapés, sidebar, README.md, settings.py
 
-- [X] **9.5.2** - Implementar logging
-  - Configurar logging em settings.py
-  - Logs de erros
-  - Logs de ações críticas
+#### Tarefa 10.4: Ajustes de Tipografia e UX
+- [X] **10.4.1** - Inter via Google Fonts (300 para corpo, 600 para títulos)
+- [X] **10.4.2** - Números financeiros em font-mono
+- [X] **10.4.3** - Hover states com transição 150ms
+- [X] **10.4.4** - Compilar Tailwind: `npm run build:css`
 
-- [X] **9.5.3** - Tratamento de exceções
-  - Try-catch em views críticas
-  - Mensagens amigáveis ao usuário
-  - Não expor detalhes técnicos
+---
 
-#### [X] Tarefa 9.6: Segurança
-- [X] **9.6.1** - Revisar configurações de segurança
-  - DEBUG = False em produção
-  - SECRET_KEY segura
-  - ALLOWED_HOSTS configurado
-  - CSRF_COOKIE_SECURE = True
-  - SESSION_COOKIE_SECURE = True
-  
-- [X] **9.6.2** - Proteção de rotas
-  - Todas as views autenticadas protegidas
-  - Verificação de ownership em updates/deletes
-  - Prevenir IDOR
-  
-- [X] **9.6.3** - Sanitização de inputs
-  - Escape de HTML em outputs
-  - Limitar tamanho de inputs
+### [X] Sprint 11: App de Metas (Goals) (1 semana)
 
-#### [X] Tarefa 9.7: Performance
-- [X] **9.7.1** - Otimizar queries do banco
-  - Usar select_related onde necessário
-  - Usar prefetch_related
-  - Adicionar índices em campos filtrados
-  
-- [X] **9.7.2** - Minificar assets
-  - Minificar CSS customizado
-  - Minificar JavaScript
-  - Otimizar imagens
+#### Tarefa 11.1: Backend
+- [X] **11.1.1** - Criar app `goals` e registrar em INSTALLED_APPS
+- [X] **11.1.2** - Model Goal
+  - Campos: user (FK), name, description, target_amount, current_amount, deadline, category (FK opcional), color, icon, is_completed, created_at, updated_at
+  - Property `progress_percentage`: (current_amount / target_amount) * 100, máx 100
+  - Property `remaining_amount`: target_amount - current_amount
+  - is_completed atualizado automaticamente no save()
+- [X] **11.1.3** - GoalForm (CRUD) e GoalDepositForm com validações
+- [X] **11.1.4** - Views: GoalListView, GoalCreateView, GoalUpdateView, GoalDeleteView (UserPassesTestMixin), GoalDepositView (POST-only)
+- [X] **11.1.5** - goals/urls.py com 5 rotas (namespace 'goals')
+- [X] **11.1.6** - Registrar em core/urls.py: path('metas/', ...)
+- [X] **11.1.7** - Migration criada e aplicada
 
-#### [X] Tarefa 9.8: Documentação
-- [X] **9.8.1** - Criar README.md completo
-  - Descrição do projeto
-  - Instruções de instalação
-  - Como executar
-  - Tecnologias usadas
-  - Estrutura do projeto
-  
-- [X] **9.8.2** - Documentar configurações
-  - Variáveis de ambiente
-  - Configurações de banco
-  - Configurações de produção
-  
-- [X] **9.8.3** - Comentar código complexo
-  - Docstrings em classes e métodos
-  - Comentários em lógicas complexas
-  - TODO's para melhorias futuras
+#### Tarefa 11.2: Templates
+- [X] **11.2.1** - goals/goal_list.html — cards com barra de progresso colorida, badge de status, modal de depósito inline
+- [X] **11.2.2** - goals/goal_form.html — formulário com breadcrumb
+- [X] **11.2.3** - goals/goal_confirm_delete.html — confirmação com detalhes da meta
 
-#### [X] Tarefa 9.9: Testes Finais e QA
-- [X] **9.9.1** - Teste completo de fluxo de usuário
-  - Cadastro > Login > Criar conta > Criar transação > Ver dashboard
-  - Testar em navegadores diferentes
-  - Testar em dispositivos móveis
-  
-- [X] **9.9.2** - Teste de edge cases
-  - Contas sem transações
-  - Usuários sem contas
-  - Valores extremos
-  - Datas limites
+#### Tarefa 11.3: Integração com Dashboard e Sidebar
+- [X] **11.3.1** - Sidebar: `<span>` desabilitado → `<a href="{% url 'goals:list' %}">` com highlight ativo
+- [X] **11.3.2** - DashboardView: passa upcoming_goals, goals_active_count, goals_total_count
+- [X] **11.3.3** - dashboard.html: card de resumo com mini progress bars das 3 próximas metas
 
-- [X] **9.9.3** - Teste de carga básico
-  - Criar 100+ transações
-  - Verificar performance do dashboard
-  - Verificar paginação
+---
 
-#### [X] Tarefa 9.10: Preparação para Deploy
-- [X] **9.10.1** - Configurar settings para produção
-  - Criar settings/production.py
-  - Variáveis de ambiente
-  - Configurações de email
+### [ ] Sprint 12: App de Relatórios (Reports) (1 semana)
 
-- [X] **9.10.2** - Criar requirements.txt final
-  - Listar todas as dependências
-  - Especificar versões
+#### Tarefa 12.1: Backend
+- [ ] **12.1.1** - Criar app `reports` e registrar em INSTALLED_APPS
+  - Sem models novos — apenas views de leitura que agregam dados existentes
 
-- [X] **9.10.3** - Criar guia de deploy
-  - Instruções passo a passo
-  - Checklist de deploy
-  - Rollback plan
+- [ ] **12.1.2** - Criar ReportView (GET, LoginRequiredMixin) em reports/views.py
+  - Parâmetros de filtro via query string: ?period=this_month|last_month|last_3_months|last_6_months|this_year
+  - Parâmetro opcional: ?account=<id>
+  - Calcular e passar ao template:
+    - Resumo geral: total_income, total_expense, net_balance, avg_daily_expense, biggest_expense, biggest_income
+    - Por categoria (despesas): nome, cor, total, %, quantidade de transações — ordenado por total
+    - Por categoria (receitas): mesma estrutura
+    - Evolução diária: lista de dias com income e expense por dia (para gráfico de barras)
+    - Por conta: nome, tipo, saldo atual, total recebido e total gasto no período
+    - Top 5 despesas e top 5 receitas do período
+  - Usar Django ORM aggregates (Sum, Count, Avg) — não calcular em Python
+  - Empty states elegantes quando não há dados
+
+- [ ] **12.1.3** - Criar reports/urls.py
+  - /relatorios/ → ReportView (name: reports:index)
+
+- [ ] **12.1.4** - Registrar em core/urls.py
+  - path('relatorios/', include('reports.urls', namespace='reports'))
+
+#### Tarefa 12.2: Template
+- [ ] **12.2.1** - Criar reports/report.html
+  - Filtros no topo: seletor de período + seletor de conta + botão aplicar (GET)
+  - Cards de resumo: Total Receitas (verde), Total Despesas (vermelho), Saldo Líquido, Média diária
+  - Maior receita e maior despesa do período (nome + valor)
+  - Gráfico de barras Chart.js (evolução diária — receitas verde / despesas vermelho)
+    - Dados via json_script tag do Django (evitar XSS)
+    - Estilo visual idêntico ao dashboard.js
+  - Distribuição por categoria (duas colunas): barras de progresso proporcionais + valor + %
+  - Por conta: tabela com conta, tipo, saldo atual, entradas e saídas no período
+  - Maiores transações: duas listas lado a lado (top 5 despesas | top 5 receitas)
+    - Cada item: data, descrição, categoria, conta, valor
+
+#### Tarefa 12.3: Sidebar
+- [ ] **12.3.1** - Substituir `<span>` desabilitado de "Relatórios" por `<a href="{% url 'reports:index' %}">`
+- [ ] **12.3.2** - Remover badge "Em breve" do item na sidebar
+
+---
+
+### [ ] Sprint 13: Vínculo Bancário e Transferências entre Contas (2 semanas)
+
+> Objetivo: tornar o controle de contas mais real — cada conta corrente vinculada a um banco real com ícone,
+> débito automático ao registrar despesas e transferências entre contas do mesmo usuário.
+
+#### Tarefa 13.1: Vínculo com Banco no Model Account
+- [ ] **13.1.1** - Adicionar campo `bank_code` ao model Account
+  - CharField com choices dos 8 maiores bancos do Brasil:
+    - NUBANK = 'nubank' — Nubank
+    - ITAU = 'itau' — Itaú
+    - BRADESCO = 'bradesco' — Bradesco
+    - SANTANDER = 'santander' — Santander
+    - BANCO_DO_BRASIL = 'bb' — Banco do Brasil
+    - CAIXA = 'caixa' — Caixa Econômica Federal
+    - INTER = 'inter' — Banco Inter
+    - C6 = 'c6' — C6 Bank
+    - OTHER = 'other' — Outro
+  - Campo opcional (null=True, blank=True) — contas do tipo wallet/investment podem não ter banco
+  - Inspecione accounts/models.py antes de alterar
+
+- [ ] **13.1.2** - Adicionar campo `is_default` ao model Account
+  - BooleanField default=False
+  - Apenas uma conta por usuário pode ser is_default=True
+  - Implementar lógica no save() para garantir unicidade: ao setar is_default=True, desmarcar as demais contas do usuário
+
+- [ ] **13.1.3** - Criar migration e aplicar
+  - `python manage.py makemigrations accounts`
+  - `python manage.py migrate`
+
+- [ ] **13.1.4** - Adicionar ícones dos bancos em static/images/banks/
+  - SVG ou PNG para cada banco: nubank.svg, itau.svg, bradesco.svg, santander.svg, bb.svg, caixa.svg, inter.svg, c6.svg
+  - Usar logos oficiais em versão monocromática ou colorida (verificar licença)
+  - Criar template tag ou helper para retornar o caminho do ícone dado o bank_code
+
+- [ ] **13.1.5** - Atualizar AccountForm
+  - Adicionar campo bank_code (select com os 8 bancos + ícone preview via JavaScript)
+  - Adicionar campo is_default (checkbox "Usar como conta padrão")
+  - bank_code obrigatório apenas para account_type = 'checking'
+
+- [ ] **13.1.6** - Atualizar templates de accounts
+  - account_list.html: exibir ícone do banco ao lado do nome da conta
+  - Destacar visualmente a conta marcada como padrão (badge "Padrão")
+  - account_form.html: mostrar preview do ícone do banco ao selecionar
+
+#### Tarefa 13.2: Conta Padrão e Débito Automático
+- [ ] **13.2.1** - Atualizar TransactionForm
+  - O campo `account` deve pré-selecionar a conta padrão do usuário (is_default=True)
+  - Manter possibilidade de selecionar outra conta manualmente
+
+- [ ] **13.2.2** - Atualizar GoalDepositForm
+  - Adicionar campo `source_account` — conta de onde o valor será debitado
+  - Pré-selecionar a conta padrão do usuário
+  - Ao confirmar depósito: incrementa current_amount na meta E debita o valor da source_account via signal ou service
+
+- [ ] **13.2.3** - Criar service accounts/services.py
+  - Função `debit_account(account, amount, description)` — debita valor de uma conta e registra a operação
+  - Função `get_default_account(user)` — retorna a conta padrão do usuário (ou None se não houver)
+  - Usada pelo GoalDepositView e futuramente pelo TransferView
+
+- [ ] **13.2.4** - Atualizar GoalDepositView
+  - Chamar `debit_account()` na conta selecionada ao confirmar depósito
+  - Exibir aviso se saldo da conta for insuficiente (não bloquear, apenas alertar)
+  - Registrar a movimentação como transação do tipo expense na conta debitada (categoria: "Meta" ou similar)
+
+#### Tarefa 13.3: Transferências entre Contas
+- [ ] **13.3.1** - Criar TransferView em accounts/views.py
+  - View POST, LoginRequiredMixin
+  - Campos: from_account, to_account, amount, description, date
+  - Validações:
+    - from_account != to_account
+    - Ambas as contas pertencem ao usuário logado
+    - amount > 0
+    - Alerta (não bloqueio) se saldo insuficiente em from_account
+  - Ao confirmar:
+    - Debita `amount` de `from_account`
+    - Credita `amount` em `to_account`
+    - Cria 2 transações vinculadas (uma saída, uma entrada) com referência cruzada
+    - Redireciona para lista de contas com mensagem de sucesso
+
+- [ ] **13.3.2** - Criar TransferForm em accounts/forms.py
+  - Campos: from_account (select filtrado pelo usuário), to_account (idem), amount, description, date
+  - Validação: from_account != to_account
+
+- [ ] **13.3.3** - Criar template accounts/transfer.html
+  - Formulário de transferência com campos estilizados
+  - Mostrar saldo atual de cada conta ao selecionar
+  - Preview do saldo após a transferência (JavaScript)
+  - Alerta visual se saldo insuficiente
+
+- [ ] **13.3.4** - Adicionar URL de transferência
+  - /contas/transferir/ → TransferView (name: accounts:transfer)
+  - Adicionar botão "Transferir" na account_list.html e no dashboard (atalhos rápidos)
+
+#### Tarefa 13.4: Extrato por Conta
+- [ ] **13.4.1** - Atualizar AccountDetailView
+  - Incluir transferências recebidas e enviadas no histórico da conta
+  - Filtro por período no extrato
+  - Mostrar saldo após cada movimentação (saldo corrente)
+
+- [ ] **13.4.2** - Atualizar account_detail.html
+  - Coluna "Tipo" para diferenciar transação normal, transferência enviada e transferência recebida
+  - Ícone ou badge visual por tipo de movimentação
+
+#### Tarefa 13.5: Alerta de Saldo Insuficiente
+- [ ] **13.5.1** - Implementar verificação de saldo no TransactionCreateView
+  - Se despesa > saldo atual da conta selecionada: exibir mensagem de aviso (não bloquear)
+  - Mensagem: "Atenção: esta despesa deixará sua conta com saldo negativo."
+
+- [ ] **13.5.2** - Implementar alerta visual no frontend (JavaScript)
+  - Ao selecionar conta + preencher valor: calcular e exibir saldo resultante em tempo real
+  - Cor vermelha se saldo ficar negativo
+
+---
+
+### [ ] Sprint 14: Orçamentos por Categoria (1 semana)
+
+> Permite ao usuário definir um teto de gasto mensal por categoria e acompanhar em tempo real
+> quanto já gastou e quanto ainda pode gastar. Diferente de metas (reserva de dinheiro),
+> orçamento é um limite de gasto.
+
+#### Tarefa 14.1: Backend
+
+- [ ] **14.1.1** - Criar app `budgets` e registrar em INSTALLED_APPS
+  - `python manage.py startapp budgets`
+  - Criar estrutura padrão: models, views, forms, urls, admin
+
+- [ ] **14.1.2** - Criar model `Budget` em budgets/models.py
+  - Campos:
+    - `user` — FK para settings.AUTH_USER_MODEL (on_delete=CASCADE)
+    - `category` — FK para Category (on_delete=CASCADE)
+    - `amount` — DecimalField — limite mensal de gasto
+    - `month` — DateField — primeiro dia do mês de referência (ex: 2026-04-01)
+    - `created_at`, `updated_at` — auto
+  - Meta: `unique_together = ['user', 'category', 'month']` — um orçamento por categoria por mês
+  - Property `spent_amount`: soma das transações do tipo expense nessa categoria no mês
+  - Property `remaining_amount`: amount - spent_amount (pode ser negativo se estourou)
+  - Property `usage_percentage`: (spent_amount / amount) * 100, máximo 100
+  - Property `is_exceeded`: True se spent_amount > amount
+
+- [ ] **14.1.3** - Criar budgets/forms.py
+  - `BudgetForm` — campos: category (filtrada por tipo expense do usuário), amount, month
+  - Validação: category deve ser do tipo expense
+  - Validação: amount > 0
+  - Widget de month: input type="month" (YYYY-MM)
+
+- [ ] **14.1.4** - Criar budgets/views.py — CRUD completo
+  - `BudgetListView` — lista orçamentos do mês atual por padrão, com filtro de mês
+    - Anotação via ORM: gasto real de cada categoria no mês
+    - Ordenar por usage_percentage decrescente (os mais estourados primeiro)
+  - `BudgetCreateView` — cria orçamento, associa ao usuário logado
+  - `BudgetUpdateView` — edita orçamento (UserPassesTestMixin)
+  - `BudgetDeleteView` — exclui orçamento (UserPassesTestMixin)
+  - `BudgetAPIView` — endpoint JSON GET /orcamentos/api/?month=YYYY-MM
+    - Retorna lista de orçamentos com spent, remaining, percentage para uso no dashboard
+  - Todas com LoginRequiredMixin
+
+- [ ] **14.1.5** - Criar budgets/urls.py
+  - /orcamentos/ → BudgetListView (name: budgets:list)
+  - /orcamentos/novo/ → BudgetCreateView (name: budgets:create)
+  - /orcamentos/<pk>/editar/ → BudgetUpdateView (name: budgets:update)
+  - /orcamentos/<pk>/excluir/ → BudgetDeleteView (name: budgets:delete)
+  - /orcamentos/api/ → BudgetAPIView (name: budgets:api)
+
+- [ ] **14.1.6** - Registrar em core/urls.py
+  - `path('orcamentos/', include('budgets.urls', namespace='budgets'))`
+
+- [ ] **14.1.7** - Criar migration e aplicar
+
+#### Tarefa 14.2: Templates
+
+- [ ] **14.2.1** - Criar budgets/budget_list.html
+  - Header com seletor de mês (navegar entre meses)
+  - Card de resumo no topo: total orçado vs total gasto no mês + % geral
+  - Lista de orçamentos como cards ou linhas:
+    - Ícone e cor da categoria
+    - Nome da categoria
+    - Barra de progresso colorida: verde < 70%, amarelo 70–99%, vermelho ≥ 100%
+    - Valores: "R$ X,XX gastados de R$ Y,YY" + "Resta R$ Z,ZZ" ou "Estourado em R$ Z,ZZ"
+    - Percentual de uso
+    - Botões editar / excluir
+  - Botão "Novo Orçamento" no topo
+  - Empty state elegante se não houver orçamentos no mês
+
+- [ ] **14.2.2** - Criar budgets/budget_form.html
+  - Formulário com breadcrumb
+  - Select de categoria com cor visual
+  - Campo de valor com máscara monetária
+  - Campo de mês com input type="month"
+
+- [ ] **14.2.3** - Criar budgets/budget_confirm_delete.html
+  - Confirmação com nome da categoria e valor do orçamento
+
+#### Tarefa 14.3: Alertas de Orçamento
+
+- [ ] **14.3.1** - Implementar alerta no TransactionCreateView
+  - Ao criar despesa: verificar se a categoria tem orçamento no mês
+  - Se o gasto ultrapassar o orçamento após a transação: exibir aviso via Django messages
+  - Mensagem: "Atenção: você ultrapassou o orçamento de R$ X,XX para [categoria] este mês."
+
+- [ ] **14.3.2** - Notificação visual no dashboard
+  - Na DashboardView: buscar orçamentos do mês com usage_percentage >= 80%
+  - Passar `budget_alerts` ao contexto
+  - No dashboard.html: exibir card de alertas se houver orçamentos críticos
+
+#### Tarefa 14.4: Integração com Dashboard e Sidebar
+
+- [ ] **14.4.1** - Atualizar DashboardView (core/views.py)
+  - Passar top 3 orçamentos mais críticos (maior uso %) ao contexto
+  - Passar `budgets_count` e `budgets_exceeded_count`
+
+- [ ] **14.4.2** - Atualizar dashboard.html
+  - Adicionar card de "Orçamentos" com mini barras de progresso das categorias críticas
+  - Link "Ver todos os orçamentos"
+
+- [ ] **14.4.3** - Atualizar sidebar (base_dashboard.html)
+  - Adicionar item "Orçamentos" com link para budgets:list
+  - Badge numérico se houver orçamentos estourados (ex: badge vermelho "2")
+
+---
+
+### [ ] Sprint 15: Recorrências — Despesas e Receitas Fixas (1 semana)
+
+> Permite registrar despesas e receitas que se repetem mensalmente (aluguel, salário, Netflix, academia)
+> e lançá-las automaticamente no início de cada mês, sem intervenção manual.
+
+#### Tarefa 15.1: Backend
+
+- [ ] **15.1.1** - Criar app `recurrences` e registrar em INSTALLED_APPS
+  - `python manage.py startapp recurrences`
+
+- [ ] **15.1.2** - Criar model `Recurrence` em recurrences/models.py
+  - Campos:
+    - `user` — FK para settings.AUTH_USER_MODEL
+    - `name` — CharField — descrição da recorrência (ex: "Netflix", "Aluguel")
+    - `transaction_type` — CharField choices: INCOME / EXPENSE
+    - `amount` — DecimalField
+    - `category` — FK para Category
+    - `account` — FK para Account — conta que será debitada/creditada
+    - `day_of_month` — PositiveIntegerField (1–28) — dia do mês do lançamento
+    - `start_date` — DateField — quando começa a recorrência
+    - `end_date` — DateField, opcional — quando termina (null = sem fim)
+    - `is_active` — BooleanField default=True
+    - `last_generated_date` — DateField, null — último mês em que foi lançada
+    - `created_at`, `updated_at` — auto
+  - Property `is_due_this_month`: True se ainda não foi lançada no mês atual
+  - Method `generate_transaction()`: cria uma Transaction com os dados da recorrência
+
+- [ ] **15.1.3** - Criar recurrences/forms.py
+  - `RecurrenceForm` — campos: name, transaction_type, amount, category, account, day_of_month, start_date, end_date
+  - Validação: day_of_month entre 1 e 28 (evitar problemas com fevereiro)
+  - Validação: end_date > start_date se informado
+
+- [ ] **15.1.4** - Criar recurrences/views.py — CRUD completo
+  - `RecurrenceListView` — lista recorrências ativas do usuário, separadas por tipo (receitas / despesas)
+    - Mostrar próximo lançamento previsto (próximo day_of_month)
+    - Indicar se já foi lançada no mês atual
+  - `RecurrenceCreateView` — cria recorrência
+  - `RecurrenceUpdateView` — edita recorrência (UserPassesTestMixin)
+  - `RecurrenceDeleteView` — desativa recorrência (soft delete via is_active=False)
+  - `RecurrenceGenerateView` — POST: lança manualmente todas as recorrências pendentes do mês atual
+    - Chama `generate_transaction()` para cada recorrência devido no mês
+    - Atualiza `last_generated_date`
+    - Retorna resumo: quantas foram lançadas
+
+- [ ] **15.1.5** - Criar management command `generate_recurrences`
+  - recurrences/management/commands/generate_recurrences.py
+  - Lógica: busca recorrências ativas cujo `day_of_month` <= hoje e `last_generated_date` != mês atual
+  - Cria Transaction para cada uma e atualiza `last_generated_date`
+  - Deve ser idempotente (pode rodar múltiplas vezes no mesmo dia sem duplicar)
+  - Argumento opcional `--month YYYY-MM` para gerar para um mês específico
+  - Preparado para futura execução via cron job ou Celery
+
+- [ ] **15.1.6** - Criar recurrences/urls.py
+  - /recorrencias/ → RecurrenceListView (name: recurrences:list)
+  - /recorrencias/nova/ → RecurrenceCreateView (name: recurrences:create)
+  - /recorrencias/<pk>/editar/ → RecurrenceUpdateView (name: recurrences:update)
+  - /recorrencias/<pk>/excluir/ → RecurrenceDeleteView (name: recurrences:delete)
+  - /recorrencias/gerar/ → RecurrenceGenerateView POST (name: recurrences:generate)
+
+- [ ] **15.1.7** - Registrar em core/urls.py e criar migration
+
+#### Tarefa 15.2: Templates
+
+- [ ] **15.2.1** - Criar recurrences/recurrence_list.html
+  - Duas seções: Receitas Fixas | Despesas Fixas
+  - Card por recorrência: nome, categoria (com cor), conta, valor, dia do mês, próximo lançamento
+  - Badge "Lançada este mês" (verde) ou "Pendente" (amarelo)
+  - Botão "Lançar agora" → POST para recurrences:generate (lança todas pendentes)
+  - Botões editar / desativar por item
+  - Total mensal de receitas fixas vs despesas fixas no topo
+
+- [ ] **15.2.2** - Criar recurrences/recurrence_form.html
+  - Formulário completo com todos os campos
+  - Select de categoria filtrado dinamicamente por transaction_type (via JS)
+  - Preview: "Será lançado todo dia X, a partir de MM/YYYY"
+
+- [ ] **15.2.3** - Criar recurrences/recurrence_confirm_delete.html
+
+#### Tarefa 15.3: Integração com Dashboard
+
+- [ ] **15.3.1** - Atualizar DashboardView
+  - Buscar recorrências pendentes do mês atual (`is_due_this_month = True`)
+  - Passar `pending_recurrences_count` ao contexto
+
+- [ ] **15.3.2** - Atualizar dashboard.html
+  - Se houver recorrências pendentes: exibir alerta/card "X lançamentos fixos pendentes este mês"
+  - Link direto para recurrences:list
+
+- [ ] **15.3.3** - Atualizar sidebar (base_dashboard.html)
+  - Adicionar item "Recorrências" com link para recurrences:list
+
+---
+
+### [ ] Sprint 16: Parcelamentos (2 semanas)
+
+> Controle de compras parceladas — acompanhar cada parcela, quantas restam,
+> valor total da dívida e impacto no orçamento mensal.
+
+#### Tarefa 16.1: Backend
+
+- [ ] **16.1.1** - Criar app `installments` e registrar em INSTALLED_APPS
+  - `python manage.py startapp installments`
+
+- [ ] **16.1.2** - Criar model `InstallmentPlan` em installments/models.py
+  - Representa a compra parcelada (o "contrato" do parcelamento)
+  - Campos:
+    - `user` — FK para settings.AUTH_USER_MODEL
+    - `name` — CharField — descrição da compra (ex: "iPhone 15 Pro — Magazine Luiza")
+    - `total_amount` — DecimalField — valor total da compra
+    - `installment_count` — PositiveIntegerField — total de parcelas
+    - `installment_amount` — DecimalField — valor de cada parcela (calculado ou manual)
+    - `start_date` — DateField — data da primeira parcela
+    - `category` — FK para Category
+    - `account` — FK para Account — conta/cartão vinculado
+    - `notes` — TextField opcional
+    - `created_at`, `updated_at` — auto
+  - Property `paid_installments`: quantidade de parcelas já pagas (Installment com status=paid)
+  - Property `remaining_installments`: installment_count - paid_installments
+  - Property `remaining_amount`: remaining_installments * installment_amount
+  - Property `progress_percentage`: (paid_installments / installment_count) * 100
+  - Property `is_completed`: True se remaining_installments == 0
+
+- [ ] **16.1.3** - Criar model `Installment` em installments/models.py
+  - Representa cada parcela individual
+  - Campos:
+    - `plan` — FK para InstallmentPlan (on_delete=CASCADE)
+    - `number` — PositiveIntegerField — número da parcela (1, 2, 3...)
+    - `due_date` — DateField — data de vencimento
+    - `amount` — DecimalField — valor desta parcela
+    - `status` — CharField choices: PENDING / PAID / OVERDUE
+    - `paid_date` — DateField opcional — data em que foi paga
+    - `transaction` — FK opcional para Transaction — transação gerada ao pagar
+  - Property `is_overdue`: status == PENDING e due_date < hoje
+
+- [ ] **16.1.4** - Signal post_save em InstallmentPlan
+  - Ao criar um plano, gerar automaticamente todas as parcelas individuais (Installment)
+  - Cada parcela com due_date = start_date + (number - 1) meses
+  - Status inicial: PENDING
+
+- [ ] **16.1.5** - Criar installments/forms.py
+  - `InstallmentPlanForm` — campos: name, total_amount, installment_count, start_date, category, account, notes
+  - `installment_amount` calculado automaticamente: total_amount / installment_count
+  - Validação: installment_count entre 2 e 120
+  - Validação: total_amount > 0
+
+- [ ] **16.1.6** - Criar installments/views.py
+  - `InstallmentPlanListView` — lista todos os planos do usuário
+    - Separar: em andamento vs concluídos
+    - Ordenar por próxima parcela a vencer
+    - Mostrar total de dívida restante consolidada
+  - `InstallmentPlanCreateView` — cria plano e gera parcelas automaticamente via signal
+  - `InstallmentPlanDetailView` — exibe todas as parcelas do plano com status
+  - `InstallmentPlanDeleteView` — exclui plano e todas as parcelas (CASCADE)
+  - `InstallmentPayView` — POST: marca uma parcela como paga
+    - Atualiza status para PAID e paid_date para hoje
+    - Cria Transaction vinculada na conta do plano
+    - Atualiza saldo da conta via signal existente
+    - Se for a última parcela: marca plan como completed
+
+- [ ] **16.1.7** - Criar installments/urls.py
+  - /parcelamentos/ → InstallmentPlanListView (name: installments:list)
+  - /parcelamentos/novo/ → InstallmentPlanCreateView (name: installments:create)
+  - /parcelamentos/<pk>/ → InstallmentPlanDetailView (name: installments:detail)
+  - /parcelamentos/<pk>/excluir/ → InstallmentPlanDeleteView (name: installments:delete)
+  - /parcelamentos/parcela/<pk>/pagar/ → InstallmentPayView POST (name: installments:pay)
+
+- [ ] **16.1.8** - Registrar em core/urls.py e criar migrations
+
+#### Tarefa 16.2: Templates
+
+- [ ] **16.2.1** - Criar installments/plan_list.html
+  - Card de resumo: total de dívida ativa, total de parcelas pendentes este mês
+  - Seção "Em andamento": cards por plano com barra de progresso
+    - Nome, categoria, conta vinculada
+    - Progresso: "X de Y parcelas pagas"
+    - Próxima parcela: data e valor
+    - Valor total restante
+    - Botão "Ver parcelas"
+  - Seção "Concluídos" (colapsável)
+  - Botão "Novo Parcelamento"
+
+- [ ] **16.2.2** - Criar installments/plan_detail.html
+  - Header com resumo do plano (nome, total, progresso)
+  - Tabela de todas as parcelas:
+    - Número, data de vencimento, valor, status (badge colorido), data de pagamento
+    - Botão "Marcar como paga" para parcelas PENDING
+    - Destaque visual para parcela vencida (OVERDUE)
+    - Destaque para próxima parcela a vencer
+
+- [ ] **16.2.3** - Criar installments/plan_form.html
+  - Formulário com preview automático (JavaScript):
+    - Ao digitar valor total + número de parcelas: calcular e exibir valor por parcela
+    - Ao digitar data início: mostrar tabela de datas previstas de vencimento
+
+- [ ] **16.2.4** - Criar installments/plan_confirm_delete.html
+
+#### Tarefa 16.3: Integração com Dashboard
+
+- [ ] **16.3.1** - Atualizar DashboardView
+  - Buscar parcelas com due_date no mês atual e status PENDING
+  - Passar `installments_due_this_month` (lista) e `installments_total_this_month` (soma) ao contexto
+
+- [ ] **16.3.2** - Atualizar dashboard.html
+  - Card "Parcelas do Mês": valor total de parcelas vencendo no mês atual
+  - Lista das próximas 3 parcelas a vencer com nome do plano, data e valor
+
+- [ ] **16.3.3** - Atualizar sidebar (base_dashboard.html)
+  - Adicionar item "Parcelamentos" com link para installments:list
+
+---
+
+### [ ] Sprint 17: Cartões de Crédito (2 semanas)
+
+> Controle dedicado para cartões de crédito: fatura, limite, data de fechamento e vencimento.
+> Separado de contas correntes pois tem lógica própria (fatura mensal, limite rotativo).
+
+#### Tarefa 17.1: Backend
+
+- [ ] **17.1.1** - Criar model `CreditCard` em accounts/models.py (ou novo app `cards`)
+  - Decisão arquitetural: avaliar se cabe no app `accounts` ou merece app próprio `cards`
+  - Inspecione accounts/models.py antes de decidir
+  - Campos:
+    - `user` — FK para settings.AUTH_USER_MODEL
+    - `name` — CharField (ex: "Nubank Roxinho", "Itaú Personnalité")
+    - `bank_code` — CharField choices (mesmos 8 bancos do Account)
+    - `credit_limit` — DecimalField — limite total do cartão
+    - `closing_day` — PositiveIntegerField (1–28) — dia de fechamento da fatura
+    - `due_day` — PositiveIntegerField (1–28) — dia de vencimento da fatura
+    - `is_active` — BooleanField default=True
+    - `color` — CharField (cor para identificação visual)
+    - `created_at`, `updated_at` — auto
+  - Property `current_bill_amount`: soma das transações no cartão no período de fatura atual
+  - Property `available_limit`: credit_limit - current_bill_amount
+  - Property `current_billing_period`: tupla (data_inicio, data_fim) do período atual
+  - Property `next_due_date`: próxima data de vencimento
+
+- [ ] **17.1.2** - Criar model `CardTransaction` ou adaptar Transaction
+  - Avaliar se Transaction existente pode ter FK opcional para CreditCard
+  - Adicionar campo `credit_card` — FK opcional para CreditCard em Transaction
+  - Se FK null: transação de conta corrente (comportamento atual)
+  - Se FK preenchida: transação de cartão (não debita conta imediatamente)
+  - Criar migration para adicionar o campo
+
+- [ ] **17.1.3** - Criar model `CardBill` (Fatura)
+  - Representa a fatura mensal de um cartão
+  - Campos:
+    - `credit_card` — FK para CreditCard
+    - `reference_month` — DateField (primeiro dia do mês)
+    - `closing_date` — DateField
+    - `due_date` — DateField
+    - `total_amount` — DecimalField (valor total da fatura)
+    - `status` — CharField choices: OPEN / CLOSED / PAID
+    - `payment_date` — DateField opcional
+    - `payment_account` — FK opcional para Account (conta usada para pagar a fatura)
+  - Method `pay_bill(account)`: cria transação de débito na conta e marca fatura como PAID
+
+- [ ] **17.1.4** - Criar CRUD de CreditCard em accounts/views.py (ou cards/views.py)
+  - CardListView, CardCreateView, CardUpdateView, CardDeleteView
+  - CardDetailView — exibe fatura atual, histórico de transações e limite disponível
+  - CardBillPayView — POST: paga a fatura da conta corrente selecionada
+
+- [ ] **17.1.5** - Atualizar TransactionForm e TransactionCreateView
+  - Adicionar campo opcional `credit_card` no formulário de transação
+  - Se credit_card selecionado: não atualizar saldo de conta (será debitado ao pagar a fatura)
+  - Se credit_card null: comportamento atual (debita/credita conta)
+
+- [ ] **17.1.6** - Criar URLs de cartão e registrar em core/urls.py
+  - /cartoes/ → CardListView
+  - /cartoes/novo/ → CardCreateView
+  - /cartoes/<pk>/ → CardDetailView
+  - /cartoes/<pk>/editar/ → CardUpdateView
+  - /cartoes/<pk>/excluir/ → CardDeleteView
+  - /cartoes/<pk>/fatura/pagar/ → CardBillPayView POST
+
+- [ ] **17.1.7** - Criar migrations e aplicar
+
+#### Tarefa 17.2: Templates
+
+- [ ] **17.2.1** - Criar cards/card_list.html (ou accounts/card_list.html)
+  - Cards visuais por cartão com ícone do banco e cor personalizada
+  - Exibir: limite total, limite disponível, valor da fatura atual, próximo vencimento
+  - Barra de limite: verde se < 50%, amarelo 50–80%, vermelho > 80%
+  - Botão "Ver fatura" e "Pagar fatura"
+
+- [ ] **17.2.2** - Criar cards/card_detail.html
+  - Header: nome do cartão, limite, fatura atual, datas de fechamento e vencimento
+  - Transações do período atual agrupadas por categoria
+  - Botão "Pagar fatura" com modal de seleção de conta
+  - Histórico de faturas anteriores (status e valor)
+
+- [ ] **17.2.3** - Criar cards/card_form.html
+  - Formulário com seletor de banco (com ícone), cor do cartão, dias de fechamento e vencimento
+  - Preview: "Sua próxima fatura fecha em X/MM e vence em Y/MM"
+
+- [ ] **17.2.4** - Atualizar transaction_form.html
+  - Adicionar toggle "Pagar com cartão de crédito"
+  - Se ativo: mostrar select de cartões do usuário (ocultar campo conta)
+  - Se inativo: comportamento atual com select de contas
+
+#### Tarefa 17.3: Integração com Dashboard
+
+- [ ] **17.3.1** - Atualizar DashboardView
+  - Passar `cards_summary`: lista de cartões com fatura atual e próximo vencimento
+  - Passar `total_card_debt`: soma de todas as faturas abertas
+
+- [ ] **17.3.2** - Atualizar dashboard.html
+  - Card "Cartões de Crédito": total de faturas abertas + próximo vencimento
+  - Mini lista dos cartões com limite e fatura
+
+- [ ] **17.3.3** - Atualizar sidebar (base_dashboard.html)
+  - Adicionar item "Cartões" com link para cards:list
+
+---
+
+### [ ] Sprint 18: Integração com WhatsApp (3 semanas)
+
+> Permite ao usuário registrar transações, consultar saldos e receber resumos
+> diretamente pelo WhatsApp, usando IA para interpretar mensagens em linguagem natural.
+> Stack: Twilio (webhook) + LangChain Agent (já existente no projeto) + Django.
+
+#### Tarefa 18.1: Configuração da Infraestrutura
+
+- [ ] **18.1.1** - Criar conta no Twilio e configurar WhatsApp Sandbox
+  - Acessar console.twilio.com
+  - Ativar o WhatsApp Sandbox (para desenvolvimento)
+  - Obter Account SID e Auth Token
+  - Configurar número de telefone de teste
+
+- [ ] **18.1.2** - Instalar dependências
+  - `pip install twilio`
+  - Atualizar requirements.txt
+
+- [ ] **18.1.3** - Configurar variáveis de ambiente
+  - Adicionar ao .env:
+    ```
+    TWILIO_ACCOUNT_SID=AC...
+    TWILIO_AUTH_TOKEN=...
+    TWILIO_WHATSAPP_NUMBER=whatsapp:+14155238886
+    ```
+  - Adicionar leitura em core/settings.py
+
+- [ ] **18.1.4** - Criar app `whatsapp` e registrar em INSTALLED_APPS
+  - `python manage.py startapp whatsapp`
+
+- [ ] **18.1.5** - Configurar endpoint público para webhook
+  - Em desenvolvimento: usar ngrok para expor localhost
+  - Documentar: `ngrok http 8000` e configurar URL no Twilio console
+  - Em produção: usar URL real do servidor
+
+#### Tarefa 18.2: Model de Vínculo do WhatsApp
+
+- [ ] **18.2.1** - Criar model `WhatsAppProfile` em whatsapp/models.py
+  - Vincula número de WhatsApp ao usuário Finova
+  - Campos:
+    - `user` — OneToOneField para settings.AUTH_USER_MODEL
+    - `phone_number` — CharField — número no formato whatsapp:+5511999999999
+    - `is_verified` — BooleanField default=False
+    - `verification_code` — CharField (6 dígitos, temporário)
+    - `verified_at` — DateTimeField opcional
+    - `created_at` — auto
+
+- [ ] **18.2.2** - Criar migration e aplicar
+
+- [ ] **18.2.3** - Criar fluxo de verificação do número
+  - Usuário informa número de WhatsApp no perfil da plataforma
+  - Sistema envia código de 6 dígitos via WhatsApp (usando Twilio)
+  - Usuário digita o código na plataforma para confirmar o vínculo
+  - Após confirmação: is_verified = True
+
+#### Tarefa 18.3: Webhook e Roteamento de Mensagens
+
+- [ ] **18.3.1** - Criar whatsapp/views.py — WebhookView
+  - View POST `/whatsapp/webhook/` — recebe mensagens do Twilio
+  - Validar assinatura do Twilio (segurança contra requisições externas)
+    ```python
+    from twilio.request_validator import RequestValidator
+    validator = RequestValidator(settings.TWILIO_AUTH_TOKEN)
+    ```
+  - Extrair: número do remetente, tipo de mensagem (texto/áudio/imagem), conteúdo
+  - Buscar `WhatsAppProfile` pelo número — se não encontrado: responder com instrução de cadastro
+  - Se encontrado e verificado: passar para o MessageRouter
+  - Retornar TwiML response (XML) vazio imediatamente (resposta assíncrona)
+
+- [ ] **18.3.2** - Criar whatsapp/router.py — MessageRouter
+  - Recebe a mensagem e decide qual handler chamar:
+    - Mensagem de texto → TextMessageHandler
+    - Áudio → AudioMessageHandler
+    - Imagem → ImageMessageHandler
+  - Envia a resposta de volta via Twilio REST API
+
+- [ ] **18.3.3** - Criar whatsapp/urls.py
+  - /whatsapp/webhook/ → WebhookView (name: whatsapp:webhook)
+  - /whatsapp/vincular/ → WhatsAppLinkView (name: whatsapp:link) — interface da plataforma
+  - /whatsapp/verificar/ → WhatsAppVerifyView (name: whatsapp:verify)
+
+- [ ] **18.3.4** - Registrar em core/urls.py
+  - `path('whatsapp/', include('whatsapp.urls', namespace='whatsapp'))`
+
+#### Tarefa 18.4: Agente de IA para Processamento de Mensagens
+
+- [ ] **18.4.1** - Criar whatsapp/agent.py — WhatsAppAgent
+  - Agente LangChain especializado em interpretar mensagens financeiras em PT-BR
+  - Reutilizar as tools existentes de ai/agents/finance_insight_agent.py
+  - Adicionar novas tools específicas para o WhatsApp:
+    - `create_transaction(user_id, type, amount, category_name, description, date)` — cria transação
+    - `get_account_balance(user_id, account_name=None)` — consulta saldo
+    - `get_monthly_summary(user_id)` — resumo do mês
+    - `get_goal_progress(user_id, goal_name=None)` — progresso de metas
+    - `get_budget_status(user_id, category_name=None)` — status do orçamento
+  - System prompt em PT-BR adaptado para conversação curta (respostas máx 3 linhas)
+  - Retornar sempre:
+    - `action`: o que foi feito (created_transaction, answered_question, etc.)
+    - `message`: texto de resposta para o usuário
+    - `requires_confirmation`: Boolean — se precisa de confirmação antes de executar
+
+- [ ] **18.4.2** - Implementar fluxo de confirmação
+  - Se `requires_confirmation = True`: não executa a ação ainda
+  - Armazena o contexto pendente em cache (Django cache framework) com TTL de 5 minutos
+  - Envia mensagem de confirmação ao usuário: "Entendi! [resumo da ação]. Confirma? (sim/não)"
+  - Na próxima mensagem do usuário: verificar se há ação pendente no cache
+  - Se "sim": executar ação e limpar cache
+  - Se "não" ou timeout: cancelar e informar usuário
+
+- [ ] **18.4.3** - Criar whatsapp/handlers/text_handler.py
+  - Recebe texto da mensagem e usuário
+  - Verifica se há ação pendente de confirmação no cache
+  - Se sim: processar resposta de confirmação
+  - Se não: passar ao WhatsAppAgent para interpretar
+  - Retornar mensagem de resposta
+
+- [ ] **18.4.4** - Criar whatsapp/handlers/audio_handler.py
+  - Receber URL do áudio do Twilio
+  - Baixar o arquivo de áudio temporariamente
+  - Transcrever usando OpenAI Whisper API (`openai.audio.transcriptions.create`)
+  - Passar texto transcrito ao TextMessageHandler
+  - Deletar arquivo temporário após processamento
+
+- [ ] **18.4.5** - Criar whatsapp/handlers/image_handler.py
+  - Receber URL da imagem do Twilio
+  - Passar imagem para a Vision API do OpenAI (GPT-4o com input de imagem)
+  - Prompt: "Extraia o valor total, estabelecimento e data desta nota fiscal/comprovante em JSON"
+  - Passar dados extraídos ao TextMessageHandler para criar a transação
+  - Responder com os dados identificados + confirmação
+
+#### Tarefa 18.5: Notificações Proativas
+
+- [ ] **18.5.1** - Criar whatsapp/notifications.py — NotificationService
+  - Função `send_message(phone_number, message)` — envia mensagem via Twilio REST API
+  - Função `notify_transaction_created(user, transaction)` — notifica criação via plataforma
+    - Mensagem: "✅ Transação registrada: [descrição] R$ [valor] em [categoria]"
+  - Função `send_weekly_summary(user)` — resumo semanal
+    - Total gasto na semana, categoria que mais gastou, saldo atual
+  - Função `notify_budget_exceeded(user, budget, category)` — alerta de orçamento estourado
+    - Mensagem: "⚠️ Você ultrapassou o orçamento de [categoria] este mês!"
+  - Função `notify_goal_completed(user, goal)` — meta atingida
+    - Mensagem: "🎉 Parabéns! Você atingiu sua meta: [nome da meta]!"
+  - Função `notify_installment_due(user, installment)` — parcela próxima do vencimento
+
+- [ ] **18.5.2** - Integrar notificações nos signals existentes
+  - Em transactions/signals.py: após criar transação, chamar `notify_transaction_created` se usuário tem WhatsApp vinculado
+  - Em goals/views.py: após depósito completar meta, chamar `notify_goal_completed`
+  - Em budgets/views.py: após criar despesa que estoura orçamento, chamar `notify_budget_exceeded`
+
+- [ ] **18.5.3** - Criar management command `send_weekly_summaries`
+  - whatsapp/management/commands/send_weekly_summaries.py
+  - Para cada usuário com WhatsApp verificado: chamar `send_weekly_summary(user)`
+  - Preparado para execução semanal via cron (toda segunda-feira)
+
+#### Tarefa 18.6: Interface na Plataforma
+
+- [ ] **18.6.1** - Criar template whatsapp/link.html — página de vinculação
+  - Formulário para informar número de WhatsApp
+  - Instrução: "Você receberá um código de verificação no WhatsApp"
+  - Status atual: vinculado / não vinculado
+
+- [ ] **18.6.2** - Criar template whatsapp/verify.html
+  - Campo para digitar o código de 6 dígitos recebido
+  - Timer de expiração visual (5 minutos)
+  - Botão "Reenviar código"
+
+- [ ] **18.6.3** - Adicionar seção WhatsApp na página de perfil
+  - Se não vinculado: card com CTA "Vincular WhatsApp" e benefícios
+  - Se vinculado: exibir número vinculado, status verificado, botão "Desvincular"
+
+- [ ] **18.6.4** - Adicionar central de notificações na plataforma
+  - Model `Notification` em whatsapp/models.py (ou app notifications separado):
+    - `user`, `title`, `message`, `notification_type`, `is_read`, `created_at`
+  - View `NotificationListView` — lista as últimas notificações do usuário
+  - Ícone de sino no navbar com badge de não lidas
+  - Ao clicar: marcar como lida
+
+#### Tarefa 18.7: Exemplos de Interação Suportados
+
+- [ ] **18.7.1** - Documentar e testar os seguintes fluxos:
+
+  **Registrar gastos (texto):**
+  - "gastei 45 no almoço" → Despesa R$ 45,00 / Alimentação / conta padrão
+  - "paguei 89,90 de combustível no posto" → Despesa R$ 89,90 / Transporte
+  - "recebi 5800 de salário" → Receita R$ 5.800,00 / Salário
+  - "gastei 320,50 no supermercado extra" → Despesa / Alimentação
+
+  **Registrar por áudio:**
+  - [áudio] "almoço no restaurante, quarenta e cinco reais" → mesma lógica do texto
+
+  **Registrar por foto:**
+  - [foto de cupom fiscal] → extrai valor e estabelecimento automaticamente
+
+  **Consultas:**
+  - "qual meu saldo?" → "Seu saldo total é R$ 3.420,50 (Nubank: R$ 2.100,00 | Carteira: R$ 1.320,50)"
+  - "quanto gastei esse mês?" → "Em abril você gastou R$ 1.843,20 (↑12% vs março)"
+  - "como está minha meta de viagem?" → "Meta Viagem Europa: R$ 2.300/R$ 5.000 — 46% concluída"
+  - "quanto falta no orçamento de alimentação?" → "Alimentação: R$ 320,50 de R$ 800,00 — resta R$ 479,50"
+
+  **Resumo automático (segunda-feira):**
+  - "📊 Resumo da semana (29/03–04/04): Gastos: R$ 543,80 | Categoria top: Alimentação (R$ 210,00) | Saldo atual: R$ 3.420,50"
+
+---
+
+### [ ] Sprint 19: Reestruturação do Site Público — Múltiplas Páginas (2 semanas)
+
+> Transformar a landing page atual em um site público completo com navegação multi-página,
+> copy persuasivo, mocks visuais fiéis ao design system e páginas dedicadas por feature.
+> Objetivo: prender a atenção do visitante e converter em cadastro.
+
+#### Tarefa 19.1: Estrutura e Navegação
+
+- [ ] **19.1.1** - Criar views e URLs para todas as páginas públicas em core/views.py e core/urls.py
+  - / → LandingView (atualizar existente)
+  - /features/dashboard/ → FeatureDashboardView
+  - /features/whatsapp/ → FeatureWhatsAppView
+  - /features/ia/ → FeatureIAView
+  - /features/metas/ → FeatureMetasView
+  - /sobre/ → AboutView
+  - /precos/ → PricingView
+  - Todas as views são simples TemplateView — sem lógica de backend
+
+- [ ] **19.1.2** - Criar estrutura de templates em templates/public/
+  - home.html (substituir landing page existente)
+  - features/dashboard.html
+  - features/whatsapp.html
+  - features/ia.html
+  - features/metas.html
+  - about.html
+  - pricing.html
+
+- [ ] **19.1.3** - Atualizar navbar global (base.html ou componente navbar)
+  - Logo: "F" verde + "inova" branco, Inter 600
+  - Links: "Início" / "Features ▾" (dropdown) / "Sobre" / "Preços"
+  - Dropdown "Features" com 4 itens, cada um com ícone Lucide + descrição curta:
+    - 📊 Dashboard & Relatórios → /features/dashboard/
+    - 💬 WhatsApp → /features/whatsapp/
+    - 🤖 IA Financeira → /features/ia/
+    - 🎯 Metas & Orçamentos → /features/metas/
+  - Botões: "Entrar" (outline verde) + "Começar grátis" (verde sólido)
+  - Navbar fixa com fundo #0a0a0a e border-bottom #262626
+  - Mobile: hamburguer com menu lateral deslizante (JavaScript vanilla)
+  - Active state no link da página atual
+
+- [ ] **19.1.4** - Atualizar footer global
+  - Logo Finova à esquerda
+  - Colunas: Produto (links das features) / Empresa (Sobre, Preços) / Legal (Termos, Privacidade)
+  - "© 2026 Finova. Todos os direitos reservados."
+  - Fundo #000000, border-top #262626
+
+#### Tarefa 19.2: Página Início (Landing Principal)
+
+> Página enxuta e persuasiva — apresenta o produto, desperta curiosidade
+> e direciona para as páginas de feature. Não tenta explicar tudo.
+
+- [ ] **19.2.1** - Hero Section
+  - Badge pill: ✨ "Novo: Controle via WhatsApp" — fundo rgba(34,197,94,0.08), borda verde sutil
+  - Headline Inter 600 grande: "Suas finanças. Finalmente sob controle."
+  - Subtítulo Inter 300: "Do registro pelo WhatsApp ao relatório completo do mês. O assistente financeiro que você sempre quis."
+  - CTAs: "Começar gratuitamente" → {% url 'users:signup' %} / "Ver funcionalidades ↓" (âncora ghost)
+  - Prova social: 3 avatares coloridos + "Mais de 1.200 pessoas já usam o Finova"
+  - Radial gradient verde suavíssimo centralizado no fundo
+  - Mock do dashboard Finova: HTML/CSS puro fiel ao design real (cards de saldo + gráfico de linhas simulado)
+
+- [ ] **19.2.2** - Barra de bancos suportados
+  - Texto pequeno text-secondary: "Compatível com os maiores bancos do Brasil"
+  - 8 logos em escala de cinza (usar os SVGs de static/images/banks/ já existentes)
+  - Layout horizontal com overflow-x scroll suave em mobile
+
+- [ ] **19.2.3** - Seção "Por que o Finova?" (3 cards)
+  - Fundo #111111, borda #262626
+  - Card 1: ícone Lucide verde + "Registre em segundos" + descrição WhatsApp + IA
+  - Card 2: ícone + "Visão completa, zero planilha" + descrição dashboard
+  - Card 3: ícone + "IA que entende você" + descrição análise personalizada
+
+- [ ] **19.2.4** - Seção de features em destaque (4 blocos alternados)
+  - Layout esquerda/direita alternado a cada bloco
+  - Cada bloco: label pequena verde / título Inter 600 / 2 linhas de descrição /
+    3 bullets com check verde / mock HTML/CSS da feature / link "Saiba mais →" para página dedicada
+  - Bloco 1 — Dashboard & Relatórios: "Tudo que importa em uma tela."
+    - Mock: mini cards de saldo + gráfico de linhas simulado
+  - Bloco 2 — WhatsApp: "Registre um gasto sem abrir nenhum app."
+    - Mock: conversa WhatsApp estilizada com 2-3 balões de exemplo real
+  - Bloco 3 — IA Financeira: "Insights que você não saberia sozinho."
+    - Mock: card de análise IA com texto simulado de insight financeiro
+  - Bloco 4 — Metas & Orçamentos: "Economize com propósito, não com culpa."
+    - Mock: dois cards de meta com barra de progresso colorida
+
+- [ ] **19.2.5** - Seção de depoimentos (3 cards)
+  - Fundo #111111, borda #262626
+  - Avatar (inicial colorida em círculo), nome, profissão, depoimento
+  - Depoimentos fictícios mas específicos e realistas — mencionar features reais:
+    - Ex: "Descobri que gastava R$ 340 por mês em assinaturas esquecidas. A IA me mostrou isso na primeira semana."
+    - Ex: "Mando um áudio no WhatsApp saindo do restaurante. Quando chego em casa tá tudo categorizado."
+    - Ex: "Em 3 meses juntei R$ 4.200 para a viagem usando as metas do Finova."
+
+- [ ] **19.2.6** - CTA Final
+  - Radial gradient verde suavíssimo no fundo
+  - Headline: "Suas finanças merecem um app melhor."
+  - Subtítulo: "14 dias grátis para descobrir como é ter controle de verdade."
+  - Botão verde grande: "Começar gratuitamente" → {% url 'users:signup' %}
+  - Três ícones abaixo: ✓ Sem cartão de crédito / ✓ Cancele quando quiser / ✓ Suporte em português
+
+#### Tarefa 19.3: Página Feature — Dashboard & Relatórios
+
+- [ ] **19.3.1** - Hero da página
+  - Label verde: "Dashboard & Relatórios"
+  - Headline: "Tudo que importa em uma tela."
+  - Subtítulo: "Saldo de todas as contas, evolução dos últimos 6 meses e os gastos do mês — sem abrir extrato de banco."
+  - Mock grande do dashboard Finova (HTML/CSS detalhado)
+
+- [ ] **19.3.2** - Seções de detalhe (uma por sub-feature)
+  - Saldo consolidado em tempo real — mock: 3 cards de conta com saldo e ícone do banco
+  - Gráfico de evolução mensal — mock: gráfico de linhas simulado (SVG ou CSS)
+  - Distribuição por categoria — mock: donut chart simulado + lista de categorias
+  - Relatórios por período — mock: filtro de período + tabela de categorias com barras
+  - Top gastos do mês — mock: lista de 5 transações com valor e categoria
+
+- [ ] **19.3.3** - CTA ao final: "Começar gratuitamente"
+
+#### Tarefa 19.4: Página Feature — WhatsApp
+
+- [ ] **19.4.1** - Hero da página
+  - Label verde: "Integração WhatsApp"
+  - Headline: "Registre um gasto sem abrir nenhum app."
+  - Subtítulo: "Texto, áudio ou foto do comprovante. Nossa IA entende, categoriza e lança automaticamente."
+  - Mock: conversa WhatsApp grande e detalhada (4-5 mensagens com exemplos reais)
+
+- [ ] **19.4.2** - Seções de detalhe
+  - Registro por texto — mock: balão "gastei 45 no almoço" + resposta da IA confirmando
+  - Registro por áudio — mock: balão de áudio + transcrição + confirmação
+  - Foto de comprovante — mock: balão de imagem + dados extraídos pela IA
+  - Consultas instantâneas — mock: "Qual meu saldo?" + resposta com valores
+  - Notificações proativas — mock: mensagem de resumo semanal automático
+
+- [ ] **19.4.3** - CTA ao final: "Vincular meu WhatsApp"
+
+#### Tarefa 19.5: Página Feature — IA Financeira
+
+- [ ] **19.5.1** - Hero da página
+  - Label verde: "IA Financeira"
+  - Headline: "Insights que você não saberia sozinho."
+  - Subtítulo: "Nosso agente analisa seus padrões de gasto e entrega recomendações práticas toda semana."
+  - Mock: card de análise IA com texto simulado realista de insight
+
+- [ ] **19.5.2** - Seções de detalhe
+  - Como funciona o agente — diagrama simples HTML/CSS (3 passos: dados → IA → insights)
+  - Análise de padrões — mock: gráfico de categorias + texto de insight sobre alimentação
+  - Recomendações práticas — mock: lista de 3 recomendações com ícone e texto
+  - Categorização automática — mock: transação sem categoria → IA → categoria atribuída
+  - Histórico de análises — mock: lista de análises passadas com data e resumo
+
+- [ ] **19.5.3** - CTA ao final: "Experimentar grátis"
+
+#### Tarefa 19.6: Página Feature — Metas & Orçamentos
+
+- [ ] **19.6.1** - Hero da página
+  - Label verde: "Metas & Orçamentos"
+  - Headline: "Economize com propósito, não com culpa."
+  - Subtítulo: "Defina onde quer chegar e quanto pode gastar. O Finova acompanha cada passo."
+  - Mock: dois cards de meta com barra de progresso + card de orçamento
+
+- [ ] **19.6.2** - Seções de detalhe
+  - Criar e acompanhar metas — mock: formulário de meta + card com progresso 67%
+  - Depósito vinculado à conta — mock: modal de depósito com seleção de conta
+  - Orçamento por categoria — mock: lista de orçamentos com barras verde/amarelo/vermelho
+  - Alertas de estouro — mock: notificação WhatsApp de orçamento estourado
+  - Parcelamentos e recorrências — mock: card de parcelamento com parcelas restantes
+
+- [ ] **19.6.3** - CTA ao final: "Começar minha primeira meta"
+
+#### Tarefa 19.7: Página Sobre
+
+- [ ] **19.7.1** - Hero: headline + subtítulo sobre a missão do Finova
+- [ ] **19.7.2** - História: por que o Finova foi criado (texto narrativo, tom pessoal)
+- [ ] **19.7.3** - Missão e valores (3 cards): Simplicidade / Segurança / Inovação
+- [ ] **19.7.4** - Segurança e privacidade: criptografia, sem venda de dados, HTTPS
+- [ ] **19.7.5** - Números: 1.200+ usuários / 4.8★ avaliação / 100% desenvolvido no Brasil
+- [ ] **19.7.6** - CTA: "Conhecer o produto"
+
+#### Tarefa 19.8: Página Preços
+
+- [ ] **19.8.1** - Hero: "Simples. Transparente. Sem surpresas." + destaque do trial de 14 dias
+- [ ] **19.8.2** - Dois cards de plano (fundo #111111):
+  - Gratuito: funcionalidades básicas listadas
+  - Premium (borda verde, badge "Mais popular"): R$ 19,90/mês ou R$ 199/ano — todas as features
+- [ ] **19.8.3** - Tabela comparativa: features em linhas, planos em colunas, check verde / X cinza
+- [ ] **19.8.4** - FAQ de preços (accordion JavaScript vanilla, 5 perguntas):
+  - "Preciso de cartão de crédito para o teste?" / "Posso cancelar quando quiser?" /
+    "O que está incluso no plano gratuito?" / "Como funciona o plano anual?" /
+    "Meus dados estão seguros?"
+- [ ] **19.8.5** - CTA final: "Começar gratuitamente"
+
+#### Tarefa 19.9: Componentes JavaScript e CSS
+
+- [ ] **19.9.1** - Criar static/js/public.js
+  - Menu hamburguer mobile (abrir/fechar sidebar)
+  - Dropdown de features na navbar (abrir/fechar ao hover e click)
+  - Accordion do FAQ (toggle com transição suave de altura)
+  - Fade-in ao entrar na viewport (Intersection Observer API)
+  - Scroll suave para âncoras
+
+- [ ] **19.9.2** - Garantir responsividade completa
+  - Testar breakpoints: 375px / 768px / 1280px
+  - Blocos alternados viram coluna única em mobile
+  - Mocks HTML/CSS redimensionados corretamente
+  - Navbar mobile funcional
+
+- [ ] **19.9.3** - Compilar Tailwind: `npm run build:css`
+
+#### Tarefa 19.10: Qualidade e Revisão
+
+- [ ] **19.10.1** - Revisar todos os links internos ({% url %} em todos os CTAs)
+- [ ] **19.10.2** - Garantir que usuário autenticado veja navbar diferente (sem "Entrar"/"Cadastrar", com link para dashboard)
+- [ ] **19.10.3** - Meta tags SEO em cada página (title, description únicos por página)
+- [ ] **19.10.4** - Testar em Chrome, Firefox e Safari
 
 ---
 
 ### Sprints Futuras
 
-#### Sprint 10: Testes Automatizados
+#### Sprint 20: Testes Automatizados
 - Setup de testes (pytest, pytest-django)
-- Testes unitários (models, forms, signals)
+- Testes unitários (models, forms, signals, services)
 - Testes de integração (views, fluxos completos)
 - Testes E2E com Selenium
-- Testes específicos para a app `ai` (mocking de chamadas OpenAI)
+- Testes para agente de IA (mocking de chamadas OpenAI)
+- Testes para webhook do WhatsApp (mocking do Twilio)
+- Testes para transferências, parcelamentos e recorrências
 
-#### Sprint 11: Containerização e CI/CD
+#### Sprint 21: Containerização e CI/CD
 - Criar Dockerfile e docker-compose.yml
 - Configurar volumes e redes
-- Setup de GitHub Actions ou GitLab CI
+- Setup de GitHub Actions
 - Pipelines de testes e deploy
 - Ambientes staging/production
+- Configurar cron jobs para: generate_recurrences, send_weekly_summaries
 
 ---
 
-## 14. Cronograma Estimado
+## Cronograma Estimado (Atualizado)
 
-| Sprint | Duração | Descrição | Entregáveis |
-|--------|---------|-----------|-------------|
-| Sprint 0 | 1 semana | Setup e Configuração | Projeto configurado, apps criadas, TailwindCSS integrado |
-| Sprint 1 | 1 semana | Autenticação e Usuários | Sistema de login, cadastro e perfil funcionando |
-| Sprint 2 | 1 semana | Site Público | Landing page responsiva e atrativa |
-| Sprint 3 | 1 semana | Models de Contas e Categorias | Models criados, admin funcional, categorias padrão |
-| Sprint 4 | 1 semana | Views e Templates de Contas | CRUD completo de contas bancárias |
-| Sprint 5 | 1 semana | Views e Templates de Categorias | CRUD completo de categorias |
-| Sprint 6 | 2 semanas | Transações | CRUD completo de transações com signals |
-| Sprint 7 | 2 semanas | Dashboard e Visualizações | Dashboard com gráficos e estatísticas |
-| Sprint 8 | 2 semanas | Agente de IA Financeiro | App `ai`, modelo AIAnalysis, agente LangChain, Django Command |
-| Sprint 9 | 1 semana | Refinamentos e MVP | Melhorias de UX, segurança e preparação |
-| **Total** | **12 semanas** | **MVP Completo com IA** | Sistema funcional, testado e com insights de IA |
+| Sprint | Duração | Descrição | Status |
+|--------|---------|-----------|--------|
+| Sprint 0 | 1 semana | Setup e Configuração | ✅ Concluído |
+| Sprint 1 | 1 semana | Autenticação e Usuários | ✅ Concluído |
+| Sprint 2 | 1 semana | Landing Page | ✅ Concluído |
+| Sprint 3 | 1 semana | Models de Contas e Categorias | ✅ Concluído |
+| Sprint 4 | 1 semana | Views de Contas | ✅ Concluído |
+| Sprint 5 | 1 semana | Views de Categorias | ✅ Concluído |
+| Sprint 6 | 2 semanas | Transações | ✅ Concluído |
+| Sprint 7 | 2 semanas | Dashboard e Gráficos | ✅ Concluído |
+| Sprint 8 | 2 semanas | Agente de IA Financeiro | ✅ Concluído |
+| Sprint 9 | 1 semana | Refinamentos e MVP | ✅ Concluído |
+| Sprint 10 | 1 semana | Redesign Visual + Rebranding Finova | ✅ Concluído |
+| Sprint 11 | 1 semana | App de Metas (Goals) | ✅ Concluído |
+| Sprint 12 | 1 semana | App de Relatórios (Reports) | 🔄 Em andamento |
+| Sprint 13 | 2 semanas | Vínculo Bancário e Transferências | ⏳ Planejado |
+| Sprint 14 | 1 semana | Orçamentos por Categoria | ⏳ Planejado |
+| Sprint 15 | 1 semana | Recorrências — Despesas e Receitas Fixas | ⏳ Planejado |
+| Sprint 16 | 2 semanas | Parcelamentos | ⏳ Planejado |
+| Sprint 17 | 2 semanas | Cartões de Crédito | ⏳ Planejado |
+| Sprint 18 | 3 semanas | Integração com WhatsApp | ⏳ Planejado |
+| Sprint 19 | 2 semanas | Reestruturação do Site Público | ⏳ Planejado |
+| Sprint 20 | 2 semanas | Testes Automatizados | ⏳ Futuro |
+| Sprint 21 | 1 semana | Containerização e CI/CD | ⏳ Futuro |
+| **Total** | **~32 semanas** | **Produto completo** | |
 
 ---

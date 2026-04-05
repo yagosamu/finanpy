@@ -1,31 +1,41 @@
-# PRD - Finanpy
+# PRD - Finova
 ## Product Requirement Document
 
 ---
 
 ## 1. Visão Geral
 
-O **Finanpy** é um sistema de gestão de finanças pessoais desenvolvido em Python/Django, focado em simplicidade e eficiência. O projeto visa fornecer uma solução completa para controle financeiro pessoal através de uma interface web moderna e responsiva, sem complexidade desnecessária (anti-overengineering).
+O **Finova** é um sistema de gestão de finanças pessoais desenvolvido em Python/Django, focado em simplicidade, eficiência e design sofisticado. O projeto visa fornecer uma solução completa para controle financeiro pessoal através de uma interface web moderna e elegante, com identidade visual minimalista em tema escuro — paleta preta + verde.
 
 ---
 
 ## 2. Sobre o Produto
 
-Finanpy é uma aplicação web full-stack que permite aos usuários gerenciar suas finanças pessoais de forma intuitiva. O sistema utiliza Django como framework principal, com templates nativos para o frontend e TailwindCSS para estilização, proporcionando uma experiência visual moderna com tema escuro e gradientes harmônicos.
+Finova é uma aplicação web full-stack que permite aos usuários gerenciar suas finanças pessoais de forma intuitiva. O sistema utiliza Django como framework principal, com templates nativos para o frontend e TailwindCSS para estilização.
 
 **Características principais:**
-- Sistema de autenticação baseado em email
-- Gestão de contas bancárias
-- Categorização de transações
-- Controle de receitas e despesas
-- Dashboard analítico
-- Design system consistente
+- Autenticação por email sem username
+- Gestão de contas bancárias vinculadas aos 8 maiores bancos do Brasil
+- Categorização de transações (padrão + personalizadas)
+- Controle de receitas e despesas com débito automático de conta
+- Transferências entre contas do mesmo usuário
+- Cartões de crédito com controle de fatura e limite
+- Metas financeiras com depósito vinculado à conta
+- Orçamentos por categoria com alertas de estouro
+- Recorrências — despesas e receitas fixas automáticas
+- Parcelamentos — controle de compras parceladas
+- Dashboard analítico com gráficos interativos (Chart.js)
+- Relatórios financeiros detalhados por período
+- Análise financeira com IA (LangChain + OpenAI)
+- Integração com WhatsApp — registro por texto, áudio e foto
+- Site público multi-página com páginas dedicadas por feature
+- Design system consistente — paleta preta + verde, Inter, minimalismo
 
 ---
 
 ## 3. Propósito
 
-Oferecer uma ferramenta simples, eficiente e visualmente atraente para que pessoas possam organizar suas finanças pessoais, acompanhar gastos, gerenciar múltiplas contas bancárias e tomar decisões financeiras mais informadas através de visualização clara de dados.
+Oferecer uma ferramenta completa, eficiente e visualmente sofisticada para que pessoas organizem suas finanças pessoais, acompanhem gastos em tempo real (inclusive via WhatsApp), gerenciem múltiplas contas e cartões, definam metas e orçamentos, e tomem decisões informadas através de dados claros e insights gerados por inteligência artificial.
 
 ---
 
@@ -33,21 +43,21 @@ Oferecer uma ferramenta simples, eficiente e visualmente atraente para que pesso
 
 - **Primário:** Jovens adultos (25-40 anos) que buscam organizar suas finanças pessoais
 - **Secundário:** Profissionais autônomos e freelancers que precisam controlar receitas e despesas
-- **Terciário:** Famílias que desejam ter visibilidade sobre o orçamento doméstico
+- **Terciário:** Famílias que desejam visibilidade sobre o orçamento doméstico
 
 **Personas:**
-- **Maria, 28 anos:** Designer freelancer que precisa organizar recebimentos de múltiplos clientes
-- **Carlos, 35 anos:** Profissional de TI que quer controlar gastos mensais e economizar
-- **Ana, 42 anos:** Mãe de família que gerencia o orçamento doméstico
+- **Maria, 28 anos:** Designer freelancer — organiza recebimentos, acompanha metas de economia e registra gastos pelo WhatsApp em movimento
+- **Carlos, 35 anos:** Profissional de TI — controla gastos mensais, gerencia múltiplas contas e cartões e acompanha orçamentos por categoria
+- **Ana, 42 anos:** Mãe de família — gerencia orçamento doméstico, acompanha parcelamentos e quer relatórios claros no fim do mês
 
 ---
 
 ## 5. Objetivos
 
 ### Objetivos de Negócio
-- Criar MVP funcional em 8 sprints
 - Alcançar 100 usuários ativos no primeiro trimestre
 - Taxa de retenção de 60% após 30 dias
+- Diferencial competitivo: IA financeira + integração WhatsApp + design sofisticado
 
 ### Objetivos de Produto
 - Interface intuitiva com curva de aprendizado inferior a 5 minutos
@@ -55,10 +65,12 @@ Oferecer uma ferramenta simples, eficiente e visualmente atraente para que pesso
 - Sistema estável com 99% de uptime
 
 ### Objetivos de Usuário
-- Visualizar saldo consolidado de todas as contas em tempo real
-- Categorizar transações de forma rápida
-- Identificar padrões de gastos mensais
-- Exportar relatórios financeiros
+- Visualizar saldo consolidado de todas as contas e cartões em tempo real
+- Registrar gastos em segundos pelo WhatsApp sem abrir o app
+- Categorizar transações de forma rápida com sugestão da IA
+- Identificar padrões de gastos via relatórios e análise de IA
+- Definir e acompanhar metas e orçamentos mensais
+- Controlar parcelamentos e despesas fixas recorrentes
 
 ---
 
@@ -68,101 +80,124 @@ Oferecer uma ferramenta simples, eficiente e visualmente atraente para que pesso
 - **RF01:** Sistema deve permitir cadastro de novos usuários com email e senha
 - **RF02:** Login deve ser realizado através de email (não username)
 - **RF03:** Sistema deve validar formato de email e força de senha
-- **RF04:** Usuário deve poder recuperar senha através de email
-- **RF05:** Sistema deve manter sessão do usuário logado
+- **RF04:** Logout deve redirecionar para landing page e encerrar sessão completamente
+- **RF05:** Botão "Entrar" na landing page deve sempre exibir tela de login
 
 ### 6.2. Gestão de Perfil
-- **RF06:** Usuário deve poder visualizar e editar dados do perfil
-- **RF07:** Sistema deve armazenar informações complementares do usuário
-- **RF08:** Usuário deve poder alterar senha
+- **RF06:** Usuário deve poder visualizar e editar dados do perfil (nome, telefone, nascimento)
+- **RF07:** Usuário deve poder alterar senha
+- **RF08:** Usuário deve poder vincular e verificar número de WhatsApp no perfil
 
 ### 6.3. Gestão de Contas Bancárias
 - **RF09:** Usuário deve poder cadastrar múltiplas contas bancárias
-- **RF10:** Cada conta deve ter: nome, tipo, saldo inicial, banco
-- **RF11:** Sistema deve calcular saldo atual baseado em transações
-- **RF12:** Usuário deve poder editar e excluir contas
-- **RF13:** Sistema deve listar todas as contas do usuário
+- **RF10:** Cada conta deve ter: nome, tipo (corrente/poupança/carteira/investimento), banco vinculado, saldo inicial e flag de conta padrão
+- **RF11:** Sistema deve calcular saldo atual baseado em transações via Django signals
+- **RF12:** Apenas uma conta por usuário pode ser marcada como padrão por vez
+- **RF13:** Os 8 maiores bancos do Brasil devem estar disponíveis com ícone SVG: Nubank, Itaú, Bradesco, Santander, Banco do Brasil, Caixa, Banco Inter, C6 Bank
+- **RF14:** Extrato por conta deve incluir transações, transferências recebidas e enviadas
 
 ### 6.4. Gestão de Categorias
-- **RF14:** Sistema deve fornecer categorias padrão (Alimentação, Transporte, etc.)
-- **RF15:** Usuário deve poder criar categorias personalizadas
-- **RF16:** Categorias devem ter tipo: receita ou despesa
-- **RF17:** Usuário deve poder editar e excluir categorias personalizadas
+- **RF15:** Sistema deve fornecer categorias padrão (Alimentação, Transporte, Salário, etc.)
+- **RF16:** Usuário deve poder criar categorias personalizadas com cor customizada
+- **RF17:** Categorias devem ter tipo: receita ou despesa
 - **RF18:** Sistema deve impedir exclusão de categorias em uso
 
 ### 6.5. Gestão de Transações
-- **RF19:** Usuário deve poder registrar transações (receitas/despesas)
-- **RF20:** Transação deve ter: valor, data, categoria, conta, descrição
-- **RF21:** Usuário deve poder editar transações
-- **RF22:** Usuário deve poder excluir transações
-- **RF23:** Sistema deve listar transações com filtros (data, categoria, tipo)
-- **RF24:** Sistema deve atualizar saldo da conta ao criar/editar/excluir transação
+- **RF19:** Usuário deve poder registrar transações com valor, data, categoria, conta e descrição
+- **RF20:** A conta padrão deve ser pré-selecionada no formulário de transação
+- **RF21:** Transação pode ser vinculada a um cartão de crédito (não debita conta imediatamente)
+- **RF22:** Sistema deve atualizar saldo da conta ao criar/editar/excluir transação via signals
+- **RF23:** Sistema deve exibir alerta (não bloqueio) quando despesa deixaria conta com saldo negativo
 
-### 6.6. Dashboard
-- **RF25:** Dashboard deve exibir saldo total de todas as contas
-- **RF26:** Dashboard deve exibir resumo mensal (receitas vs despesas)
-- **RF27:** Dashboard deve exibir gráfico de categorias mais utilizadas
-- **RF28:** Dashboard deve listar últimas transações
-- **RF29:** Dashboard deve permitir acesso rápido às funcionalidades principais
+### 6.6. Transferências entre Contas
+- **RF24:** Usuário deve poder transferir valores entre suas próprias contas
+- **RF25:** Transferência deve debitar conta de origem e creditar conta de destino com registro de transação nos dois lados
+- **RF26:** Sistema deve alertar (não bloquear) quando saldo for insuficiente para transferência
 
-### 6.7. Site Público
-- **RF30:** Site deve ter landing page com informações do produto
-- **RF31:** Site deve ter botões de "Cadastre-se" e "Login"
-- **RF32:** Site deve ser responsivo e visualmente atrativo
+### 6.7. Cartões de Crédito
+- **RF27:** Usuário deve poder cadastrar múltiplos cartões com banco, limite, dia de fechamento e dia de vencimento
+- **RF28:** Sistema deve calcular fatura atual, limite disponível e próxima data de vencimento
+- **RF29:** Transações vinculadas ao cartão não debitam conta imediatamente — apenas ao pagar a fatura
+- **RF30:** Usuário deve poder pagar a fatura do cartão debitando de uma conta corrente
+- **RF31:** Histórico de faturas anteriores deve ser armazenado com status (aberta/fechada/paga)
 
-### 6.8. Flowchart de UX
+### 6.8. Metas Financeiras
+- **RF32:** Usuário deve poder criar metas com nome, valor alvo, prazo, cor e categoria opcional
+- **RF33:** Usuário deve poder registrar depósitos em metas com débito automático da conta selecionada
+- **RF34:** Sistema deve calcular progresso percentual e valor restante da meta
+- **RF35:** Meta deve ser marcada como concluída automaticamente ao atingir valor alvo
+- **RF36:** Dashboard deve exibir resumo das metas ativas com próximos prazos
 
-```mermaid
-flowchart TD
-    A[Acesso ao Site] --> B{Usuário Autenticado?}
-    B -->|Não| C[Landing Page]
-    B -->|Sim| D[Dashboard]
-    
-    C --> E[Cadastro]
-    C --> F[Login]
-    
-    E --> G[Formulário de Registro]
-    G --> H{Dados Válidos?}
-    H -->|Não| G
-    H -->|Sim| I[Criar Usuário]
-    I --> J[Criar Perfil]
-    J --> D
-    
-    F --> K[Formulário de Login]
-    K --> L{Credenciais Válidas?}
-    L -->|Não| K
-    L -->|Sim| D
-    
-    D --> M[Visualizar Resumo Financeiro]
-    D --> N[Gerenciar Contas]
-    D --> O[Gerenciar Categorias]
-    D --> P[Gerenciar Transações]
-    D --> Q[Gerenciar Perfil]
-    
-    N --> N1[Listar Contas]
-    N1 --> N2[Criar Conta]
-    N1 --> N3[Editar Conta]
-    N1 --> N4[Excluir Conta]
-    
-    O --> O1[Listar Categorias]
-    O1 --> O2[Criar Categoria]
-    O1 --> O3[Editar Categoria]
-    O1 --> O4[Excluir Categoria]
-    
-    P --> P1[Listar Transações]
-    P1 --> P2[Criar Transação]
-    P1 --> P3[Editar Transação]
-    P1 --> P4[Excluir Transação]
-    P1 --> P5[Filtrar Transações]
-    
-    Q --> Q1[Visualizar Perfil]
-    Q1 --> Q2[Editar Perfil]
-    Q1 --> Q3[Alterar Senha]
-    
-    M --> R[Logout]
-    Q --> R
-    R --> C
-```
+### 6.9. Orçamentos por Categoria
+- **RF37:** Usuário deve poder definir limite de gasto mensal por categoria de despesa
+- **RF38:** Sistema deve calcular em tempo real quanto foi gasto e quanto resta do orçamento
+- **RF39:** Barra de progresso deve mudar de cor: verde < 70%, amarelo 70–99%, vermelho >= 100%
+- **RF40:** Sistema deve exibir alerta ao criar despesa que estoure o orçamento da categoria
+- **RF41:** Dashboard deve exibir card com orçamentos críticos (>= 80% utilizados)
+- **RF42:** Sidebar deve exibir badge vermelho com quantidade de orçamentos estourados
+
+### 6.10. Recorrências
+- **RF43:** Usuário deve poder cadastrar despesas e receitas recorrentes (aluguel, salário, assinaturas)
+- **RF44:** Cada recorrência deve ter: nome, tipo, valor, categoria, conta, dia do mês e período de vigência
+- **RF45:** Sistema deve lançar automaticamente transações das recorrências via management command idempotente
+- **RF46:** Dashboard deve alertar quando houver recorrências pendentes de lançamento no mês atual
+
+### 6.11. Parcelamentos
+- **RF47:** Usuário deve poder registrar compras parceladas com valor total, número de parcelas, data inicial, categoria e conta
+- **RF48:** Sistema deve gerar automaticamente todas as parcelas ao criar um plano via signal
+- **RF49:** Usuário deve poder marcar parcelas individualmente como pagas — cria transação vinculada automaticamente
+- **RF50:** Sistema deve exibir progresso do parcelamento com barra visual
+- **RF51:** Dashboard deve exibir parcelas com vencimento no mês atual e valor total
+
+### 6.12. Dashboard
+- **RF52:** Dashboard deve exibir saldo total consolidado de todas as contas
+- **RF53:** Dashboard deve exibir resumo mensal (receitas vs despesas vs saldo)
+- **RF54:** Dashboard deve exibir gráfico de distribuição por categoria (donut Chart.js)
+- **RF55:** Dashboard deve exibir gráfico de evolução mensal — últimos 6 meses (linhas Chart.js)
+- **RF56:** Dashboard deve listar últimas transações
+- **RF57:** Dashboard deve exibir resumo de metas, orçamentos críticos e parcelas do mês
+- **RF58:** Dashboard deve permitir acesso rápido a: nova transação, nova conta, nova categoria, transferência
+
+### 6.13. Relatórios
+- **RF59:** Sistema deve gerar relatórios por período (mês atual, mês anterior, 3 meses, 6 meses, ano)
+- **RF60:** Relatório deve exibir: total receitas, total despesas, saldo líquido, média diária, maior receita e maior despesa
+- **RF61:** Relatório deve exibir distribuição por categoria com barra proporcional
+- **RF62:** Relatório deve exibir gráfico de barras de evolução diária (Chart.js)
+- **RF63:** Relatório deve exibir top 5 maiores despesas e top 5 maiores receitas do período
+- **RF64:** Relatório deve exibir resumo por conta (saldo atual, entradas e saídas no período)
+- **RF65:** Usuário deve poder filtrar relatório por conta específica
+
+### 6.14. Análise Financeira com IA
+- **RF66:** Sistema deve gerar análises financeiras personalizadas via agente LangChain + OpenAI
+- **RF67:** Usuário deve poder solicitar nova análise pela interface (botão no dashboard)
+- **RF68:** A última análise deve ser exibida no dashboard com resumo e link para modal completo
+- **RF69:** Histórico de análises deve ser armazenado em banco de dados
+- **RF70:** Sistema deve exibir mensagem amigável caso OPENAI_API_KEY não esteja configurada
+
+### 6.15. Integração com WhatsApp
+- **RF71:** Usuário deve poder vincular e verificar seu número de WhatsApp via código de 6 dígitos
+- **RF72:** Sistema deve receber mensagens via webhook Twilio e processar com agente LangChain
+- **RF73:** Usuário deve poder registrar transações por texto ("gastei 45 no almoço")
+- **RF74:** Usuário deve poder registrar transações por áudio (transcrito via OpenAI Whisper)
+- **RF75:** Usuário deve poder registrar transações por foto de comprovante (GPT-4o Vision)
+- **RF76:** Agente deve pedir confirmação antes de lançar transação ("Confirma? sim/não")
+- **RF77:** Usuário deve poder consultar saldo, gastos do mês e progresso de metas pelo WhatsApp
+- **RF78:** Sistema deve enviar notificações proativas: transação criada, meta atingida, orçamento estourado
+- **RF79:** Sistema deve enviar resumo financeiro semanal automático toda segunda-feira
+- **RF80:** Plataforma deve ter central de notificações com ícone de sino no navbar e badge de não lidas
+
+### 6.16. Site Público Multi-Página
+- **RF81:** Site deve ter navbar global fixa com dropdown "Features" com 4 páginas dedicadas
+- **RF82:** Landing page deve ter: hero, barra de bancos, proposta de valor, 4 blocos de features alternados, depoimentos e CTA final
+- **RF83:** Cada feature principal deve ter página própria com hero, seções detalhadas e mocks HTML/CSS fiéis:
+  - /features/dashboard/ — Dashboard e Relatórios
+  - /features/whatsapp/ — Integração WhatsApp
+  - /features/ia/ — IA Financeira
+  - /features/metas/ — Metas e Orçamentos
+- **RF84:** Site deve ter página /sobre/ com história, missão, valores e números do produto
+- **RF85:** Site deve ter página /precos/ com dois planos, tabela comparativa e FAQ accordion
+- **RF86:** Usuário autenticado deve ver navbar diferente (link para dashboard, sem CTAs de cadastro)
+- **RF87:** Todas as páginas públicas devem ser responsivas e ter meta tags SEO únicas por página
 
 ---
 
@@ -172,32 +207,42 @@ flowchart TD
 - **RNF01:** Páginas devem carregar em menos de 2 segundos
 - **RNF02:** Operações CRUD devem responder em menos de 1 segundo
 - **RNF03:** Dashboard deve renderizar em menos de 3 segundos
+- **RNF04:** Webhook do WhatsApp deve responder ao Twilio em menos de 500ms
 
 ### 7.2. Usabilidade
-- **RNF04:** Interface deve ser intuitiva e autoexplicativa
-- **RNF05:** Sistema deve ser responsivo (mobile, tablet, desktop)
-- **RNF06:** Feedback visual para todas as ações do usuário
-- **RNF07:** Mensagens de erro devem ser claras e em português
+- **RNF05:** Interface deve ser intuitiva com curva de aprendizado inferior a 5 minutos
+- **RNF06:** Sistema deve ser responsivo (mobile, tablet, desktop)
+- **RNF07:** Feedback visual (toast notifications) para todas as ações do usuário
+- **RNF08:** Mensagens de erro devem ser claras e em português
 
-### 7.3. Segurança
-- **RNF08:** Senhas devem ser armazenadas com hash seguro
-- **RNF09:** Sessões devem expirar após inatividade
-- **RNF10:** Validação de dados em frontend e backend
-- **RNF11:** Proteção CSRF em todos os formulários
+### 7.3. Design
+- **RNF09:** Paleta oficial: fundo #0a0a0a, cards #111111, bordas #262626, primária #22c55e
+- **RNF10:** Tipografia: Inter (Google Fonts) — weight 300 corpo, 600 títulos
+- **RNF11:** Números financeiros em font-mono
+- **RNF12:** Visual minimalista — sem poluição visual, muito espaço negativo
+- **RNF13:** Hover states com transição de 150ms
+- **RNF14:** Mocks de UI no site público em HTML/CSS puro — sem imagens externas
 
-### 7.4. Manutenibilidade
-- **RNF12:** Código deve seguir PEP 8
-- **RNF13:** Código deve usar aspas simples
-- **RNF14:** Separação de responsabilidades por apps Django
-- **RNF15:** Código em inglês, interface em português
+### 7.4. Segurança
+- **RNF15:** Senhas armazenadas com hash seguro
+- **RNF16:** Sessões expiram após inatividade
+- **RNF17:** Proteção CSRF em todos os formulários
+- **RNF18:** Verificação de ownership em todas as operações
+- **RNF19:** Webhook WhatsApp deve validar assinatura Twilio
+- **RNF20:** HTTPS obrigatório em produção
 
-### 7.5. Escalabilidade
-- **RNF16:** Arquitetura deve suportar até 1000 usuários simultâneos
-- **RNF17:** Banco de dados deve suportar milhões de transações
+### 7.5. Manutenibilidade
+- **RNF21:** Código deve seguir PEP 8 e usar aspas simples
+- **RNF22:** Separação de responsabilidades por apps Django
+- **RNF23:** Código em inglês, interface em português
 
-### 7.6. Compatibilidade
-- **RNF18:** Suporte aos navegadores Chrome, Firefox, Safari, Edge (últimas 2 versões)
-- **RNF19:** Compatível com dispositivos iOS e Android
+### 7.6. Escalabilidade
+- **RNF24:** Arquitetura deve suportar até 1000 usuários simultâneos
+- **RNF25:** Banco de dados deve suportar milhões de transações com índices adequados
+
+### 7.7. Compatibilidade
+- **RNF26:** Suporte aos navegadores Chrome, Firefox, Safari, Edge (últimas 2 versões)
+- **RNF27:** Compatível com dispositivos iOS e Android
 
 ---
 
@@ -207,724 +252,186 @@ flowchart TD
 
 **Backend:**
 - Python 3.11+
-- Django 5.0+
-- SQLite3 (banco de dados)
+- Django 5.2+
+- SQLite3 (desenvolvimento) / PostgreSQL (produção futura)
+- LangChain 1.0+ e OpenAI (agente de IA, Whisper e Vision)
+- Twilio (webhook e envio de mensagens WhatsApp)
 
 **Frontend:**
 - Django Template Language
-- TailwindCSS 3.x
-- JavaScript vanilla (minimal)
+- TailwindCSS 4.1+
+- JavaScript ES6+ modular (um arquivo por feature)
+- Chart.js (gráficos)
+- Lucide Icons via CDN
 
 **Infraestrutura:**
 - Servidor de desenvolvimento Django
-- Sem containerização (Docker em sprints finais)
+- ngrok (desenvolvimento do webhook WhatsApp)
+- Docker (Sprint 21)
+- Cron jobs: generate_recurrences (diário) e send_weekly_summaries (semanal)
 
-### 8.2. Estrutura de Dados
+### 8.2. Estrutura de Apps
+
+```
+finova/
+├── core/          — configuração, dashboard, views públicas
+├── users/         — autenticação email-based
+├── profiles/      — perfil do usuário (1:1 com User)
+├── accounts/      — contas bancárias, cartões, transferências
+├── categories/    — categorias (padrão + personalizadas)
+├── transactions/  — receitas e despesas
+├── goals/         — metas financeiras
+├── budgets/       — orçamentos por categoria
+├── recurrences/   — despesas e receitas fixas recorrentes
+├── installments/  — parcelamentos
+├── reports/       — relatórios por período
+├── ai/            — agente de IA, análise financeira
+└── whatsapp/      — integração WhatsApp, notificações
+```
+
+### 8.3. Modelo de Dados
+
+```
+User (email-based)
+  ├── Profile (1:1)
+  ├── WhatsAppProfile (1:1)
+  ├── Account (1:N) — bank_code + is_default
+  ├── CreditCard (1:N)
+  │     └── CardBill (1:N)
+  ├── Category (1:N)
+  ├── Transaction (1:N) — → Account ou CreditCard
+  ├── Goal (1:N)
+  ├── Budget (1:N) — por categoria/mês
+  ├── Recurrence (1:N)
+  ├── InstallmentPlan (1:N)
+  │     └── Installment (1:N) — → Transaction
+  ├── AIAnalysis (1:N)
+  └── Notification (1:N)
+```
+
+### 8.4. Diagrama ER
 
 ```mermaid
 erDiagram
     User ||--o| Profile : has
+    User ||--o| WhatsAppProfile : links
     User ||--o{ Account : owns
+    User ||--o{ CreditCard : owns
     User ||--o{ Category : creates
-    Account ||--o{ Transaction : contains
-    Category ||--o{ Transaction : classifies
-    
-    User {
-        int id PK
-        string email UK
-        string password
-        boolean is_active
-        datetime created_at
-        datetime updated_at
-    }
-    
-    Profile {
-        int id PK
-        int user_id FK
-        string first_name
-        string last_name
-        string phone
-        date birth_date
-        datetime created_at
-        datetime updated_at
-    }
-    
+    User ||--o{ Transaction : records
+    User ||--o{ Goal : sets
+    User ||--o{ Budget : defines
+    User ||--o{ Recurrence : schedules
+    User ||--o{ InstallmentPlan : creates
+    User ||--o{ AIAnalysis : receives
+    User ||--o{ Notification : receives
+
     Account {
         int id PK
         int user_id FK
         string name
         string account_type
-        string bank
+        string bank_code
         decimal initial_balance
         decimal current_balance
-        boolean is_active
-        datetime created_at
-        datetime updated_at
+        bool is_default
+        bool is_active
     }
-    
-    Category {
+
+    CreditCard {
         int id PK
         int user_id FK
         string name
-        string category_type
+        string bank_code
+        decimal credit_limit
+        int closing_day
+        int due_day
         string color
-        boolean is_default
-        boolean is_active
-        datetime created_at
-        datetime updated_at
+        bool is_active
     }
-    
+
+    CardBill {
+        int id PK
+        int credit_card_id FK
+        int payment_account_id FK
+        date reference_month
+        date closing_date
+        date due_date
+        decimal total_amount
+        string status
+        date payment_date
+    }
+
     Transaction {
         int id PK
         int user_id FK
         int account_id FK
         int category_id FK
+        int credit_card_id FK
         string transaction_type
         decimal amount
         date date
-        string description
-        datetime created_at
-        datetime updated_at
+        text description
     }
-```
 
-### 8.3. Diagrama de Apps
+    Goal {
+        int id PK
+        int user_id FK
+        int category_id FK
+        string name
+        decimal target_amount
+        decimal current_amount
+        date deadline
+        string color
+        bool is_completed
+    }
+
+    Budget {
+        int id PK
+        int user_id FK
+        int category_id FK
+        decimal amount
+        date month
+    }
+
+    Recurrence {
+        int id PK
+        int user_id FK
+        int category_id FK
+        int account_id FK
+        string name
+        string transaction_type
+        decimal amount
+        int day_of_month
+        date start_date
+        date end_date
+        bool is_active
+        date last_generated_date
+    }
+
+    InstallmentPlan {
+        int id PK
+        int user_id FK
+        int category_id FK
+        int account_id FK
+        string name
+        decimal total_amount
+        int installment_count
+        decimal installment_amount
+        date start_date
+    }
+
+    Installment {
+        int id PK
+        int plan_id FK
+        int transaction_id FK
+        int number
+        date due_date
+        decimal amount
+        string status
+        date paid_date
+    }
 
-```mermaid
-graph LR
-    A[core] --> B[users]
-    B --> C[profiles]
-    B --> D[accounts]
-    B --> E[categories]
-    B --> F[transactions]
-    D --> F
-    E --> F
-```
-
----
-
-## 9. Design System
-
-### 9.1. Paleta de Cores
-
-**Cores Primárias:**
-```css
-primary-600: #7C3AED (Roxo vibrante)
-primary-700: #6D28D9
-primary-800: #5B21B6
-
-secondary-500: #06B6D4 (Ciano)
-secondary-600: #0891B2
-secondary-700: #0E7490
-
-accent-500: #F59E0B (Âmbar)
-accent-600: #D97706
-```
-
-**Cores de Fundo (Dark Theme):**
-```css
-bg-primary: #0F172A (Slate 900)
-bg-secondary: #1E293B (Slate 800)
-bg-tertiary: #334155 (Slate 700)
-```
-
-**Cores de Texto:**
-```css
-text-primary: #F1F5F9 (Slate 100)
-text-secondary: #CBD5E1 (Slate 300)
-text-muted: #94A3B8 (Slate 400)
-```
-
-**Cores de Status:**
-```css
-success: #10B981 (Green 500)
-error: #EF4444 (Red 500)
-warning: #F59E0B (Amber 500)
-info: #3B82F6 (Blue 500)
-```
-
-**Gradientes:**
-```css
-gradient-primary: from-primary-600 to-secondary-600
-gradient-accent: from-accent-500 to-primary-600
-gradient-dark: from-slate-900 to-slate-800
-```
-
-### 9.2. Tipografia
-
-**Fontes:**
-- **Principal:** Inter (Google Fonts)
-- **Monospace:** JetBrains Mono (para valores monetários)
-
-**Escalas de Texto:**
-```css
-text-xs: 0.75rem (12px)
-text-sm: 0.875rem (14px)
-text-base: 1rem (16px)
-text-lg: 1.125rem (18px)
-text-xl: 1.25rem (20px)
-text-2xl: 1.5rem (24px)
-text-3xl: 1.875rem (30px)
-text-4xl: 2.25rem (36px)
-```
-
-### 9.3. Componentes
-
-**Botões:**
-```html
-<!-- Botão Primário -->
-<button class="px-6 py-3 bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 text-white font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-200">
-    Texto do Botão
-</button>
-
-<!-- Botão Secundário -->
-<button class="px-6 py-3 bg-slate-700 hover:bg-slate-600 text-slate-100 font-medium rounded-lg border border-slate-600 transition-all duration-200">
-    Texto do Botão
-</button>
-
-<!-- Botão Outline -->
-<button class="px-6 py-3 border-2 border-primary-600 text-primary-400 hover:bg-primary-600 hover:text-white font-medium rounded-lg transition-all duration-200">
-    Texto do Botão
-</button>
-```
-
-**Inputs e Forms:**
-```html
-<!-- Input Text -->
-<div class="mb-4">
-    <label class="block text-slate-300 text-sm font-medium mb-2">
-        Label do Campo
-    </label>
-    <input type="text" 
-           class="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent transition-all duration-200"
-           placeholder="Digite aqui...">
-</div>
-
-<!-- Select -->
-<select class="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-slate-100 focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent">
-    <option>Opção 1</option>
-</select>
-
-<!-- Textarea -->
-<textarea class="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent resize-none" rows="4"></textarea>
-```
-
-**Cards:**
-```html
-<div class="bg-slate-800 rounded-xl shadow-lg border border-slate-700 p-6 hover:border-primary-600 transition-all duration-200">
-    <h3 class="text-xl font-bold text-slate-100 mb-2">Título do Card</h3>
-    <p class="text-slate-300">Conteúdo do card...</p>
-</div>
-
-<!-- Card com Gradiente -->
-<div class="bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl shadow-xl border border-slate-700 p-6">
-    <div class="flex items-center justify-between">
-        <div>
-            <p class="text-slate-400 text-sm">Label</p>
-            <p class="text-3xl font-bold text-slate-100 mt-1">R$ 1.234,56</p>
-        </div>
-        <div class="p-3 bg-primary-600 rounded-lg">
-            <!-- Icon -->
-        </div>
-    </div>
-</div>
-```
-
-**Tabelas:**
-```html
-<div class="overflow-x-auto bg-slate-800 rounded-xl border border-slate-700">
-    <table class="w-full">
-        <thead class="bg-slate-900 border-b border-slate-700">
-            <tr>
-                <th class="px-6 py-4 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">Coluna 1</th>
-                <th class="px-6 py-4 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">Coluna 2</th>
-            </tr>
-        </thead>
-        <tbody class="divide-y divide-slate-700">
-            <tr class="hover:bg-slate-700 transition-colors">
-                <td class="px-6 py-4 text-sm text-slate-100">Dado 1</td>
-                <td class="px-6 py-4 text-sm text-slate-100">Dado 2</td>
-            </tr>
-        </tbody>
-    </table>
-</div>
-```
-
-**Alertas:**
-```html
-<!-- Success -->
-<div class="bg-green-900/30 border border-green-700 rounded-lg p-4 flex items-center">
-    <div class="text-green-400 mr-3">✓</div>
-    <p class="text-green-100">Mensagem de sucesso</p>
-</div>
-
-<!-- Error -->
-<div class="bg-red-900/30 border border-red-700 rounded-lg p-4 flex items-center">
-    <div class="text-red-400 mr-3">✗</div>
-    <p class="text-red-100">Mensagem de erro</p>
-</div>
-```
-
-**Navegação:**
-```html
-<!-- Navbar -->
-<nav class="bg-slate-900 border-b border-slate-800">
-    <div class="container mx-auto px-4">
-        <div class="flex items-center justify-between h-16">
-            <div class="flex items-center">
-                <span class="text-2xl font-bold bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
-                    Finanpy
-                </span>
-            </div>
-            <div class="flex items-center space-x-4">
-                <a href="#" class="text-slate-300 hover:text-primary-400 px-3 py-2 rounded-lg transition-colors">
-                    Link
-                </a>
-            </div>
-        </div>
-    </div>
-</nav>
-
-<!-- Sidebar -->
-<aside class="w-64 bg-slate-900 border-r border-slate-800 h-screen fixed left-0 top-0">
-    <div class="p-6">
-        <h2 class="text-xl font-bold text-slate-100">Menu</h2>
-        <nav class="mt-6 space-y-2">
-            <a href="#" class="flex items-center px-4 py-3 text-slate-300 hover:bg-slate-800 hover:text-primary-400 rounded-lg transition-all">
-                Item 1
-            </a>
-        </nav>
-    </div>
-</aside>
-```
-
-### 9.4. Grids e Layout
-
-**Container:**
-```html
-<div class="container mx-auto px-4 sm:px-6 lg:px-8">
-    <!-- Conteúdo -->
-</div>
-```
-
-**Grid Responsivo:**
-```html
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-    <!-- Cards -->
-</div>
-```
-
-**Dashboard Layout:**
-```html
-<div class="min-h-screen bg-slate-900">
-    <!-- Navbar -->
-    <div class="flex">
-        <!-- Sidebar -->
-        <main class="flex-1 p-6 ml-64">
-            <!-- Conteúdo Principal -->
-        </main>
-    </div>
-</div>
-```
-
-### 9.5. Espaçamentos e Sombras
-
-**Espaçamentos:**
-- Pequeno: p-2, p-3, p-4 (8px, 12px, 16px)
-- Médio: p-6, p-8 (24px, 32px)
-- Grande: p-10, p-12 (40px, 48px)
-
-**Sombras:**
-```css
-shadow-sm: pequena
-shadow-md: média
-shadow-lg: grande
-shadow-xl: extra grande
-shadow-2xl: muito grande
-```
-
----
-
-## 10. User Stories
-
-### Épico 1: Autenticação e Perfil
-
-**US01 - Cadastro de Usuário**
-- **Como** visitante
-- **Quero** criar uma conta no sistema
-- **Para** começar a gerenciar minhas finanças
-
-**Critérios de Aceite:**
-- [ ] Formulário deve solicitar: email, senha, confirmação de senha
-- [ ] Email deve ser validado (formato correto)
-- [ ] Senha deve ter mínimo 8 caracteres
-- [ ] Sistema deve exibir mensagem de erro para emails já cadastrados
-- [ ] Após cadastro, usuário deve ser redirecionado para dashboard
-- [ ] Perfil básico deve ser criado automaticamente
-
-**US02 - Login no Sistema**
-- **Como** usuário cadastrado
-- **Quero** fazer login com meu email
-- **Para** acessar minhas informações financeiras
-
-**Critérios de Aceite:**
-- [ ] Login deve usar email (não username)
-- [ ] Sistema deve validar credenciais
-- [ ] Mensagem de erro clara para credenciais inválidas
-- [ ] Após login, usuário deve ser redirecionado para dashboard
-- [ ] Sessão deve ser mantida
-
-**US03 - Gestão de Perfil**
-- **Como** usuário logado
-- **Quero** visualizar e editar meus dados pessoais
-- **Para** manter minhas informações atualizadas
-
-**Critérios de Aceite:**
-- [ ] Usuário pode visualizar: nome, email, telefone, data de nascimento
-- [ ] Usuário pode editar dados pessoais
-- [ ] Sistema deve validar dados antes de salvar
-- [ ] Mensagem de sucesso após atualização
-- [ ] Opção de alterar senha disponível
-
-### Épico 2: Gestão de Contas Bancárias
-
-**US04 - Cadastrar Conta Bancária**
-- **Como** usuário logado
-- **Quero** cadastrar minhas contas bancárias
-- **Para** organizar meus recursos financeiros
-
-**Critérios de Aceite:**
-- [ ] Formulário deve solicitar: nome, tipo, banco, saldo inicial
-- [ ] Tipos disponíveis: Conta Corrente, Poupança, Carteira, Investimentos
-- [ ] Saldo inicial pode ser positivo ou negativo
-- [ ] Conta criada deve aparecer na listagem
-- [ ] Dashboard deve refletir nova conta
-
-**US05 - Listar Contas**
-- **Como** usuário logado
-- **Quero** visualizar todas minhas contas
-- **Para** ter visão geral dos meus recursos
-
-**Critérios de Aceite:**
-- [ ] Listagem deve mostrar: nome, banco, tipo, saldo atual
-- [ ] Contas devem ser ordenadas por nome
-- [ ] Deve mostrar saldo total de todas as contas
-- [ ] Opções de editar e excluir visíveis
-- [ ] Layout responsivo
-
-**US06 - Editar Conta**
-- **Como** usuário logado
-- **Quero** editar dados de uma conta
-- **Para** corrigir informações ou atualizá-las
-
-**Critérios de Aceite:**
-- [ ] Formulário deve vir preenchido com dados atuais
-- [ ] Todos os campos devem ser editáveis exceto saldo atual
-- [ ] Validações devem ser aplicadas
-- [ ] Mensagem de sucesso após salvar
-- [ ] Listagem deve refletir alterações
-
-**US07 - Excluir Conta**
-- **Como** usuário logado
-- **Quero** excluir uma conta
-- **Para** remover contas que não uso mais
-
-**Critérios de Aceite:**
-- [ ] Sistema deve solicitar confirmação antes de excluir
-- [ ] Exclusão deve ser lógica (is_active = False)
-- [ ] Transações relacionadas devem ser mantidas
-- [ ] Mensagem de sucesso após exclusão
-- [ ] Conta não deve mais aparecer na listagem
-
-### Épico 3: Gestão de Categorias
-
-**US08 - Visualizar Categorias**
-- **Como** usuário logado
-- **Quero** visualizar categorias disponíveis
-- **Para** conhecer as opções de classificação
-
-**Critérios de Aceite:**
-- [ ] Sistema deve ter categorias padrão pré-cadastradas
-- [ ] Categorias devem ser separadas por tipo (receita/despesa)
-- [ ] Cada categoria deve ter cor identificadora
-- [ ] Usuário pode ver categorias padrão e personalizadas
-
-**US09 - Criar Categoria Personalizada**
-- **Como** usuário logado
-- **Quero** criar categorias customizadas
-- **Para** classificar transações de forma personalizada
-
-**Critérios de Aceite:**
-- [ ] Formulário deve solicitar: nome, tipo, cor
-- [ ] Nome deve ser único por usuário
-- [ ] Tipos disponíveis: Receita, Despesa
-- [ ] Seletor de cores deve estar disponível
-- [ ] Categoria criada deve aparecer na listagem
-
-**US10 - Editar Categoria**
-- **Como** usuário logado
-- **Quero** editar minhas categorias personalizadas
-- **Para** ajustar nome ou cor
-
-**Critérios de Aceite:**
-- [ ] Apenas categorias personalizadas podem ser editadas
-- [ ] Formulário deve vir preenchido
-- [ ] Validações devem ser aplicadas
-- [ ] Alterações não afetam transações existentes
-
-**US11 - Excluir Categoria**
-- **Como** usuário logado
-- **Quero** excluir categorias que não uso
-- **Para** manter listagem organizada
-
-**Critérios de Aceite:**
-- [ ] Apenas categorias sem transações podem ser excluídas
-- [ ] Sistema deve verificar uso antes de permitir exclusão
-- [ ] Mensagem clara caso categoria esteja em uso
-- [ ] Confirmação obrigatória
-
-### Épico 4: Gestão de Transações
-
-**US12 - Registrar Transação**
-- **Como** usuário logado
-- **Quero** registrar receitas e despesas
-- **Para** controlar meu fluxo de caixa
-
-**Critérios de Aceite:**
-- [ ] Formulário deve solicitar: tipo, valor, data, categoria, conta, descrição
-- [ ] Tipos: Receita, Despesa
-- [ ] Valor deve aceitar decimais (formato brasileiro)
-- [ ] Data não pode ser futura
-- [ ] Apenas categorias do tipo correto devem aparecer
-- [ ] Saldo da conta deve ser atualizado automaticamente
-- [ ] Descrição é opcional
-
-**US13 - Listar Transações**
-- **Como** usuário logado
-- **Quero** visualizar minhas transações
-- **Para** acompanhar meu histórico financeiro
-
-**Critérios de Aceite:**
-- [ ] Listagem deve mostrar: data, descrição, categoria, conta, valor
-- [ ] Transações ordenadas por data (mais recente primeiro)
-- [ ] Receitas e despesas devem ter cores diferentes
-- [ ] Paginação disponível
-- [ ] Opções de editar e excluir visíveis
-
-**US14 - Filtrar Transações**
-- **Como** usuário logado
-- **Quero** filtrar transações por período, categoria ou tipo
-- **Para** encontrar informações específicas
-
-**Critérios de Aceite:**
-- [ ] Filtros disponíveis: data inicial, data final, categoria, tipo, conta
-- [ ] Filtros devem funcionar em conjunto
-- [ ] Botão para limpar filtros
-- [ ] Resultado deve atualizar automaticamente
-- [ ] Contador de registros encontrados
-
-**US15 - Editar Transação**
-- **Como** usuário logado
-- **Quero** editar uma transação
-- **Para** corrigir erros ou atualizar informações
-
-**Critérios de Aceite:**
-- [ ] Formulário deve vir preenchido com dados atuais
-- [ ] Todos os campos devem ser editáveis
-- [ ] Saldo da conta deve ser recalculado
-- [ ] Validações devem ser aplicadas
-- [ ] Mensagem de sucesso após salvar
-
-**US16 - Excluir Transação**
-- **Como** usuário logado
-- **Quero** excluir uma transação
-- **Para** remover registros incorretos
-
-**Critérios de Aceite:**
-- [ ] Sistema deve solicitar confirmação
-- [ ] Saldo da conta deve ser ajustado
-- [ ] Mensagem de sucesso após exclusão
-- [ ] Transação não deve mais aparecer na listagem
-
-### Épico 5: Dashboard e Visualizações
-
-**US17 - Visualizar Dashboard**
-- **Como** usuário logado
-- **Quero** ver resumo das minhas finanças
-- **Para** ter visão rápida da minha situação financeira
-
-**Critérios de Aceite:**
-- [ ] Dashboard deve mostrar saldo total consolidado
-- [ ] Resumo mensal: total de receitas e despesas
-- [ ] Gráfico de distribuição por categorias
-- [ ] Lista das últimas 5 transações
-- [ ] Cards com informações destacadas
-- [ ] Design responsivo com gradientes
-
-**US18 - Acompanhar Evolução**
-- **Como** usuário logado
-- **Quero** ver evolução do saldo ao longo do tempo
-- **Para** identificar tendências
-
-**Critérios de Aceite:**
-- [ ] Gráfico de linha mostrando evolução mensal
-- [ ] Período selecionável (3, 6, 12 meses)
-- [ ] Diferenciação visual entre receitas e despesas
-- [ ] Valores formatados em reais
-
-### Épico 6: Site Público
-
-**US19 - Acessar Landing Page**
-- **Como** visitante
-- **Quero** conhecer o produto
-- **Para** decidir se vou me cadastrar
-
-**Critérios de Aceite:**
-- [ ] Página deve apresentar benefícios do sistema
-- [ ] Design atrativo com gradientes e tema escuro
-- [ ] Botões de "Cadastre-se" e "Login" visíveis
-- [ ] Layout responsivo
-- [ ] Carregamento rápido
-
----
-
-## 11. Métricas de Sucesso
-
-### 11.1. KPIs de Produto
-
-**Adoção:**
-- Taxa de conversão de visitantes para cadastros: >15%
-- Número de usuários ativos mensais (MAU): 100+ no primeiro trimestre
-- Crescimento mensal de usuários: >20%
-
-**Engajamento:**
-- Frequência de uso: 3+ sessões por semana
-- Tempo médio por sessão: 5-10 minutos
-- Taxa de retenção D7: >40%
-- Taxa de retenção D30: >60%
-
-**Funcionalidades:**
-- Transações cadastradas por usuário/mês: >20
-- Contas cadastradas por usuário: 2-4
-- Categorias personalizadas criadas: >2 por usuário
-
-### 11.2. KPIs de Qualidade
-
-**Performance:**
-- Tempo de carregamento de páginas: <2s
-- Taxa de erro: <1%
-- Disponibilidade: >99%
-
-**Usabilidade:**
-- Taxa de conclusão de tarefas: >90%
-- Tempo para cadastrar primeira transação: <2 minutos
-- Taxa de abandono no cadastro: <20%
-
-### 11.3. KPIs de Negócio
-
-**Crescimento:**
-- Custo de aquisição por usuário (CAC): Meta definir
-- Lifetime Value (LTV): Meta definir
-- Churn rate: <10% ao mês
-
----
-
-## 12. Riscos e Mitigações
-
-### Risco 1: Complexidade de Implementação
-**Probabilidade:** Média | **Impacto:** Alto
-- **Descrição:** Projeto pode ficar mais complexo que o planejado
-- **Mitigação:** Seguir princípio anti-overengineering, revisar escopo constantemente
-
-### Risco 2: Performance com Volume de Dados
-**Probabilidade:** Média | **Impacto:** Médio
-- **Descrição:** SQLite pode ter limitações com muitas transações
-- **Mitigação:** Implementar paginação, índices adequados, considerar migração para PostgreSQL futuramente
-
-### Risco 3: Segurança de Dados
-**Probabilidade:** Baixa | **Impacto:** Alto
-- **Descrição:** Exposição de dados financeiros sensíveis
-- **Mitigação:** Seguir boas práticas Django, validações robustas, HTTPS obrigatório em produção
-
-### Risco 4: Experiência de Usuário
-**Probabilidade:** Média | **Impacto:** Médio
-- **Descrição:** Interface pode não ser intuitiva o suficiente
-- **Mitigação:** Testes com usuários reais, iterações no design, feedback contínuo
-
-### Risco 5: Prazo de Entrega
-**Probabilidade:** Média | **Impacto:** Médio
-- **Descrição:** Sprints podem atrasar por imprevistos
-- **Mitigação:** Buffer de tempo em cada sprint, priorização clara de funcionalidades
-
-### Risco 6: Adoção de Usuários
-**Probabilidade:** Média | **Impacto:** Alto
-- **Descrição:** Usuários podem não adotar o sistema
-- **Mitigação:** Landing page atrativa, onboarding simplificado, valor claro desde primeiro uso
-
----
-
-
-
-## 13. Agente de IA Financeiro
-
-### 13.1. Objetivo e Motivação
-
-O **Agente de IA Financeiro** é uma funcionalidade de análise inteligente que utiliza modelos de linguagem para gerar insights personalizados sobre a saúde financeira de cada usuário. O objetivo é transformar dados brutos de transações em recomendações práticas e contextualizadas, elevando o Finanpy de um simples sistema de controle para um verdadeiro assistente financeiro pessoal.
-
-**Motivação:**
-- Usuários têm dados financeiros ricos, mas dificuldade em extrair padrões e conclusões
-- Análises manuais são trabalhosas e propensas a vieses cognitivos
-- IA permite personalização em escala, entregando valor único a cada usuário
-- Diferencial competitivo relevante frente a outros sistemas de finanças pessoais
-
-### 13.2. Escopo da Funcionalidade
-
-- Um **agente de IA especializado** analisa os dados financeiros do usuário e gera insights personalizados
-- Cada usuário recebe **análises exclusivas e individuais** baseadas em seu próprio histórico
-- A **última análise** é exibida no **dashboard** para acesso imediato
-- **Análises anteriores** são armazenadas em banco de dados com histórico completo
-- Execução manual via **Django Command** (`python manage.py run_finance_analysis`)
-- Nenhum endpoint HTTP ou agendamento automático nesta fase inicial
-
-### 13.3. Fluxo de Funcionamento
-
-```mermaid
-flowchart TD
-    A[Django Command: run_finance_analysis] --> B[AnalysisService]
-    B --> C[Buscar todos os usuários ativos]
-    C --> D[Para cada usuário]
-    D --> E[Coletar dados financeiros via Tools]
-    E --> F[Transações do mês atual]
-    E --> G[Receitas e despesas por categoria]
-    E --> H[Saldo das contas]
-    F & G & H --> I[LangChain Agent - GPT-5-mini]
-    I --> J[Gerar análise e insights personalizados]
-    J --> K[Salvar AIAnalysis no banco de dados]
-    K --> L[Exibir última análise no Dashboard]
-```
-
-### 13.4. Modelo de Dados — AIAnalysis
-
-```python
-class AIAnalysis(models.Model):
-    user          = ForeignKey(User, on_delete=CASCADE)
-    content       = TextField()           # texto completo gerado pela IA
-    summary       = CharField(max_length=500)  # resumo curto para o dashboard
-    period_start  = DateField()           # início do período analisado
-    period_end    = DateField()           # fim do período analisado
-    tokens_used   = IntegerField()        # custo em tokens da chamada
-    created_at    = DateTimeField(auto_now_add=True)
-```
-
-**Relações:**
-```
-User (1) ──── (N) AIAnalysis
-```
-
-**Diagrama ER atualizado:**
-```mermaid
-erDiagram
-    User ||--o{ AIAnalysis : receives
     AIAnalysis {
         int id PK
         int user_id FK
@@ -935,92 +442,164 @@ erDiagram
         int tokens_used
         datetime created_at
     }
+
+    WhatsAppProfile {
+        int id PK
+        int user_id FK
+        string phone_number
+        bool is_verified
+        datetime verified_at
+    }
+
+    Notification {
+        int id PK
+        int user_id FK
+        string title
+        string message
+        string notification_type
+        bool is_read
+        datetime created_at
+    }
 ```
 
-### 13.5. Stack Tecnológica da Funcionalidade
+---
 
-| Componente | Tecnologia | Versão |
-|------------|-----------|--------|
-| Framework de agente | LangChain | 1.0 |
-| Modelo de linguagem | OpenAI GPT | gpt-4o-mini |
-| Integração Django | Python-dotenv + settings | — |
-| Persistência | SQLite3 via Django ORM | — |
-| Execução | Django Management Command | — |
+## 9. Design System
 
-**Dependências adicionais:**
+### 9.1. Paleta de Cores
+
+| Token | Valor | Uso |
+|-------|-------|-----|
+| bg-primary | #0a0a0a | Fundo principal |
+| bg-card | #111111 | Cards e superfícies |
+| bg-elevated | #1a1a1a | Modais e dropdowns |
+| border-subtle | #262626 | Bordas |
+| accent | #22c55e | Primária verde |
+| accent-hover | #16a34a | Verde no hover |
+| accent-subtle | rgba(34,197,94,0.08) | Verde suave |
+| text-primary | #f5f5f5 | Texto principal |
+| text-secondary | #a3a3a3 | Texto secundário |
+| text-tertiary | #525252 | Texto auxiliar |
+
+### 9.2. Tipografia
+- Fonte: **Inter** via Google Fonts
+- Corpo: font-weight 300
+- Títulos: font-weight 600
+- Números financeiros: **font-mono**
+
+### 9.3. Componentes Globais
+- **Botões:** primary (verde sólido), secondary (outline verde), ghost
+- **Cards:** fundo #111111, 1px border #262626
+- **Inputs:** fundo #111, borda #262626, focus borda verde
+- **Barras de progresso:** verde → amarelo → vermelho por threshold
+- **Ícones:** Lucide Icons via CDN
+- **Toast notifications:** posição fixed bottom-right, timeout automático
+
+### 9.4. Bancos Suportados
+
+| Código | Nome | Arquivo |
+|--------|------|---------|
+| nubank | Nubank | static/images/banks/nubank.svg |
+| itau | Itaú | static/images/banks/itau.svg |
+| bradesco | Bradesco | static/images/banks/bradesco.svg |
+| santander | Santander | static/images/banks/santander.svg |
+| bb | Banco do Brasil | static/images/banks/bb.svg |
+| caixa | Caixa Econômica Federal | static/images/banks/caixa.svg |
+| inter | Banco Inter | static/images/banks/inter.svg |
+| c6 | C6 Bank | static/images/banks/c6.svg |
+| other | Outro | ícone genérico |
+
+---
+
+## 10. Fluxo de UX
+
+```mermaid
+flowchart TD
+    A[Acesso ao Site] --> B{Autenticado?}
+    B -->|Não| C[Site Público]
+    B -->|Sim| D[Dashboard]
+
+    C --> C1[Início]
+    C --> C2[Features dropdown]
+    C --> C3[Sobre]
+    C --> C4[Preços]
+    C2 --> C2a[Dashboard e Relatórios]
+    C2 --> C2b[WhatsApp]
+    C2 --> C2c[IA Financeira]
+    C2 --> C2d[Metas e Orçamentos]
+
+    C1 --> E[Cadastro] --> D
+    C1 --> F[Login] --> D
+
+    D --> DA[Contas e Cartões]
+    D --> DB[Transações]
+    D --> DC[Metas]
+    D --> DD[Orçamentos]
+    D --> DE[Recorrências]
+    D --> DF[Parcelamentos]
+    D --> DG[Relatórios]
+    D --> DH[Análise IA]
+    D --> DI[Perfil e WhatsApp]
+    D --> DJ[Notificações]
+    D --> Logout[Logout → Landing]
+
+    WA[WhatsApp] --> WB[Twilio Webhook]
+    WB --> WC[Agente LangChain]
+    WC --> WD[Confirmação]
+    WD --> WE[Transação criada]
+    WE --> DJ
 ```
-langchain>=1.0.0
-langchain-openai>=0.3.0
-openai>=1.0.0
+
+---
+
+## 11. Especificações de Features Complexas
+
+### 11.1. Integração com WhatsApp
+
+**Stack:** Twilio + LangChain + OpenAI (Whisper + GPT-4o Vision)
+
+**Handlers:**
+| Handler | Input | Processamento |
+|---------|-------|---------------|
+| TextMessageHandler | Texto livre | LangChain Agent |
+| AudioMessageHandler | URL áudio | OpenAI Whisper → TextHandler |
+| ImageMessageHandler | URL imagem | GPT-4o Vision → TextHandler |
+
+**Notificações proativas:**
+- Transação registrada na plataforma
+- Orçamento de categoria estourado
+- Meta atingida
+- Resumo semanal (toda segunda-feira)
+- Parcela vencendo em 3 dias
+
+**Variáveis de ambiente:**
+```env
+TWILIO_ACCOUNT_SID=AC...
+TWILIO_AUTH_TOKEN=...
+TWILIO_WHATSAPP_NUMBER=whatsapp:+14155238886
 ```
 
-### 13.6. Estrutura da App `ai`
+### 11.2. Agente de IA Financeiro
 
-```
-ai/
-├── __init__.py
-├── apps.py
-├── models.py                          # modelo AIAnalysis
-├── admin.py                           # registro no admin
-├── agents/
-│   ├── finance_insight_agent.py       # agente LangChain com tools financeiras
-│   └── ai_integration_expert.md      # referência técnica para criação de agentes
-├── services/
-│   └── analysis_service.py           # orquestra a análise e chama o agente
-└── management/
-    └── commands/
-        └── run_finance_analysis.py    # Django Command para execução
-```
+**Stack:** LangChain 1.0+ + OpenAI gpt-4o-mini
 
-**Responsabilidades de cada módulo:**
-
-- **`models.py`** — Define `AIAnalysis` e sua relação com `User`
-- **`agents/finance_insight_agent.py`** — Configura o agente LangChain com tools de acesso ao banco (transações, categorias, contas) e faz a chamada ao GPT
-- **`agents/ai_integration_expert.md`** — Documento de referência técnica (agente de código) com padrões e boas práticas para criação de agentes no projeto
-- **`services/analysis_service.py`** — Camada de serviço que busca usuários, chama o agente e persiste a análise
-- **`management/commands/run_finance_analysis.py`** — Ponto de entrada para execução manual ou futura automação
-
-### 13.7. Tools do Agente
-
-O agente terá acesso a tools específicas que consultam o banco de dados relacional:
-
+**Tools do agente de análise:**
 | Tool | Descrição |
 |------|-----------|
-| `get_user_transactions` | Busca transações do usuário em um período |
-| `get_category_summary` | Agrega gastos e receitas por categoria |
-| `get_account_balances` | Retorna saldo atual de todas as contas |
-| `get_monthly_comparison` | Compara mês atual com mês anterior |
+| get_user_transactions | Transações do usuário no período |
+| get_category_summary | Agregação por categoria |
+| get_account_balances | Saldos das contas |
+| get_monthly_comparison | Mês atual vs anterior |
 
-### 13.8. Execução via Django Command
+**Tools adicionais do agente WhatsApp:**
+| Tool | Descrição |
+|------|-----------|
+| create_transaction | Cria transação por linguagem natural |
+| get_goal_progress | Progresso de metas |
+| get_budget_status | Status dos orçamentos |
+| get_monthly_summary | Resumo financeiro do mês |
 
-```bash
-# Analisar todos os usuários ativos
-python manage.py run_finance_analysis
-
-# Analisar um usuário específico (por email)
-python manage.py run_finance_analysis --user usuario@email.com
-
-# Analisar período específico
-python manage.py run_finance_analysis --month 2026-03
-```
-
-### 13.9. Integração com o Dashboard
-
-A última análise de cada usuário será exibida no dashboard em um card dedicado:
-- **Resumo** curto (campo `summary`) visível imediatamente no card
-- **Link** para ver a análise completa
-- **Data** da última análise
-- **Indicador** visual de "IA" para diferenciar do conteúdo manual
-
-### 13.10. Requisitos Funcionais Adicionais
-
-- **RF40:** Sistema deve gerar análises financeiras personalizadas via IA
-- **RF41:** A última análise deve ser exibida no dashboard do usuário
-- **RF42:** O histórico de análises deve ser armazenado e acessível
-- **RF43:** O Django Command deve aceitar parâmetros de usuário e período
-
-### 13.11. Variáveis de Ambiente Necessárias
-
+**Variáveis de ambiente:**
 ```env
 OPENAI_API_KEY=sk-...
 AI_MODEL=gpt-4o-mini
@@ -1028,26 +607,93 @@ AI_MAX_TOKENS=2048
 AI_TEMPERATURE=0.3
 ```
 
+### 11.3. Site Público — Páginas
+
+| URL | Descrição |
+|-----|-----------|
+| / | Landing principal — hero, features, depoimentos, CTA |
+| /features/dashboard/ | Dashboard e Relatórios |
+| /features/whatsapp/ | Integração WhatsApp |
+| /features/ia/ | IA Financeira |
+| /features/metas/ | Metas e Orçamentos |
+| /sobre/ | História, missão e valores |
+| /precos/ | Planos Gratuito e Premium |
+
+---
+
+## 12. Riscos e Mitigações
+
+| Risco | Probabilidade | Impacto | Mitigação |
+|-------|--------------|---------|-----------|
+| Complexidade crescente | Alta | Alto | Sprints curtas, anti-overengineering |
+| Performance com volume de dados | Média | Médio | Paginação, índices, select_related |
+| Segurança de dados financeiros | Baixa | Alto | HTTPS, CSRF, ownership checks |
+| Custo da API OpenAI | Média | Médio | Análise sob demanda, max_tokens limitado |
+| Confiabilidade do Twilio | Média | Alto | Tratamento gracioso de erros, fallback |
+| Adoção de usuários | Média | Alto | Site público completo, WhatsApp como diferencial |
+
+---
+
+## 13. Roadmap de Sprints
+
+| Sprint | Duração | Descrição | Status |
+|--------|---------|-----------|--------|
+| Sprint 0 | 1 semana | Setup e Configuração | ✅ Concluído |
+| Sprint 1 | 1 semana | Autenticação e Usuários | ✅ Concluído |
+| Sprint 2 | 1 semana | Landing Page | ✅ Concluído |
+| Sprint 3 | 1 semana | Models de Contas e Categorias | ✅ Concluído |
+| Sprint 4 | 1 semana | Views de Contas | ✅ Concluído |
+| Sprint 5 | 1 semana | Views de Categorias | ✅ Concluído |
+| Sprint 6 | 2 semanas | Transações | ✅ Concluído |
+| Sprint 7 | 2 semanas | Dashboard e Gráficos | ✅ Concluído |
+| Sprint 8 | 2 semanas | Agente de IA Financeiro | ✅ Concluído |
+| Sprint 9 | 1 semana | Refinamentos e MVP | ✅ Concluído |
+| Sprint 10 | 1 semana | Redesign Visual + Rebranding Finova | ✅ Concluído |
+| Sprint 11 | 1 semana | App de Metas (Goals) | ✅ Concluído |
+| Sprint 12 | 1 semana | App de Relatórios (Reports) | 🔄 Em andamento |
+| Sprint 13 | 2 semanas | Vínculo Bancário e Transferências | ⏳ Planejado |
+| Sprint 14 | 1 semana | Orçamentos por Categoria | ⏳ Planejado |
+| Sprint 15 | 1 semana | Recorrências | ⏳ Planejado |
+| Sprint 16 | 2 semanas | Parcelamentos | ⏳ Planejado |
+| Sprint 17 | 2 semanas | Cartões de Crédito | ⏳ Planejado |
+| Sprint 18 | 3 semanas | Integração com WhatsApp | ⏳ Planejado |
+| Sprint 19 | 2 semanas | Reestruturação do Site Público | ⏳ Planejado |
+| Sprint 20 | 2 semanas | Testes Automatizados | ⏳ Futuro |
+| Sprint 21 | 1 semana | Containerização e CI/CD | ⏳ Futuro |
+| **Total** | **~32 semanas** | **Produto completo** | |
+
+---
+
+## 14. Histórico de Versões
+
+| Versão | Data | Mudanças |
+|--------|------|----------|
+| 1.0 | Janeiro 2026 | PRD inicial — MVP com auth, contas, categorias, transações, dashboard |
+| 1.1 | Março 2026 | Agente de IA Financeiro (Sprint 8) |
+| 2.0 | Abril 2026 | Redesign + Rebranding Finova + Metas + Relatórios + Vínculo Bancário + Transferências |
+| 3.0 | Abril 2026 | Orçamentos + Recorrências + Parcelamentos + Cartões + WhatsApp + Site Público multi-página. Diagrama ER completo. RF expandidos para RF87. Roadmap 32 semanas. |
+
 ---
 
 ## 15. Conclusão
 
-Este PRD define um roadmap claro e detalhado para o desenvolvimento do **Finanpy**, um sistema de gestão de finanças pessoais moderno e eficiente. O projeto está estruturado em 8 sprints principais que cobrem desde a configuração inicial até o refinamento final do MVP.
+O **Finova** evoluiu de um MVP de controle financeiro para um produto completo que compete diretamente com as melhores soluções do mercado brasileiro. Com integração WhatsApp, IA financeira, cartões de crédito, parcelamentos, recorrências, orçamentos e um site público persuasivo, o Finova tem diferenciais claros e uma identidade visual sofisticada que o destaca da concorrência.
 
 ### Próximos Passos
-1. Revisar e aprovar este PRD
-2. Iniciar Sprint 0 (Setup)
-3. Realizar daily standups durante cada sprint
-4. Revisar progresso ao final de cada sprint
-5. Ajustar escopo conforme necessário
+1. Concluir Sprint 12 — Relatórios
+2. Sprint 13 — Vínculo Bancário e Transferências
+3. Sprints 14 a 17 — Orçamentos, Recorrências, Parcelamentos, Cartões
+4. Sprint 18 — Integração WhatsApp (maior diferencial competitivo)
+5. Sprint 19 — Site Público multi-página
 
 ### Princípios a Seguir
-- **Simplicidade:** Evitar over-engineering
-- **Qualidade:** Código limpo seguindo PEP 8
-- **Consistência:** Design system bem definido
-- **Segurança:** Boas práticas em todos os níveis
-- **UX:** Foco na experiência do usuário
+- **Simplicidade:** Anti-overengineering — cada feature entrega valor claro
+- **Qualidade:** PEP 8, aspas simples, separação por apps Django
+- **Consistência:** Design system rigoroso em todas as páginas
+- **Segurança:** HTTPS, CSRF, ownership checks, validação Twilio
+- **UX:** Do WhatsApp ao dashboard, a experiência é fluida e sem atrito
 
-**Data de Criação:** Janeiro 2026  
-**Versão:** 1.0  
-**Status:** Aprovado para Implementação
+**Data de Criação:** Janeiro 2026
+**Última Atualização:** Abril 2026
+**Versão:** 3.0
+**Status:** Em desenvolvimento ativo

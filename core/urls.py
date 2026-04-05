@@ -26,6 +26,7 @@ urlpatterns = [
     path('categorias/', include('categories.urls', namespace='categories')),
     path('transacoes/', include('transactions.urls', namespace='transactions')),
     path('ai/', include('ai.urls', namespace='ai')),
+    path('metas/', include('goals.urls', namespace='goals')),
 ]
 
 # Debug-only routes

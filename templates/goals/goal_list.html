@@ -1,0 +1,330 @@
+{% extends 'base_dashboard.html' %}
+{% load static %}
+
+{% block dashboard_title %}Minhas Metas{% endblock %}
+
+{% block dashboard_content %}
+<!-- Page Header -->
+<div class="mb-6">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+            <h1 class="text-lg font-semibold mb-0.5" style="color:#f5f5f5;">Minhas Metas</h1>
+            <p class="text-xs" style="color:#525252;">Acompanhe seu progresso em direção aos seus objetivos financeiros</p>
+        </div>
+        <a href="{% url 'goals:create' %}"
+           class="inline-flex items-center justify-center px-4 py-2 rounded-lg text-sm font-medium text-black transition-all duration-150 hover:opacity-90"
+           style="background:#22c55e;">
+            <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+            </svg>
+            Nova Meta
+        </a>
+    </div>
+</div>
+
+<!-- Summary Cards -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+    <!-- Total de Metas -->
+    <div class="rounded-lg p-5" style="background:#111111;border:1px solid #262626;">
+        <div class="flex items-center justify-between mb-2">
+            <span class="text-xs font-medium" style="color:#525252;">Total de Metas</span>
+            <div class="w-7 h-7 rounded-md flex items-center justify-center" style="background:rgba(34,197,94,0.1);">
+                <svg class="w-3.5 h-3.5" style="color:#22c55e;" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+                </svg>
+            </div>
+        </div>
+        <p class="text-xl font-semibold" style="color:#f5f5f5;">{{ total_goals }}</p>
+    </div>
+
+    <!-- Metas Ativas -->
+    <div class="rounded-lg p-5" style="background:#111111;border:1px solid #262626;">
+        <div class="flex items-center justify-between mb-2">
+            <span class="text-xs font-medium" style="color:#525252;">Em Andamento</span>
+            <div class="w-7 h-7 rounded-md flex items-center justify-center" style="background:rgba(59,130,246,0.1);">
+                <svg class="w-3.5 h-3.5" style="color:#3b82f6;" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+            </div>
+        </div>
+        <p class="text-xl font-semibold" style="color:#f5f5f5;">{{ active_goals }}</p>
+    </div>
+
+    <!-- Metas Concluídas -->
+    <div class="rounded-lg p-5" style="background:#111111;border:1px solid #262626;">
+        <div class="flex items-center justify-between mb-2">
+            <span class="text-xs font-medium" style="color:#525252;">Concluídas</span>
+            <div class="w-7 h-7 rounded-md flex items-center justify-center" style="background:rgba(34,197,94,0.1);">
+                <svg class="w-3.5 h-3.5" style="color:#22c55e;" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+            </div>
+        </div>
+        <p class="text-xl font-semibold" style="color:#f5f5f5;">{{ completed_goals }}</p>
+    </div>
+</div>
+
+<!-- Messages -->
+{% if messages %}
+<div class="mb-5 space-y-2">
+    {% for message in messages %}
+    <div role="alert" class="rounded-lg px-4 py-3 flex items-center gap-3 text-sm"
+         style="{% if message.tags == 'success' %}background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);color:#22c55e;{% else %}background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);color:#ef4444;{% endif %}">
+        {% if message.tags == 'success' %}
+        <svg class="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        {% else %}
+        <svg class="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+        </svg>
+        {% endif %}
+        {{ message }}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+{% if goals %}
+<!-- Goals Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+    {% for goal in goals %}
+    <div class="rounded-lg p-5 flex flex-col" style="background:#111111;border:1px solid {% if goal.is_completed %}rgba(34,197,94,0.3){% else %}#262626{% endif %};">
+
+        <!-- Goal Header -->
+        <div class="flex items-start justify-between mb-4">
+            <div class="flex items-center gap-3 min-w-0">
+                <div class="w-9 h-9 rounded-lg flex-shrink-0 flex items-center justify-center"
+                     style="background:{{ goal.color }}1a;">
+                    <svg class="w-4 h-4" style="color:{{ goal.color }};" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+                    </svg>
+                </div>
+                <div class="min-w-0">
+                    <h3 class="text-sm font-semibold truncate" style="color:#f5f5f5;">{{ goal.name }}</h3>
+                    {% if goal.category %}
+                    <div class="flex items-center gap-1.5 mt-0.5">
+                        <div class="w-1.5 h-1.5 rounded-full flex-shrink-0" style="background-color:{{ goal.category.color }};"></div>
+                        <span class="text-[10px]" style="color:#525252;">{{ goal.category.name }}</span>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Status badge -->
+            {% if goal.is_completed %}
+            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium flex-shrink-0 ml-2"
+                  style="background:rgba(34,197,94,0.1);color:#22c55e;border:1px solid rgba(34,197,94,0.2);">
+                Concluída
+            </span>
+            {% elif goal.deadline %}
+            <span class="text-[10px] flex-shrink-0 ml-2" style="color:#525252;">
+                {% if goal.deadline < today %}
+                <span style="color:#ef4444;">Prazo vencido</span>
+                {% else %}
+                até {{ goal.deadline|date:"d/m/Y" }}
+                {% endif %}
+            </span>
+            {% endif %}
+        </div>
+
+        <!-- Description -->
+        {% if goal.description %}
+        <p class="text-xs mb-4 leading-relaxed" style="color:#a3a3a3;">{{ goal.description|truncatechars:80 }}</p>
+        {% endif %}
+
+        <!-- Progress -->
+        <div class="mb-4">
+            <div class="flex justify-between items-center mb-2">
+                <span class="text-xs font-mono" style="color:#f5f5f5;">
+                    R$ {{ goal.current_amount|floatformat:2 }}
+                </span>
+                <span class="text-xs font-mono" style="color:#525252;">
+                    de R$ {{ goal.target_amount|floatformat:2 }}
+                </span>
+            </div>
+            <!-- Progress bar -->
+            <div class="w-full h-2 rounded-full overflow-hidden" style="background:#1a1a1a;">
+                <div class="h-full rounded-full transition-all duration-500"
+                     style="width:{{ goal.progress_percentage|floatformat:0 }}%;background:{{ goal.color }};"
+                     role="progressbar"
+                     aria-valuenow="{{ goal.progress_percentage|floatformat:0 }}"
+                     aria-valuemin="0"
+                     aria-valuemax="100">
+                </div>
+            </div>
+            <div class="flex justify-between items-center mt-1.5">
+                <span class="text-[10px] font-medium" style="color:{{ goal.color }};">
+                    {{ goal.progress_percentage|floatformat:1 }}%
+                </span>
+                {% if not goal.is_completed %}
+                <span class="text-[10px]" style="color:#525252;">
+                    Faltam R$ {{ goal.remaining_amount|floatformat:2 }}
+                </span>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex items-center gap-2 mt-auto pt-4" style="border-top:1px solid #262626;">
+            {% if not goal.is_completed %}
+            <!-- Deposit button triggers modal -->
+            <button type="button"
+                    onclick="openDepositModal({{ goal.pk }}, '{{ goal.name|escapejs }}')"
+                    class="flex-1 inline-flex items-center justify-center px-3 py-2 rounded-lg text-xs font-medium text-black transition-all duration-150 hover:opacity-90"
+                    style="background:#22c55e;">
+                <svg class="w-3.5 h-3.5 mr-1.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
+                Depositar
+            </button>
+            {% else %}
+            <div class="flex-1 inline-flex items-center justify-center px-3 py-2 rounded-lg text-xs font-medium"
+                 style="background:rgba(34,197,94,0.05);color:#22c55e;border:1px solid rgba(34,197,94,0.15);">
+                <svg class="w-3.5 h-3.5 mr-1.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                Meta atingida!
+            </div>
+            {% endif %}
+
+            <a href="{% url 'goals:update' goal.pk %}"
+               class="inline-flex items-center justify-center w-8 h-8 rounded-lg transition-all duration-150"
+               style="background:#1a1a1a;color:#a3a3a3;border:1px solid #262626;"
+               aria-label="Editar meta" title="Editar">
+                <svg class="w-3.5 h-3.5" aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                </svg>
+            </a>
+            <a href="{% url 'goals:delete' goal.pk %}"
+               class="inline-flex items-center justify-center w-8 h-8 rounded-lg transition-all duration-150"
+               style="background:rgba(239,68,68,0.05);color:#ef4444;border:1px solid rgba(239,68,68,0.15);"
+               aria-label="Excluir meta" title="Excluir">
+                <svg class="w-3.5 h-3.5" aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                </svg>
+            </a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% else %}
+<!-- Empty State -->
+<div class="rounded-lg p-12" style="background:#111111;border:1px solid #262626;">
+    <div class="text-center max-w-md mx-auto">
+        <div class="flex items-center justify-center w-16 h-16 rounded-full mx-auto mb-5" style="background:#1a1a1a;">
+            <svg class="w-8 h-8" style="color:#525252;" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+            </svg>
+        </div>
+        <h3 class="text-base font-semibold mb-2" style="color:#f5f5f5;">Nenhuma meta criada</h3>
+        <p class="text-sm font-light mb-6" style="color:#a3a3a3;">
+            Defina suas metas financeiras e acompanhe o progresso para realizá-las.
+        </p>
+        <a href="{% url 'goals:create' %}"
+           class="inline-flex items-center justify-center px-5 py-2.5 rounded-lg text-sm font-medium text-black transition-all duration-150 hover:opacity-90"
+           style="background:#22c55e;">
+            <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+            </svg>
+            Criar Primeira Meta
+        </a>
+    </div>
+</div>
+{% endif %}
+
+<!-- Deposit Modal -->
+<div id="deposit-modal"
+     class="fixed inset-0 z-50 hidden flex items-center justify-center p-4"
+     style="background:rgba(0,0,0,0.7);"
+     role="dialog"
+     aria-modal="true"
+     aria-labelledby="deposit-modal-title">
+    <div class="w-full max-w-sm rounded-xl p-6" style="background:#111111;border:1px solid #262626;">
+        <div class="flex items-center justify-between mb-5">
+            <h2 id="deposit-modal-title" class="text-sm font-semibold" style="color:#f5f5f5;">
+                Depositar na Meta
+            </h2>
+            <button type="button"
+                    onclick="closeDepositModal()"
+                    class="p-1 rounded-lg transition-all duration-150"
+                    style="color:#525252;"
+                    aria-label="Fechar">
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+
+        <p id="deposit-goal-name" class="text-xs mb-4" style="color:#a3a3a3;"></p>
+
+        <form id="deposit-form" method="post" action="">
+            {% csrf_token %}
+            <div class="mb-4">
+                <label for="deposit-amount" class="block text-xs font-medium mb-1.5" style="color:#a3a3a3;">
+                    Valor a depositar <span style="color:#ef4444;">*</span>
+                </label>
+                <div class="relative">
+                    <span class="absolute left-4 top-1/2 -translate-y-1/2 text-xs font-mono" style="color:#525252;">R$</span>
+                    <input type="number"
+                           id="deposit-amount"
+                           name="amount"
+                           step="0.01"
+                           min="0.01"
+                           required
+                           class="w-full pl-10 pr-4 py-2.5 rounded-lg text-sm font-mono transition-all duration-150"
+                           style="background:#0a0a0a;border:1px solid #262626;color:#f5f5f5;"
+                           placeholder="0.00">
+                </div>
+            </div>
+            <div class="flex gap-3">
+                <button type="submit"
+                        class="flex-1 px-4 py-2.5 rounded-lg text-sm font-medium text-black transition-all duration-150 hover:opacity-90"
+                        style="background:#22c55e;">
+                    Depositar
+                </button>
+                <button type="button"
+                        onclick="closeDepositModal()"
+                        class="flex-1 px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-150"
+                        style="background:#1a1a1a;color:#a3a3a3;border:1px solid #262626;">
+                    Cancelar
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+{{ block.super }}
+<script>
+    function openDepositModal(goalPk, goalName) {
+        const modal = document.getElementById('deposit-modal');
+        const form = document.getElementById('deposit-form');
+        const nameEl = document.getElementById('deposit-goal-name');
+        const amountInput = document.getElementById('deposit-amount');
+
+        form.action = '/metas/' + goalPk + '/depositar/';
+        nameEl.textContent = 'Meta: ' + goalName;
+        amountInput.value = '';
+        modal.classList.remove('hidden');
+        amountInput.focus();
+    }
+
+    function closeDepositModal() {
+        document.getElementById('deposit-modal').classList.add('hidden');
+    }
+
+    // Close on backdrop click
+    document.getElementById('deposit-modal').addEventListener('click', function(e) {
+        if (e.target === this) closeDepositModal();
+    });
+
+    // Close on Escape
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeDepositModal();
+    });
+</script>
+{% endblock %}
