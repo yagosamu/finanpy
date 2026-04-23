@@ -8,6 +8,8 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 
 from accounts.models import Account
+from accounts.services import get_default_account
+from budgets.models import Budget
 from categories.models import Category
 
 from .forms import TransactionForm
@@ -29,7 +31,6 @@ class TransactionListView(LoginRequiredMixin, ListView):
             user=self.request.user
         ).select_related('account', 'category')
 
-        # Filter by date range
         date_from = self.request.GET.get('date_from')
         date_to = self.request.GET.get('date_to')
         if date_from:
@@ -37,17 +38,14 @@ class TransactionListView(LoginRequiredMixin, ListView):
         if date_to:
             queryset = queryset.filter(date__lte=date_to)
 
-        # Filter by category
         category = self.request.GET.get('category')
         if category:
             queryset = queryset.filter(category_id=category)
 
-        # Filter by transaction type
         transaction_type = self.request.GET.get('transaction_type')
         if transaction_type:
             queryset = queryset.filter(transaction_type=transaction_type)
 
-        # Filter by account
         account = self.request.GET.get('account')
         if account:
             queryset = queryset.filter(account_id=account)
@@ -57,7 +55,6 @@ class TransactionListView(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        # Calculate totals from filtered queryset
         queryset = self.get_queryset()
 
         total_income = queryset.filter(
@@ -72,14 +69,12 @@ class TransactionListView(LoginRequiredMixin, ListView):
         context['total_expense'] = total_expense
         context['balance'] = total_income - total_expense
 
-        # Pass filter values back to template
         context['filter_date_from'] = self.request.GET.get('date_from', '')
         context['filter_date_to'] = self.request.GET.get('date_to', '')
         context['filter_category'] = self.request.GET.get('category', '')
         context['filter_transaction_type'] = self.request.GET.get('transaction_type', '')
         context['filter_account'] = self.request.GET.get('account', '')
 
-        # Pass available accounts and categories for filter dropdowns
         context['available_accounts'] = Account.objects.filter(
             user=self.request.user,
             is_active=True
@@ -101,6 +96,13 @@ class TransactionCreateView(LoginRequiredMixin, CreateView):
     template_name = 'transactions/transaction_form.html'
     success_url = reverse_lazy('transactions:list')
 
+    def get_initial(self):
+        initial = super().get_initial()
+        default_account = get_default_account(self.request.user)
+        if default_account:
+            initial['account'] = default_account
+        return initial
+
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs['user'] = self.request.user
@@ -117,6 +119,31 @@ class TransactionCreateView(LoginRequiredMixin, CreateView):
                 'Ocorreu um erro ao criar a transação. Tente novamente.'
             )
             return HttpResponseRedirect(reverse_lazy('transactions:list'))
+
+        self.object.account.refresh_from_db()
+        if (
+            self.object.transaction_type == Transaction.EXPENSE
+            and self.object.account.current_balance < 0
+        ):
+            messages.warning(
+                self.request,
+                'Atenção: esta despesa deixou sua conta com saldo negativo.'
+            )
+
+        if self.object.transaction_type == Transaction.EXPENSE:
+            budget = Budget.objects.filter(
+                user=self.request.user,
+                category=self.object.category,
+                month=self.object.date.replace(day=1),
+            ).first()
+            if budget and budget.spent_amount > budget.amount:
+                budget_amount = f'{budget.amount:.2f}'.replace('.', ',')
+                messages.warning(
+                    self.request,
+                    'Atenção: você ultrapassou o orçamento de '
+                    f'R$ {budget_amount} para {budget.category.name} este mês.'
+                )
+
         messages.success(self.request, 'Transação criada com sucesso!')
         return response
 

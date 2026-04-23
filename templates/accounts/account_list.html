@@ -11,14 +11,24 @@
             <h1 class="text-lg font-semibold mb-0.5" style="color:#f5f5f5;">Minhas Contas</h1>
             <p class="text-xs" style="color:#525252;">Gerencie suas contas bancárias e acompanhe seus saldos</p>
         </div>
-        <a href="{% url 'accounts:create' %}"
-           class="inline-flex items-center justify-center px-4 py-2 rounded-lg text-sm font-medium text-black transition-all duration-150 hover:opacity-90"
-           style="background:#22c55e;">
-            <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-            </svg>
-            Nova Conta
-        </a>
+        <div class="flex flex-col sm:flex-row gap-3">
+            <a href="{% url 'accounts:transfer' %}"
+               class="inline-flex items-center justify-center px-4 py-2 rounded-lg text-sm font-medium transition-all duration-150"
+               style="background:#1a1a1a;color:#f5f5f5;border:1px solid #262626;">
+                <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 16.5L12 21m0 0l4.5-4.5M12 21V3" />
+                </svg>
+                Transferir
+            </a>
+            <a href="{% url 'accounts:create' %}"
+               class="inline-flex items-center justify-center px-4 py-2 rounded-lg text-sm font-medium text-black transition-all duration-150 hover:opacity-90"
+               style="background:#22c55e;">
+                <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
+                Nova Conta
+            </a>
+        </div>
     </div>
 </div>
 

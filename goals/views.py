@@ -8,6 +8,8 @@ from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 
+from accounts.services import debit_account
+
 from .forms import GoalDepositForm, GoalForm
 from .models import Goal
 
@@ -30,7 +32,7 @@ class GoalListView(LoginRequiredMixin, ListView):
         context['total_goals'] = goals.count()
         context['active_goals'] = goals.filter(is_completed=False).count()
         context['completed_goals'] = goals.filter(is_completed=True).count()
-        context['deposit_form'] = GoalDepositForm()
+        context['deposit_form'] = GoalDepositForm(user=self.request.user)
         context['today'] = date.today()
         return context
 
@@ -114,22 +116,35 @@ class GoalDepositView(LoginRequiredMixin, View):
 
     http_method_names = ['post']
 
+    def get_form_kwargs(self):
+        return {
+            'data': self.request.POST,
+            'user': self.request.user,
+        }
+
     def post(self, request, pk, *args, **kwargs):
         goal = Goal.objects.filter(user=request.user, pk=pk).first()
         if not goal:
             messages.error(request, 'Meta não encontrada.')
             return HttpResponseRedirect(reverse_lazy('goals:list'))
 
-        form = GoalDepositForm(request.POST)
+        form = GoalDepositForm(**self.get_form_kwargs())
         if form.is_valid():
             amount = form.cleaned_data['amount']
+            source_account = form.cleaned_data['source_account']
+            description = f'Depósito na meta "{goal.name}"'
             goal.current_amount += amount
             try:
+                debit_account(source_account, amount, description)
                 goal.save()
             except Exception:
                 logger.exception('Erro ao depositar na meta %s', pk)
                 messages.error(request, 'Ocorreu um erro ao registrar o depósito. Tente novamente.')
                 return HttpResponseRedirect(reverse_lazy('goals:list'))
+
+            source_account.refresh_from_db()
+            if source_account.current_balance < 0:
+                messages.warning(request, 'Atenção: sua conta ficou com saldo negativo.')
 
             if goal.is_completed:
                 messages.success(

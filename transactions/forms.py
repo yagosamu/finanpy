@@ -5,6 +5,8 @@ from django import forms
 from django.core.exceptions import ValidationError
 from django.db.models import Q
 
+from accounts.services import get_default_account
+
 from .models import Transaction
 
 
@@ -65,10 +67,10 @@ class TransactionForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
 
         if self.user:
-            # Filter accounts: only user's active accounts
             self.fields['account'].queryset = self.user.accounts.filter(is_active=True)
+            if not self.is_bound and not getattr(self.instance, 'pk', None):
+                self.fields['account'].initial = get_default_account(self.user)
 
-            # Filter categories: user's categories + default categories, active only
             from categories.models import Category
             categories = Category.objects.filter(
                 is_active=True
@@ -78,7 +80,6 @@ class TransactionForm(forms.ModelForm):
 
             self.fields['category'].queryset = categories
 
-            # Store categories data as JSON for JS filtering
             categories_data = []
             for category in categories:
                 categories_data.append({
@@ -106,7 +107,6 @@ class TransactionForm(forms.ModelForm):
             raise ValidationError('A data é obrigatória.')
         if transaction_date > date.today():
             raise ValidationError('A data da transação não pode ser no futuro.')
-        # Prevent dates too far in the past (more than 10 years)
         min_date = date.today().replace(year=date.today().year - 10)
         if transaction_date < min_date:
             raise ValidationError('A data não pode ser anterior a 10 anos atrás.')
@@ -126,20 +126,17 @@ class TransactionForm(forms.ModelForm):
         category = cleaned_data.get('category')
         account = cleaned_data.get('account')
 
-        # Validate category type matches transaction type
         if transaction_type and category:
             if transaction_type != category.category_type:
                 raise ValidationError({
                     'category': 'O tipo da categoria deve corresponder ao tipo da transação.'
                 })
 
-        # Validate account belongs to user
         if account and self.user and account.user != self.user:
             raise ValidationError({
                 'account': 'Conta inválida.'
             })
 
-        # Validate category belongs to user or is default
         if category and self.user:
             if category.user is not None and category.user != self.user:
                 raise ValidationError({

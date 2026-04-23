@@ -1,6 +1,8 @@
 from django import forms
 from django.core.exceptions import ValidationError
 
+from accounts.services import get_default_account
+
 from .models import Goal
 
 
@@ -77,7 +79,6 @@ class GoalForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
-        # Filter category to user's own categories + defaults
         from categories.models import Category
         from django.db.models import Q
         if self.user:
@@ -85,7 +86,6 @@ class GoalForm(forms.ModelForm):
                 Q(user=self.user) | Q(is_default=True),
                 is_active=True
             ).order_by('name')
-        # Make category not required
         self.fields['category'].required = False
         self.fields['category'].empty_label = 'Nenhuma categoria'
 
@@ -131,6 +131,13 @@ class GoalForm(forms.ModelForm):
 class GoalDepositForm(forms.Form):
     """Form for depositing an amount into a goal."""
 
+    source_account = forms.ModelChoiceField(
+        label='Conta de origem',
+        queryset=None,
+        widget=forms.Select(attrs={
+            'class': SELECT_STYLE,
+        })
+    )
     amount = forms.DecimalField(
         label='Valor a depositar',
         max_digits=12,
@@ -143,6 +150,17 @@ class GoalDepositForm(forms.Form):
             'min': '0.01',
         })
     )
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
+        super().__init__(*args, **kwargs)
+
+        if self.user:
+            accounts = self.user.accounts.filter(is_active=True).order_by('name')
+            self.fields['source_account'].queryset = accounts
+            self.fields['source_account'].initial = get_default_account(self.user)
+        else:
+            self.fields['source_account'].queryset = self.fields['source_account'].queryset.none()
 
     def clean_amount(self):
         amount = self.cleaned_data.get('amount')

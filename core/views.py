@@ -11,6 +11,7 @@ from django.views.generic import TemplateView
 
 from accounts.models import Account
 from ai.models import AIAnalysis
+from budgets.views import get_budget_queryset
 from categories.models import Category
 from goals.models import Goal
 from transactions.models import Transaction
@@ -209,6 +210,16 @@ class DashboardView(LoginRequiredMixin, TemplateView):
             goals_active_count = active_goals.count()
             goals_total_count = user_goals.count()
 
+            current_month_date = current_month_start.date()
+            monthly_budgets = list(get_budget_queryset(user, current_month_date))
+            budget_alerts = [
+                budget for budget in monthly_budgets
+                if budget.usage_percentage_value >= Decimal('80.00')
+            ]
+            budget_alerts = budget_alerts[:3]
+            budgets_count = len(monthly_budgets)
+            budgets_exceeded_count = sum(1 for budget in monthly_budgets if budget.spent > budget.amount)
+
             # Add all data to context
             context.update({
                 # Basic data
@@ -236,6 +247,9 @@ class DashboardView(LoginRequiredMixin, TemplateView):
                 'upcoming_goals': upcoming_goals,
                 'goals_active_count': goals_active_count,
                 'goals_total_count': goals_total_count,
+                'budget_alerts': budget_alerts,
+                'budgets_count': budgets_count,
+                'budgets_exceeded_count': budgets_exceeded_count,
             })
 
         except Exception:
@@ -262,6 +276,9 @@ class DashboardView(LoginRequiredMixin, TemplateView):
                 'upcoming_goals': [],
                 'goals_active_count': 0,
                 'goals_total_count': 0,
+                'budget_alerts': [],
+                'budgets_count': 0,
+                'budgets_exceeded_count': 0,
                 'dashboard_error': True,
             })
 

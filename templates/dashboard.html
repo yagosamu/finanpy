@@ -11,6 +11,33 @@
     <p class="text-[11px] mt-0.5" style="color:#525252;">{{ current_month_name }} de {{ current_year }}</p>
 </div>
 
+<div class="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-5">
+    <a href="{% url 'transactions:create' %}"
+       class="rounded-lg px-4 py-3 transition-all duration-150"
+       style="background:#111111;border:1px solid #262626;">
+        <p class="text-[11px] uppercase tracking-wider mb-1" style="color:#525252;">Atalho</p>
+        <p class="text-sm font-medium" style="color:#f5f5f5;">Adicionar Transacao</p>
+    </a>
+    <a href="{% url 'accounts:create' %}"
+       class="rounded-lg px-4 py-3 transition-all duration-150"
+       style="background:#111111;border:1px solid #262626;">
+        <p class="text-[11px] uppercase tracking-wider mb-1" style="color:#525252;">Atalho</p>
+        <p class="text-sm font-medium" style="color:#f5f5f5;">Nova Conta</p>
+    </a>
+    <a href="{% url 'goals:create' %}"
+       class="rounded-lg px-4 py-3 transition-all duration-150"
+       style="background:#111111;border:1px solid #262626;">
+        <p class="text-[11px] uppercase tracking-wider mb-1" style="color:#525252;">Atalho</p>
+        <p class="text-sm font-medium" style="color:#f5f5f5;">Criar Meta</p>
+    </a>
+    <a href="{% url 'accounts:transfer' %}"
+       class="rounded-lg px-4 py-3 transition-all duration-150"
+       style="background:#111111;border:1px solid rgba(34,197,94,0.18);">
+        <p class="text-[11px] uppercase tracking-wider mb-1" style="color:#525252;">Atalho</p>
+        <p class="text-sm font-medium" style="color:#22c55e;">Transferencia</p>
+    </a>
+</div>
+
 <!-- 3 stat cards -->
 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-5">
 
@@ -342,6 +369,72 @@
            style="background:#22c55e;">
             Criar Meta
         </a>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Budgets Summary Card -->
+<div class="rounded-lg p-5 mb-5" style="background:#111111;border:1px solid #262626;">
+    <div class="flex items-center justify-between mb-4">
+        <div class="flex items-center gap-2">
+            <svg class="w-4 h-4" style="color:#22c55e;" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 6.75h15m-15 5.25h15m-15 5.25h9" />
+            </svg>
+            <h2 class="text-sm font-semibold" style="color:#f5f5f5;">Orçamentos</h2>
+            {% if budgets_exceeded_count > 0 %}
+            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium"
+                  style="background:rgba(239,68,68,0.1);color:#ef4444;border:1px solid rgba(239,68,68,0.18);">
+                {{ budgets_exceeded_count }} estourado{{ budgets_exceeded_count|pluralize:",s" }}
+            </span>
+            {% endif %}
+        </div>
+        <a href="{% url 'budgets:list' %}" class="text-[11px] flex items-center gap-1 transition-colors duration-150" style="color:#525252;">
+            Ver todos os orçamentos
+            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            </svg>
+        </a>
+    </div>
+
+    {% if budgets_count == 0 %}
+    <div class="text-center py-4">
+        <p class="text-xs mb-2" style="color:#525252;">Nenhum orçamento cadastrado</p>
+        <p class="text-[11px]" style="color:#525252;">Defina limites mensais para acompanhar excessos antes que eles cresçam.</p>
+    </div>
+    {% elif budget_alerts %}
+    <div class="space-y-3">
+        {% for budget in budget_alerts %}
+        <div class="rounded-lg p-3" style="background:#0a0a0a;border:1px solid #262626;">
+            <div class="flex items-center justify-between gap-3 mb-2">
+                <div class="flex items-center gap-2 min-w-0">
+                    <span class="w-2.5 h-2.5 rounded-full flex-shrink-0" style="background:{{ budget.category.color }};"></span>
+                    <span class="text-xs font-medium truncate" style="color:#f5f5f5;">{{ budget.category.name }}</span>
+                </div>
+                <span class="text-[10px] font-mono flex-shrink-0"
+                      style="color:{% if budget.usage_percentage_value < 100 %}#eab308{% else %}#ef4444{% endif %};">
+                    {{ budget.usage_percentage_value|floatformat:0 }}%
+                </span>
+            </div>
+            <div class="w-full h-1.5 rounded-full overflow-hidden mb-2" style="background:#1a1a1a;">
+                <div class="h-full rounded-full"
+                     style="width:{{ budget.usage_percentage_value|floatformat:0 }}%;background:{% if budget.usage_percentage_value < 100 %}#eab308{% else %}#ef4444{% endif %};">
+                </div>
+            </div>
+            <div class="flex items-center justify-between gap-3">
+                <span class="text-[10px] font-mono" style="color:#a3a3a3;">{{ budget.spent|format_currency }} de {{ budget.amount|format_currency }}</span>
+                {% if budget.spent > budget.amount %}
+                <span class="text-[10px]" style="color:#ef4444;">Acima do limite</span>
+                {% else %}
+                <span class="text-[10px]" style="color:#eab308;">Quase no limite</span>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="text-center py-4">
+        <p class="text-xs mb-2" style="color:#a3a3a3;">Orçamentos sob controle</p>
+        <p class="text-[11px]" style="color:#525252;">Nenhuma categoria acima de 80% do limite neste mês.</p>
     </div>
     {% endif %}
 </div>

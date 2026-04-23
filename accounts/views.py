@@ -5,16 +5,22 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Sum
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
+from django.views import View
 from django.views.generic import (
     CreateView,
     DeleteView,
     DetailView,
+    FormView,
     ListView,
     UpdateView,
 )
 
-from .forms import AccountForm, AccountUpdateForm
+from categories.models import Category
+from transactions.models import Transaction
+
+from .forms import AccountForm, AccountUpdateForm, TransferForm
 from .models import Account
+from .services import debit_account
 
 logger = logging.getLogger(__name__)
 
@@ -172,3 +178,71 @@ class AccountDetailView(LoginRequiredMixin, DetailView):
         ).order_by('-date', '-created_at')[:10]
 
         return context
+
+
+class TransferView(LoginRequiredMixin, FormView):
+    """Transfer balance between two user accounts."""
+
+    template_name = 'accounts/transfer.html'
+    form_class = TransferForm
+    success_url = reverse_lazy('accounts:list')
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
+
+    def form_valid(self, form):
+        from_account = form.cleaned_data['from_account']
+        to_account = form.cleaned_data['to_account']
+        amount = form.cleaned_data['amount']
+        description = (form.cleaned_data.get('description') or '').strip()
+        transfer_date = form.cleaned_data['date']
+        message_description = (
+            f'Transferencia: {description}' if description else 'Transferencia'
+        )
+        transfer_category, _ = Category.objects.get_or_create(
+            user=None,
+            name='Transferência',
+            defaults={
+                'category_type': Category.EXPENSE,
+                'color': '#525252',
+                'is_default': True,
+                'is_active': True,
+            },
+        )
+
+        try:
+            debit_account(
+                from_account,
+                amount,
+                message_description,
+                category=transfer_category,
+                date=transfer_date,
+            )
+            Transaction.objects.create(
+                user=self.request.user,
+                account=to_account,
+                category=transfer_category,
+                transaction_type=Transaction.INCOME,
+                amount=amount,
+                date=transfer_date,
+                description=message_description,
+            )
+        except Exception:
+            logger.exception(
+                'Erro ao transferir saldo entre contas para o usuario %s',
+                self.request.user.email,
+            )
+            messages.error(
+                self.request,
+                'Ocorreu um erro ao realizar a transferencia. Tente novamente.',
+            )
+            return HttpResponseRedirect(self.get_success_url())
+
+        from_account.refresh_from_db()
+        if from_account.current_balance < 0:
+            messages.warning(self.request, 'Atenção: sua conta ficou com saldo negativo.')
+
+        messages.success(self.request, 'Transferência realizada com sucesso!')
+        return super().form_valid(form)

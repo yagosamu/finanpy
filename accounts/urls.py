@@ -7,6 +7,7 @@ app_name = 'accounts'
 urlpatterns = [
     path('', views.AccountListView.as_view(), name='list'),
     path('nova/', views.AccountCreateView.as_view(), name='create'),
+    path('transferir/', views.TransferView.as_view(), name='transfer'),
     path('<int:pk>/', views.AccountDetailView.as_view(), name='detail'),
     path('<int:pk>/editar/', views.AccountUpdateView.as_view(), name='update'),
     path('<int:pk>/excluir/', views.AccountDeleteView.as_view(), name='delete'),

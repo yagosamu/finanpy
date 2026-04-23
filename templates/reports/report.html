@@ -1,0 +1,543 @@
+{% extends 'base_dashboard.html' %}
+{% load format_filters %}
+
+{% block dashboard_title %}Relatórios{% endblock %}
+
+{% block dashboard_content %}
+<div class="mb-6">
+    <div class="flex flex-col gap-2">
+        <nav aria-label="Breadcrumb" class="flex items-center gap-2 text-[11px]" style="color:#525252;">
+            <a href="{% url 'dashboard' %}" class="transition-colors duration-150 hover:text-[#f5f5f5]">Dashboard</a>
+            <span>/</span>
+            <span style="color:#a3a3a3;">Relatórios</span>
+        </nav>
+        <div>
+            <h1 class="text-lg font-semibold" style="color:#f5f5f5;">Relatórios</h1>
+            <p class="text-[11px] mt-0.5" style="color:#525252;">
+                Período de {{ date_start|date:'d/m/Y' }} até {{ date_end|date:'d/m/Y' }}
+            </p>
+        </div>
+    </div>
+</div>
+
+<div class="rounded-lg p-5 mb-6" style="background:#111111;border:1px solid #262626;">
+    <form method="get" class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto] gap-4 items-end">
+        <div>
+            <label for="period" class="block text-xs font-medium mb-1.5" style="color:#a3a3a3;">Período</label>
+            <select
+                id="period"
+                name="period"
+                class="w-full px-4 py-2.5 rounded-lg text-sm transition-all duration-150"
+                style="background:#0a0a0a;border:1px solid #262626;color:#f5f5f5;">
+                <option value="this_month" {% if period == 'this_month' %}selected{% endif %}>Este mês</option>
+                <option value="last_month" {% if period == 'last_month' %}selected{% endif %}>Mês anterior</option>
+                <option value="last_3_months" {% if period == 'last_3_months' %}selected{% endif %}>Últimos 3 meses</option>
+                <option value="last_6_months" {% if period == 'last_6_months' %}selected{% endif %}>Últimos 6 meses</option>
+                <option value="this_year" {% if period == 'this_year' %}selected{% endif %}>Este ano</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="account" class="block text-xs font-medium mb-1.5" style="color:#a3a3a3;">Conta</label>
+            <select
+                id="account"
+                name="account"
+                class="w-full px-4 py-2.5 rounded-lg text-sm transition-all duration-150"
+                style="background:#0a0a0a;border:1px solid #262626;color:#f5f5f5;">
+                <option value="">Todas as contas</option>
+                {% for account in accounts %}
+                <option value="{{ account.pk }}" {% if selected_account and account.pk == selected_account.pk %}selected{% endif %}>
+                    {{ account.name }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <button
+            type="submit"
+            class="inline-flex items-center justify-center px-5 py-2.5 rounded-lg text-sm font-medium text-black transition-all duration-150 hover:opacity-90"
+            style="background:#22c55e;">
+            Aplicar
+        </button>
+    </form>
+</div>
+
+{% if not biggest_income and not biggest_expense %}
+<div class="rounded-lg p-12 mb-6" style="background:#111111;border:1px solid #262626;">
+    <div class="max-w-md mx-auto text-center">
+        <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-5" style="background:#1a1a1a;">
+            <svg class="w-8 h-8" style="color:#525252;" fill="none" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
+            </svg>
+        </div>
+        <h2 class="text-base font-semibold mb-2" style="color:#f5f5f5;">Nenhum dado encontrado neste período</h2>
+        <p class="text-sm mb-6" style="color:#a3a3a3;">
+            Ajuste os filtros ou registre novas transações para começar a visualizar seus relatórios.
+        </p>
+        <a
+            href="{% url 'transactions:create' %}"
+            class="inline-flex items-center justify-center px-5 py-2.5 rounded-lg text-sm font-medium text-black transition-all duration-150 hover:opacity-90"
+            style="background:#22c55e;">
+            Criar transação
+        </a>
+    </div>
+</div>
+{% endif %}
+
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 mb-4">
+    <div class="rounded-lg p-5" style="background:#111111;border:1px solid #262626;">
+        <div class="flex items-center justify-between mb-3">
+            <span class="text-xs font-medium uppercase tracking-wider" style="color:#525252;">Total Receitas</span>
+            <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background:rgba(34,197,94,0.1);">
+                <svg class="w-4 h-4" style="color:#22c55e;" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7m0 0H9m8 0v8" />
+                </svg>
+            </div>
+        </div>
+        <p class="font-mono text-2xl font-semibold" style="color:#22c55e;">{{ total_income|format_currency }}</p>
+    </div>
+
+    <div class="rounded-lg p-5" style="background:#111111;border:1px solid #262626;">
+        <div class="flex items-center justify-between mb-3">
+            <span class="text-xs font-medium uppercase tracking-wider" style="color:#525252;">Total Despesas</span>
+            <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background:rgba(239,68,68,0.1);">
+                <svg class="w-4 h-4" style="color:#ef4444;" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M17 7L7 17m0 0h8m-8 0V9" />
+                </svg>
+            </div>
+        </div>
+        <p class="font-mono text-2xl font-semibold" style="color:#ef4444;">{{ total_expense|format_currency }}</p>
+    </div>
+
+    <div class="rounded-lg p-5" style="background:#111111;border:1px solid #262626;">
+        <div class="flex items-center justify-between mb-3">
+            <span class="text-xs font-medium uppercase tracking-wider" style="color:#525252;">Saldo Líquido</span>
+            <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background:rgba(34,197,94,0.1);">
+                <svg class="w-4 h-4" style="color:#22c55e;" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.75l4.5 4.5 6-9 4.5 6.75 4.5-9" />
+                </svg>
+            </div>
+        </div>
+        <p class="font-mono text-2xl font-semibold {% if net_balance < 0 %}text-red-400{% else %}text-green-400{% endif %}">
+            {{ net_balance|format_currency_signed }}
+        </p>
+    </div>
+
+    <div class="rounded-lg p-5" style="background:#111111;border:1px solid #262626;">
+        <div class="flex items-center justify-between mb-3">
+            <span class="text-xs font-medium uppercase tracking-wider" style="color:#525252;">Média Diária</span>
+            <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background:rgba(245,158,11,0.1);">
+                <svg class="w-4 h-4" style="color:#f59e0b;" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6l4 2.25M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+            </div>
+        </div>
+        <p class="font-mono text-2xl font-semibold" style="color:#f5f5f5;">{{ avg_daily_expense|format_currency }}</p>
+    </div>
+</div>
+
+<div class="grid grid-cols-1 xl:grid-cols-2 gap-4 mb-6">
+    <div class="rounded-lg p-5" style="background:#111111;border:1px solid #262626;">
+        <span class="text-xs font-medium uppercase tracking-wider" style="color:#525252;">Maior receita do período</span>
+        {% if biggest_income %}
+        <div class="mt-3 flex items-start justify-between gap-4">
+            <div class="min-w-0">
+                <p class="text-sm font-semibold truncate" style="color:#f5f5f5;">
+                    {% if biggest_income.description %}{{ biggest_income.description }}{% else %}{{ biggest_income.category.name }}{% endif %}
+                </p>
+                <p class="text-[11px] mt-1" style="color:#525252;">
+                    {{ biggest_income.account.name }} • {{ biggest_income.date|format_date_relative }}
+                </p>
+            </div>
+            <p class="font-mono text-sm font-semibold flex-shrink-0" style="color:#22c55e;">{{ biggest_income.amount|format_currency }}</p>
+        </div>
+        {% else %}
+        <p class="text-sm mt-3" style="color:#525252;">Nenhuma receita no período selecionado.</p>
+        {% endif %}
+    </div>
+
+    <div class="rounded-lg p-5" style="background:#111111;border:1px solid #262626;">
+        <span class="text-xs font-medium uppercase tracking-wider" style="color:#525252;">Maior despesa do período</span>
+        {% if biggest_expense %}
+        <div class="mt-3 flex items-start justify-between gap-4">
+            <div class="min-w-0">
+                <p class="text-sm font-semibold truncate" style="color:#f5f5f5;">
+                    {% if biggest_expense.description %}{{ biggest_expense.description }}{% else %}{{ biggest_expense.category.name }}{% endif %}
+                </p>
+                <p class="text-[11px] mt-1" style="color:#525252;">
+                    {{ biggest_expense.account.name }} • {{ biggest_expense.date|format_date_relative }}
+                </p>
+            </div>
+            <p class="font-mono text-sm font-semibold flex-shrink-0" style="color:#ef4444;">{{ biggest_expense.amount|format_currency }}</p>
+        </div>
+        {% else %}
+        <p class="text-sm mt-3" style="color:#525252;">Nenhuma despesa no período selecionado.</p>
+        {% endif %}
+    </div>
+</div>
+
+<div class="rounded-lg p-5 mb-6" style="background:#111111;border:1px solid #262626;">
+    <div class="flex items-center justify-between mb-5">
+        <div>
+            <h2 class="text-sm font-semibold" style="color:#f5f5f5;">Evolução diária</h2>
+            <p class="text-[11px] mt-1" style="color:#525252;">Visualização preparada para receber os dados serializados na próxima etapa.</p>
+        </div>
+        <span class="text-[11px] px-2 py-1 rounded-full" style="background:#1a1a1a;color:#525252;border:1px solid #262626;">Chart.js</span>
+    </div>
+
+    <div class="rounded-lg p-4 relative overflow-hidden" style="background:#0a0a0a;border:1px dashed #262626;min-height:320px;">
+        <div id="dailyEvolutionPlaceholderGlow" class="absolute inset-0 opacity-60" style="background:linear-gradient(180deg, rgba(34,197,94,0.04) 0%, rgba(10,10,10,0) 60%);"></div>
+        <div id="dailyEvolutionPlaceholderBars" class="absolute inset-x-4 top-12 bottom-12 grid grid-cols-6 gap-3 pointer-events-none">
+            <span class="rounded-full self-end" style="height:38%;background:rgba(34,197,94,0.08);"></span>
+            <span class="rounded-full self-end" style="height:62%;background:rgba(34,197,94,0.08);"></span>
+            <span class="rounded-full self-end" style="height:48%;background:rgba(34,197,94,0.08);"></span>
+            <span class="rounded-full self-end" style="height:74%;background:rgba(34,197,94,0.08);"></span>
+            <span class="rounded-full self-end" style="height:56%;background:rgba(34,197,94,0.08);"></span>
+            <span class="rounded-full self-end" style="height:66%;background:rgba(34,197,94,0.08);"></span>
+        </div>
+        <div id="dailyEvolutionPlaceholderLine" class="absolute left-0 right-0 top-1/2 -translate-y-1/2 border-t" style="border-color:rgba(38,38,38,0.8);"></div>
+        <div class="relative z-10 h-full flex flex-col items-center justify-center text-center px-6">
+            <canvas id="dailyEvolutionChart" class="w-full max-w-4xl h-56"></canvas>
+            <div id="dailyEvolutionPlaceholderCopy">
+                <p class="text-sm font-medium mt-4" style="color:#f5f5f5;">Área reservada para o gráfico de evolução</p>
+                <p class="text-xs mt-1" style="color:#525252;">O `json_script` de `daily_evolution` será conectado aqui na próxima etapa.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="grid grid-cols-1 xl:grid-cols-2 gap-4 mb-6">
+    <div class="rounded-lg p-5" style="background:#111111;border:1px solid #262626;">
+        <div class="flex items-center justify-between mb-5">
+            <h2 class="text-sm font-semibold" style="color:#f5f5f5;">Despesas por categoria</h2>
+            <span class="text-[11px]" style="color:#525252;">Distribuição do período</span>
+        </div>
+
+        {% if expense_by_category %}
+        <div class="space-y-4">
+            {% for category in expense_by_category %}
+            <div>
+                <div class="flex items-start justify-between gap-4 mb-2">
+                    <div class="flex items-center gap-2 min-w-0">
+                        <span class="w-2.5 h-2.5 rounded-full flex-shrink-0" style="background:{{ category.color }};"></span>
+                        <span class="text-sm font-medium truncate" style="color:#f5f5f5;">{{ category.name }}</span>
+                    </div>
+                    <div class="text-right flex-shrink-0">
+                        <p class="font-mono text-xs font-semibold" style="color:#f5f5f5;">{{ category.total|format_currency }}</p>
+                        <p class="text-[11px]" style="color:#525252;">{{ category.percentage|floatformat:2 }}%</p>
+                    </div>
+                </div>
+                <div class="w-full h-2 rounded-full overflow-hidden" style="background:#1a1a1a;">
+                    <div class="h-full rounded-full" style="width:{{ category.percentage|floatformat:2 }}%;background:{{ category.color }};"></div>
+                </div>
+                <p class="text-[11px] mt-1" style="color:#525252;">
+                    {{ category.count }}
+                    {% if category.count == 1 %}movimentação{% else %}movimentações{% endif %}
+                </p>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="text-center py-10">
+            <p class="text-sm font-medium" style="color:#a3a3a3;">Nenhuma despesa categorizada</p>
+            <p class="text-xs mt-1" style="color:#525252;">As despesas do período aparecerão aqui automaticamente.</p>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="rounded-lg p-5" style="background:#111111;border:1px solid #262626;">
+        <div class="flex items-center justify-between mb-5">
+            <h2 class="text-sm font-semibold" style="color:#f5f5f5;">Receitas por categoria</h2>
+            <span class="text-[11px]" style="color:#525252;">Distribuição do período</span>
+        </div>
+
+        {% if income_by_category %}
+        <div class="space-y-4">
+            {% for category in income_by_category %}
+            <div>
+                <div class="flex items-start justify-between gap-4 mb-2">
+                    <div class="flex items-center gap-2 min-w-0">
+                        <span class="w-2.5 h-2.5 rounded-full flex-shrink-0" style="background:{{ category.color }};"></span>
+                        <span class="text-sm font-medium truncate" style="color:#f5f5f5;">{{ category.name }}</span>
+                    </div>
+                    <div class="text-right flex-shrink-0">
+                        <p class="font-mono text-xs font-semibold" style="color:#f5f5f5;">{{ category.total|format_currency }}</p>
+                        <p class="text-[11px]" style="color:#525252;">{{ category.percentage|floatformat:2 }}%</p>
+                    </div>
+                </div>
+                <div class="w-full h-2 rounded-full overflow-hidden" style="background:#1a1a1a;">
+                    <div class="h-full rounded-full" style="width:{{ category.percentage|floatformat:2 }}%;background:{{ category.color }};"></div>
+                </div>
+                <p class="text-[11px] mt-1" style="color:#525252;">
+                    {{ category.count }}
+                    {% if category.count == 1 %}movimentação{% else %}movimentações{% endif %}
+                </p>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="text-center py-10">
+            <p class="text-sm font-medium" style="color:#a3a3a3;">Nenhuma receita categorizada</p>
+            <p class="text-xs mt-1" style="color:#525252;">As receitas do período aparecerão aqui automaticamente.</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<div class="rounded-lg p-5 mb-6 overflow-hidden" style="background:#111111;border:1px solid #262626;">
+    <div class="flex items-center justify-between mb-5">
+        <h2 class="text-sm font-semibold" style="color:#f5f5f5;">Por conta</h2>
+        <span class="text-[11px]" style="color:#525252;">Saldos e fluxo no período</span>
+    </div>
+
+    {% if by_account %}
+    <div class="overflow-x-auto">
+        <table class="w-full min-w-[720px]">
+            <thead>
+                <tr style="border-bottom:1px solid #262626;">
+                    <th class="text-left text-xs font-medium py-3 pr-4" style="color:#525252;">Conta</th>
+                    <th class="text-left text-xs font-medium py-3 pr-4" style="color:#525252;">Tipo</th>
+                    <th class="text-right text-xs font-medium py-3 pr-4" style="color:#525252;">Saldo Atual</th>
+                    <th class="text-right text-xs font-medium py-3 pr-4" style="color:#525252;">Entradas no Período</th>
+                    <th class="text-right text-xs font-medium py-3" style="color:#525252;">Saídas no Período</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for account_data in by_account %}
+                <tr style="border-bottom:1px solid rgba(38,38,38,0.6);">
+                    <td class="py-3 pr-4 text-sm font-medium" style="color:#f5f5f5;">{{ account_data.name }}</td>
+                    <td class="py-3 pr-4 text-sm" style="color:#a3a3a3;">{{ account_data.account_type }}</td>
+                    <td class="py-3 pr-4 text-sm font-mono text-right" style="color:#f5f5f5;">{{ account_data.current_balance|format_currency }}</td>
+                    <td class="py-3 pr-4 text-sm font-mono text-right" style="color:#22c55e;">{{ account_data.period_income|format_currency }}</td>
+                    <td class="py-3 text-sm font-mono text-right" style="color:#ef4444;">{{ account_data.period_expense|format_currency }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="text-center py-10">
+        <p class="text-sm font-medium" style="color:#a3a3a3;">Nenhuma conta encontrada</p>
+        <p class="text-xs mt-1" style="color:#525252;">Cadastre uma conta para acompanhar a movimentação consolidada.</p>
+    </div>
+    {% endif %}
+</div>
+
+<div class="grid grid-cols-1 xl:grid-cols-2 gap-4">
+    <div class="rounded-lg p-5" style="background:#111111;border:1px solid #262626;">
+        <div class="flex items-center justify-between mb-5">
+            <h2 class="text-sm font-semibold" style="color:#f5f5f5;">Top 5 despesas</h2>
+            <span class="text-[11px]" style="color:#525252;">Maiores saídas</span>
+        </div>
+
+        {% if top_expenses %}
+        <div class="space-y-3">
+            {% for transaction in top_expenses %}
+            <div class="rounded-lg p-4" style="background:#0a0a0a;border:1px solid #262626;">
+                <div class="flex items-start justify-between gap-4">
+                    <div class="min-w-0">
+                        <p class="text-[11px] mb-1" style="color:#525252;">{{ transaction.date|format_date_relative }}</p>
+                        <p class="text-sm font-medium truncate" style="color:#f5f5f5;">
+                            {% if transaction.description %}{{ transaction.description }}{% else %}{{ transaction.category.name }}{% endif %}
+                        </p>
+                        <div class="flex flex-wrap items-center gap-2 mt-2">
+                            <span class="inline-flex items-center px-2 py-1 rounded-full text-[11px] border"
+                                  style="background:{{ transaction.category.color }}1a;color:{{ transaction.category.color }};border-color:{{ transaction.category.color }}33;">
+                                {{ transaction.category.name }}
+                            </span>
+                            <span class="text-[11px]" style="color:#525252;">{{ transaction.account.name }}</span>
+                        </div>
+                    </div>
+                    <p class="font-mono text-sm font-semibold flex-shrink-0" style="color:#ef4444;">{{ transaction.amount|format_currency }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="text-center py-10">
+            <p class="text-sm font-medium" style="color:#a3a3a3;">Sem despesas relevantes</p>
+            <p class="text-xs mt-1" style="color:#525252;">As maiores despesas aparecerão aqui quando houver movimentação.</p>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="rounded-lg p-5" style="background:#111111;border:1px solid #262626;">
+        <div class="flex items-center justify-between mb-5">
+            <h2 class="text-sm font-semibold" style="color:#f5f5f5;">Top 5 receitas</h2>
+            <span class="text-[11px]" style="color:#525252;">Maiores entradas</span>
+        </div>
+
+        {% if top_incomes %}
+        <div class="space-y-3">
+            {% for transaction in top_incomes %}
+            <div class="rounded-lg p-4" style="background:#0a0a0a;border:1px solid #262626;">
+                <div class="flex items-start justify-between gap-4">
+                    <div class="min-w-0">
+                        <p class="text-[11px] mb-1" style="color:#525252;">{{ transaction.date|format_date_relative }}</p>
+                        <p class="text-sm font-medium truncate" style="color:#f5f5f5;">
+                            {% if transaction.description %}{{ transaction.description }}{% else %}{{ transaction.category.name }}{% endif %}
+                        </p>
+                        <div class="flex flex-wrap items-center gap-2 mt-2">
+                            <span class="inline-flex items-center px-2 py-1 rounded-full text-[11px] border"
+                                  style="background:{{ transaction.category.color }}1a;color:{{ transaction.category.color }};border-color:{{ transaction.category.color }}33;">
+                                {{ transaction.category.name }}
+                            </span>
+                            <span class="text-[11px]" style="color:#525252;">{{ transaction.account.name }}</span>
+                        </div>
+                    </div>
+                    <p class="font-mono text-sm font-semibold flex-shrink-0" style="color:#22c55e;">{{ transaction.amount|format_currency }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="text-center py-10">
+            <p class="text-sm font-medium" style="color:#a3a3a3;">Sem receitas relevantes</p>
+            <p class="text-xs mt-1" style="color:#525252;">As maiores receitas aparecerão aqui quando houver movimentação.</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+{{ block.super }}
+{{ daily_evolution|json_script:"daily-evolution-data" }}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script>
+    (function () {
+        var dataElement = document.getElementById('daily-evolution-data');
+        var canvas = document.getElementById('dailyEvolutionChart');
+
+        if (!dataElement || !canvas || typeof Chart === 'undefined') {
+            return;
+        }
+
+        var rawData = document.getElementById('daily-evolution-data').textContent;
+        var chartData = JSON.parse(rawData);
+
+        if (!Array.isArray(chartData) || chartData.length === 0) {
+            return;
+        }
+
+        var placeholderIds = [
+            'dailyEvolutionPlaceholderGlow',
+            'dailyEvolutionPlaceholderBars',
+            'dailyEvolutionPlaceholderLine',
+            'dailyEvolutionPlaceholderCopy'
+        ];
+
+        placeholderIds.forEach(function (id) {
+            var element = document.getElementById(id);
+            if (element) {
+                element.style.display = 'none';
+            }
+        });
+
+        function formatBRL(value) {
+            return 'R$ ' + Number(value).toLocaleString('pt-BR', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+        }
+
+        var labels = chartData.map(function (item) {
+            var parts = item.date.split('-');
+            return parts[2] + '/' + parts[1];
+        });
+        var incomes = chartData.map(function (item) { return Number(item.income); });
+        var expenses = chartData.map(function (item) { return Number(item.expense); });
+
+        new Chart(canvas, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Receitas',
+                        data: incomes,
+                        backgroundColor: '#22c55e',
+                        borderRadius: 8,
+                        maxBarThickness: 28
+                    },
+                    {
+                        label: 'Despesas',
+                        data: expenses,
+                        backgroundColor: '#ef4444',
+                        borderRadius: 8,
+                        maxBarThickness: 28
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: {
+                    intersect: false,
+                    mode: 'index'
+                },
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: '#525252',
+                            font: { size: 12, family: 'Inter, sans-serif' },
+                            boxWidth: 12,
+                            boxHeight: 12,
+                            padding: 20
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: '#111111',
+                        titleColor: '#f5f5f5',
+                        titleFont: { family: 'Inter, sans-serif', size: 13, weight: 'bold' },
+                        bodyColor: '#a3a3a3',
+                        bodyFont: { family: '"JetBrains Mono", monospace', size: 12 },
+                        borderColor: '#262626',
+                        borderWidth: 1,
+                        padding: 14,
+                        cornerRadius: 8,
+                        callbacks: {
+                            label: function (context) {
+                                return ' ' + context.dataset.label + ': ' + formatBRL(context.parsed.y);
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        stacked: false,
+                        ticks: {
+                            color: '#525252',
+                            font: { size: 12, family: '"JetBrains Mono", monospace' }
+                        },
+                        grid: {
+                            color: 'rgba(51,65,85,0.4)',
+                            drawBorder: false
+                        },
+                        border: {
+                            color: 'rgba(51,65,85,0.4)'
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            color: '#525252',
+                            font: { size: 11, family: '"JetBrains Mono", monospace' },
+                            callback: function (value) {
+                                return formatBRL(value);
+                            }
+                        },
+                        grid: {
+                            color: 'rgba(51,65,85,0.4)',
+                            drawBorder: false
+                        },
+                        border: {
+                            color: 'rgba(51,65,85,0.4)'
+                        }
+                    }
+                }
+            }
+        });
+    })();
+</script>
+{% endblock %}
