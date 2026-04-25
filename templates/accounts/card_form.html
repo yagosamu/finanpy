@@ -1,0 +1,174 @@
+{% extends 'base_dashboard.html' %}
+
+{% block dashboard_title %}{% if object %}Editar Cartão{% else %}Novo Cartão{% endif %}{% endblock %}
+
+{% block breadcrumbs %}
+<nav class="mb-5" aria-label="Breadcrumb">
+    <ol class="flex items-center gap-2 text-xs" style="color:#525252;">
+        <li><a href="{% url 'dashboard' %}" class="transition-colors duration-150 hover:text-[#a3a3a3]" style="color:#525252;">Dashboard</a></li>
+        <li aria-hidden="true">/</li>
+        <li><a href="{% url 'accounts:card_list' %}" class="transition-colors duration-150 hover:text-[#a3a3a3]" style="color:#525252;">Cartões</a></li>
+        <li aria-hidden="true">/</li>
+        <li style="color:#a3a3a3;">{% if object %}Editar{% else %}Novo{% endif %}</li>
+    </ol>
+</nav>
+{% endblock %}
+
+{% block dashboard_content %}
+<div class="mb-6">
+    <div class="flex items-center gap-3 mb-1">
+        <a href="{% url 'accounts:card_list' %}" class="transition-colors duration-150" style="color:#525252;">
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+            </svg>
+        </a>
+        <h1 class="text-lg font-semibold" style="color:#f5f5f5;">{% if object %}Editar Cartão{% else %}Novo Cartão{% endif %}</h1>
+    </div>
+    <p class="text-xs" style="color:#525252;">Configure limite, datas e identidade visual do cartão.</p>
+</div>
+
+<div class="grid grid-cols-1 gap-5 xl:grid-cols-[minmax(0,1fr)_320px] max-w-6xl">
+    <form method="post" class="rounded-lg p-6" style="background:#111111;border:1px solid #262626;">
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+        <div role="alert" class="rounded-lg p-4 flex items-start mb-5" style="background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);">
+            <svg class="w-4 h-4 mr-3 mt-0.5 flex-shrink-0" style="color:#ef4444;" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+            </svg>
+            <div>
+                {% for error in form.non_field_errors %}
+                <p class="text-sm" style="color:#ef4444;">{{ error }}</p>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <h2 class="text-sm font-semibold mb-5" style="color:#f5f5f5;">Dados do Cartão</h2>
+
+        <div class="mb-5">
+            <label for="{{ form.name.id_for_label }}" class="block text-xs font-medium mb-1.5" style="color:#a3a3a3;">Nome <span style="color:#ef4444;">*</span></label>
+            <input type="text" name="{{ form.name.name }}" id="{{ form.name.id_for_label }}" value="{{ form.name.value|default:'' }}"
+                   class="w-full px-4 py-2.5 rounded-lg text-sm transition-all duration-150"
+                   style="background:#0a0a0a;border:1px solid {% if form.name.errors %}#ef4444{% else %}#262626{% endif %};color:#f5f5f5;"
+                   placeholder="Ex.: Nubank Roxinho" required>
+            {% for error in form.name.errors %}<p class="text-xs mt-1.5" style="color:#ef4444;">{{ error }}</p>{% endfor %}
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
+            <div>
+                <label for="{{ form.bank_code.id_for_label }}" class="block text-xs font-medium mb-1.5" style="color:#a3a3a3;">Banco <span style="color:#ef4444;">*</span></label>
+                <select name="{{ form.bank_code.name }}" id="{{ form.bank_code.id_for_label }}"
+                        class="w-full px-4 py-2.5 rounded-lg text-sm transition-all duration-150"
+                        style="background:#0a0a0a;border:1px solid {% if form.bank_code.errors %}#ef4444{% else %}#262626{% endif %};color:#f5f5f5;" required>
+                    <option value="">Selecione o banco</option>
+                    {% for value, label in form.bank_code.field.choices %}
+                    {% if value %}
+                    <option value="{{ value }}" {% if form.bank_code.value == value %}selected{% endif %}>{{ label }}</option>
+                    {% endif %}
+                    {% endfor %}
+                </select>
+                {% for error in form.bank_code.errors %}<p class="text-xs mt-1.5" style="color:#ef4444;">{{ error }}</p>{% endfor %}
+            </div>
+            <div>
+                <label for="{{ form.credit_limit.id_for_label }}" class="block text-xs font-medium mb-1.5" style="color:#a3a3a3;">Limite de Crédito <span style="color:#ef4444;">*</span></label>
+                <div class="relative">
+                    <span class="absolute left-4 top-1/2 -translate-y-1/2 text-xs font-mono" style="color:#525252;">R$</span>
+                    <input type="number" name="{{ form.credit_limit.name }}" id="{{ form.credit_limit.id_for_label }}" value="{{ form.credit_limit.value|default:'' }}"
+                           step="0.01" min="0.01"
+                           class="w-full pl-10 pr-4 py-2.5 rounded-lg text-sm font-mono transition-all duration-150"
+                           style="background:#0a0a0a;border:1px solid {% if form.credit_limit.errors %}#ef4444{% else %}#262626{% endif %};color:#f5f5f5;"
+                           placeholder="0.00" required>
+                </div>
+                {% for error in form.credit_limit.errors %}<p class="text-xs mt-1.5" style="color:#ef4444;">{{ error }}</p>{% endfor %}
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-6">
+            <div>
+                <label for="{{ form.closing_day.id_for_label }}" class="block text-xs font-medium mb-1.5" style="color:#a3a3a3;">Dia de Fechamento <span style="color:#ef4444;">*</span></label>
+                <input type="number" name="{{ form.closing_day.name }}" id="{{ form.closing_day.id_for_label }}" value="{{ form.closing_day.value|default:'' }}"
+                       min="1" max="28"
+                       class="w-full px-4 py-2.5 rounded-lg text-sm font-mono transition-all duration-150"
+                       style="background:#0a0a0a;border:1px solid {% if form.closing_day.errors %}#ef4444{% else %}#262626{% endif %};color:#f5f5f5;" required>
+                {% for error in form.closing_day.errors %}<p class="text-xs mt-1.5" style="color:#ef4444;">{{ error }}</p>{% endfor %}
+            </div>
+            <div>
+                <label for="{{ form.due_day.id_for_label }}" class="block text-xs font-medium mb-1.5" style="color:#a3a3a3;">Dia de Vencimento <span style="color:#ef4444;">*</span></label>
+                <input type="number" name="{{ form.due_day.name }}" id="{{ form.due_day.id_for_label }}" value="{{ form.due_day.value|default:'' }}"
+                       min="1" max="28"
+                       class="w-full px-4 py-2.5 rounded-lg text-sm font-mono transition-all duration-150"
+                       style="background:#0a0a0a;border:1px solid {% if form.due_day.errors %}#ef4444{% else %}#262626{% endif %};color:#f5f5f5;" required>
+                {% for error in form.due_day.errors %}<p class="text-xs mt-1.5" style="color:#ef4444;">{{ error }}</p>{% endfor %}
+            </div>
+            <div>
+                <label for="{{ form.color.id_for_label }}" class="block text-xs font-medium mb-1.5" style="color:#a3a3a3;">Cor</label>
+                <div class="flex items-center gap-3">
+                    <input type="color" name="{{ form.color.name }}" id="{{ form.color.id_for_label }}" value="{{ form.color.value|default:'#22c55e' }}"
+                           class="h-11 w-16 rounded-lg cursor-pointer border-0 bg-transparent p-0">
+                    <span id="cardColorValue" class="text-sm font-mono" style="color:#f5f5f5;">{{ form.color.value|default:'#22c55e' }}</span>
+                </div>
+                {% for error in form.color.errors %}<p class="text-xs mt-1.5" style="color:#ef4444;">{{ error }}</p>{% endfor %}
+            </div>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-3 pt-5" style="border-top:1px solid #262626;">
+            <button type="submit"
+                    class="px-5 py-2.5 rounded-lg text-sm font-medium text-black transition-all duration-150 hover:opacity-90 flex items-center justify-center"
+                    style="background:#22c55e;">
+                Salvar
+            </button>
+            <a href="{% url 'accounts:card_list' %}"
+               class="px-5 py-2.5 rounded-lg text-sm font-medium transition-all duration-150 flex items-center justify-center"
+               style="background:#1a1a1a;color:#a3a3a3;border:1px solid #262626;">
+                Cancelar
+            </a>
+        </div>
+    </form>
+
+    <aside class="rounded-lg p-5 h-fit" style="background:#111111;border:1px solid #262626;">
+        <h2 class="text-sm font-semibold mb-3" style="color:#f5f5f5;">Preview</h2>
+        <div id="cardPreviewSurface" class="rounded-2xl p-5 mb-4 transition-all duration-150"
+             style="background:linear-gradient(135deg, #22c55e22 0%, rgba(17,17,17,0.96) 55%, rgba(10,10,10,1) 100%);border:1px solid #262626;">
+            <p class="text-[11px] uppercase tracking-[0.14em]" style="color:#a3a3a3;">Cartão</p>
+            <p id="cardPreviewName" class="mt-3 text-base font-semibold" style="color:#f5f5f5;">{{ form.name.value|default:'Seu cartão' }}</p>
+        </div>
+        <p id="billPreviewText" class="text-sm leading-6" style="color:#a3a3a3;">Sua fatura fecha todo dia {{ form.closing_day.value|default:'X' }} e vence todo dia {{ form.due_day.value|default:'Y' }}</p>
+    </aside>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+{{ block.super }}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const nameField = document.getElementById('{{ form.name.id_for_label }}');
+        const closingDayField = document.getElementById('{{ form.closing_day.id_for_label }}');
+        const dueDayField = document.getElementById('{{ form.due_day.id_for_label }}');
+        const colorField = document.getElementById('{{ form.color.id_for_label }}');
+        const cardPreviewSurface = document.getElementById('cardPreviewSurface');
+        const cardPreviewName = document.getElementById('cardPreviewName');
+        const billPreviewText = document.getElementById('billPreviewText');
+        const cardColorValue = document.getElementById('cardColorValue');
+
+        function updatePreview() {
+            const color = colorField.value || '#22c55e';
+            const closingDay = closingDayField.value || 'X';
+            const dueDay = dueDayField.value || 'Y';
+            const name = nameField.value || 'Seu cartão';
+
+            cardPreviewSurface.style.background = 'linear-gradient(135deg, ' + color + '22 0%, rgba(17,17,17,0.96) 55%, rgba(10,10,10,1) 100%)';
+            cardPreviewName.textContent = name;
+            billPreviewText.textContent = 'Sua fatura fecha todo dia ' + closingDay + ' e vence todo dia ' + dueDay;
+            cardColorValue.textContent = color;
+        }
+
+        [nameField, closingDayField, dueDayField, colorField].forEach(function(field) {
+            field.addEventListener('input', updatePreview);
+            field.addEventListener('change', updatePreview);
+        });
+
+        updatePreview();
+    });
+</script>
+{% endblock %}

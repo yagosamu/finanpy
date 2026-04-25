@@ -1299,13 +1299,13 @@
 | Sprint 9 | 1 semana | Refinamentos e MVP | ✅ Concluído |
 | Sprint 10 | 1 semana | Redesign Visual + Rebranding Finova | ✅ Concluído |
 | Sprint 11 | 1 semana | App de Metas (Goals) | ✅ Concluído |
-| Sprint 12 | 1 semana | App de Relatórios (Reports) | 🔄 Em andamento |
-| Sprint 13 | 2 semanas | Vínculo Bancário e Transferências | ⏳ Planejado |
-| Sprint 14 | 1 semana | Orçamentos por Categoria | ⏳ Planejado |
-| Sprint 15 | 1 semana | Recorrências — Despesas e Receitas Fixas | ⏳ Planejado |
-| Sprint 16 | 2 semanas | Parcelamentos | ⏳ Planejado |
-| Sprint 17 | 2 semanas | Cartões de Crédito | ⏳ Planejado |
-| Sprint 18 | 3 semanas | Integração com WhatsApp | ⏳ Planejado |
+| Sprint 12 | 1 semana | App de Relatórios (Reports) | ✅ Concluído |
+| Sprint 13 | 2 semanas | Vínculo Bancário e Transferências | ✅ Concluído |
+| Sprint 14 | 1 semana | Orçamentos por Categoria | ✅ Concluído |
+| Sprint 15 | 1 semana | Recorrências — Despesas e Receitas Fixas | ✅ Concluído |
+| Sprint 16 | 2 semanas | Parcelamentos | ✅ Concluído |
+| Sprint 17 | 2 semanas | Cartões de Crédito | ✅ Concluído |
+| Sprint 18 | 3 semanas | Integração com WhatsApp | 🔄 Em andamento |
 | Sprint 19 | 2 semanas | Reestruturação do Site Público | ⏳ Planejado |
 | Sprint 20 | 2 semanas | Testes Automatizados | ⏳ Futuro |
 | Sprint 21 | 1 semana | Containerização e CI/CD | ⏳ Futuro |

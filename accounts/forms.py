@@ -4,7 +4,7 @@ from django import forms
 from django.core.exceptions import ValidationError
 
 from .services import get_default_account
-from .models import Account
+from .models import Account, CreditCard
 
 
 class AccountUpdateForm(forms.ModelForm):
@@ -288,3 +288,77 @@ class TransferForm(forms.Form):
             raise ValidationError('Selecione contas diferentes para a transferencia.')
 
         return cleaned_data
+
+
+class CreditCardForm(forms.ModelForm):
+    class Meta:
+        model = CreditCard
+        fields = ['name', 'bank_code', 'credit_limit', 'closing_day', 'due_day', 'color']
+        labels = {
+            'name': 'Nome do Cartão',
+            'bank_code': 'Banco',
+            'credit_limit': 'Limite de Crédito',
+            'closing_day': 'Dia de Fechamento',
+            'due_day': 'Dia de Vencimento',
+            'color': 'Cor',
+        }
+        widgets = {
+            'name': forms.TextInput(attrs={
+                'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm',
+                'placeholder': 'Nubank Roxinho',
+            }),
+            'bank_code': forms.Select(attrs={
+                'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm',
+            }),
+            'credit_limit': forms.NumberInput(attrs={
+                'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm',
+                'placeholder': '0.00',
+                'step': '0.01',
+                'min': '0.01',
+            }),
+            'closing_day': forms.NumberInput(attrs={
+                'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm',
+                'min': '1',
+                'max': '28',
+            }),
+            'due_day': forms.NumberInput(attrs={
+                'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm',
+                'min': '1',
+                'max': '28',
+            }),
+            'color': forms.TextInput(attrs={
+                'class': 'mt-1 block h-11 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm',
+                'type': 'color',
+            }),
+        }
+    def clean_closing_day(self):
+        closing_day = self.cleaned_data.get('closing_day')
+        if closing_day is None or not 1 <= closing_day <= 28:
+            raise ValidationError('O dia de fechamento deve estar entre 1 e 28.')
+        return closing_day
+
+    def clean_due_day(self):
+        due_day = self.cleaned_data.get('due_day')
+        if due_day is None or not 1 <= due_day <= 28:
+            raise ValidationError('O dia de vencimento deve estar entre 1 e 28.')
+        return due_day
+
+
+class CardBillPayForm(forms.Form):
+    payment_account = forms.ModelChoiceField(
+        label='Conta de Pagamento',
+        queryset=Account.objects.none(),
+        widget=forms.Select(attrs={
+            'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm',
+        }),
+    )
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
+        super().__init__(*args, **kwargs)
+
+        if self.user:
+            self.fields['payment_account'].queryset = Account.objects.filter(
+                user=self.user,
+                is_active=True,
+            ).order_by('name')

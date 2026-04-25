@@ -39,6 +39,14 @@ class Transaction(models.Model):
         related_name='transactions',
         verbose_name='Categoria'
     )
+    credit_card = models.ForeignKey(
+        'accounts.CreditCard',
+        on_delete=models.SET_NULL,
+        related_name='transactions',
+        null=True,
+        blank=True,
+        verbose_name='Cartão de Crédito'
+    )
 
     # Regular fields
     transaction_type = models.CharField(

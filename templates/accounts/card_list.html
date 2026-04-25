@@ -1,0 +1,117 @@
+{% extends 'base_dashboard.html' %}
+{% load format_filters account_tags %}
+
+{% block dashboard_title %}Cartões de Crédito{% endblock %}
+
+{% block breadcrumbs %}
+<nav class="mb-5" aria-label="Breadcrumb">
+    <ol class="flex items-center gap-2 text-xs" style="color:#525252;">
+        <li><a href="{% url 'dashboard' %}" class="transition-colors duration-150 hover:text-[#a3a3a3]" style="color:#525252;">Dashboard</a></li>
+        <li aria-hidden="true">/</li>
+        <li style="color:#a3a3a3;">Cartões</li>
+    </ol>
+</nav>
+{% endblock %}
+
+{% block dashboard_content %}
+<div class="mb-6">
+    <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+            <h1 class="text-lg font-semibold mb-0.5" style="color:#f5f5f5;">Cartões de Crédito</h1>
+            <p class="text-xs" style="color:#525252;">Acompanhe limite, faturas e uso atual de cada cartão.</p>
+        </div>
+        <a href="{% url 'accounts:card_create' %}"
+           class="inline-flex items-center justify-center px-4 py-2 rounded-lg text-sm font-medium text-black transition-all duration-150 hover:opacity-90"
+           style="background:#22c55e;">
+            <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+            </svg>
+            Novo Cartão
+        </a>
+    </div>
+</div>
+
+<div class="rounded-lg p-5 mb-6" style="background:#111111;border:1px solid #262626;">
+    <p class="text-[11px] uppercase tracking-[0.16em]" style="color:#525252;">Total de faturas abertas</p>
+    <p class="mt-2 text-2xl font-semibold font-mono" style="color:#f5f5f5;">{{ total_card_debt|format_currency }}</p>
+</div>
+
+{% if cards %}
+<div class="grid grid-cols-1 gap-5 lg:grid-cols-2">
+    {% for card in cards %}
+    {% widthratio card.current_bill_amount card.credit_limit 100 as limit_usage %}
+    <article class="rounded-2xl p-5 overflow-hidden relative" style="background:linear-gradient(135deg, {{ card.color }}22 0%, rgba(17,17,17,0.96) 55%, rgba(10,10,10,1) 100%);border:1px solid #262626;">
+        <div class="absolute inset-0 opacity-30 pointer-events-none" style="background:radial-gradient(circle at top right, {{ card.color }}33 0%, transparent 45%);"></div>
+        <div class="relative">
+            <div class="flex items-start justify-between gap-4 mb-6">
+                <div class="flex items-center gap-3 min-w-0">
+                    <div class="flex h-11 w-11 items-center justify-center rounded-xl" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);">
+                        <img src="{% bank_icon card.bank_code %}" alt="{{ card.get_bank_code_display }}" class="h-6 w-6 object-contain">
+                    </div>
+                    <div class="min-w-0">
+                        <p class="text-[11px] uppercase tracking-[0.14em]" style="color:#a3a3a3;">{{ card.get_bank_code_display }}</p>
+                        <h2 class="text-base font-semibold truncate" style="color:#f5f5f5;">{{ card.name }}</h2>
+                    </div>
+                </div>
+                <span class="inline-flex items-center rounded-full px-2.5 py-1 text-[10px] font-medium"
+                      style="background:rgba(255,255,255,0.06);color:#f5f5f5;border:1px solid rgba(255,255,255,0.08);">
+                    Ativo
+                </span>
+            </div>
+
+            <div class="mb-5">
+                <p class="text-[11px] uppercase tracking-[0.14em] mb-1" style="color:#a3a3a3;">Limite disponível</p>
+                <p class="text-2xl font-semibold font-mono" style="color:#f5f5f5;">{{ card.available_limit|format_currency }}</p>
+                <p class="text-xs font-mono mt-1" style="color:#525252;">de {{ card.credit_limit|format_currency }}</p>
+            </div>
+
+            <div class="mb-5">
+                <div class="mb-2 flex items-center justify-between text-xs">
+                    <span style="color:#a3a3a3;">Uso do limite</span>
+                    <span class="font-mono" style="color:#f5f5f5;">{{ limit_usage }}%</span>
+                </div>
+                <div class="h-2 overflow-hidden rounded-full" style="background:rgba(255,255,255,0.08);">
+                    <div class="h-full rounded-full"
+                         style="width:{{ limit_usage }}%;background:{% if limit_usage > 80 %}#ef4444{% elif limit_usage >= 50 %}#eab308{% else %}#22c55e{% endif %};"></div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4 mb-5">
+                <div class="rounded-xl p-3" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);">
+                    <p class="text-[11px] uppercase tracking-[0.14em] mb-1" style="color:#a3a3a3;">Fatura atual</p>
+                    <p class="text-sm font-semibold font-mono" style="color:#f5f5f5;">{{ card.current_bill_amount|format_currency }}</p>
+                </div>
+                <div class="rounded-xl p-3" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);">
+                    <p class="text-[11px] uppercase tracking-[0.14em] mb-1" style="color:#a3a3a3;">Próximo vencimento</p>
+                    <p class="text-sm font-semibold" style="color:#f5f5f5;">{{ card.next_due_date|date:"d/m/Y" }}</p>
+                </div>
+            </div>
+
+            <a href="{% url 'accounts:card_detail' card.pk %}"
+               class="inline-flex items-center justify-center rounded-lg px-4 py-2 text-sm font-medium transition-all duration-150 hover:opacity-90"
+               style="background:#22c55e;color:#000;">
+                Ver fatura
+            </a>
+        </div>
+    </article>
+    {% endfor %}
+</div>
+{% else %}
+<div class="rounded-lg p-12" style="background:#111111;border:1px solid #262626;">
+    <div class="mx-auto max-w-md text-center">
+        <div class="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full" style="background:#1a1a1a;">
+            <svg class="h-8 w-8" style="color:#525252;" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M5.25 4.5h13.5A1.5 1.5 0 0120.25 6v12A1.5 1.5 0 0118.75 19.5H5.25A1.5 1.5 0 013.75 18V6A1.5 1.5 0 015.25 4.5zm0 5.25h13.5m-9 4.5h2.25" />
+            </svg>
+        </div>
+        <h3 class="text-base font-semibold mb-2" style="color:#f5f5f5;">Nenhum cartão cadastrado</h3>
+        <p class="text-sm font-light mb-6" style="color:#a3a3a3;">Cadastre seu primeiro cartão para acompanhar limite, compras e pagamento de fatura em um só lugar.</p>
+        <a href="{% url 'accounts:card_create' %}"
+           class="inline-flex items-center justify-center px-5 py-2.5 rounded-lg text-sm font-medium text-black transition-all duration-150 hover:opacity-90"
+           style="background:#22c55e;">
+            Criar Primeiro Cartão
+        </a>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

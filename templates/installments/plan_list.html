@@ -1,0 +1,198 @@
+{% extends 'base_dashboard.html' %}
+{% load format_filters %}
+
+{% block dashboard_title %}Parcelamentos{% endblock %}
+
+{% block dashboard_content %}
+<div class="mb-6 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+    <div>
+        <h1 class="text-lg font-semibold" style="color:#f5f5f5;">Parcelamentos</h1>
+        <p class="text-[11px] mt-0.5" style="color:#525252;">Acompanhe compras parceladas, parcelas pendentes e progresso de pagamento.</p>
+    </div>
+    <a href="{% url 'installments:create' %}"
+       class="inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium text-black transition-all duration-150 hover:opacity-90"
+       style="background:#22c55e;">
+        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+        </svg>
+        Novo Parcelamento
+    </a>
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+    <div class="rounded-lg p-5" style="background:#111111;border:1px solid #262626;">
+        <p class="text-[11px] uppercase tracking-[0.16em]" style="color:#525252;">Total de dívida ativa</p>
+        <p class="mt-2 text-2xl font-semibold font-mono" style="color:#f5f5f5;">{{ total_debt|format_currency }}</p>
+        <p class="mt-2 text-xs" style="color:#525252;">Soma do valor restante dos planos em andamento.</p>
+    </div>
+    <div class="rounded-lg p-5" style="background:#111111;border:1px solid #262626;">
+        <p class="text-[11px] uppercase tracking-[0.16em]" style="color:#525252;">Vencendo este mês</p>
+        <p class="mt-2 text-2xl font-semibold font-mono" style="color:#f5f5f5;">{{ installments_due_this_month|length }}</p>
+        <p class="mt-2 text-xs" style="color:#525252;">Parcelas pendentes com vencimento no mês atual.</p>
+    </div>
+</div>
+
+{% if active_plans or completed_plans %}
+<section class="mb-6 rounded-lg p-5" style="background:#111111;border:1px solid #262626;">
+    <div class="flex items-center justify-between mb-4">
+        <h2 class="text-sm font-semibold" style="color:#f5f5f5;">Em andamento</h2>
+        <span class="text-[11px]" style="color:#525252;">{{ active_plans|length }} plano{{ active_plans|length|pluralize:",s" }}</span>
+    </div>
+
+    {% if active_plans %}
+    <div class="space-y-4">
+        {% for plan in active_plans %}
+        <article class="rounded-lg p-4" style="background:#0a0a0a;border:1px solid #262626;">
+            <div class="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+                <div class="min-w-0">
+                    <div class="flex flex-wrap items-center gap-2 mb-2">
+                        <h3 class="text-sm font-semibold" style="color:#f5f5f5;">{{ plan.name }}</h3>
+                        <span class="inline-flex items-center rounded-full px-2.5 py-1 text-[10px] font-medium"
+                              style="background:{{ plan.category.color }}22;color:{{ plan.category.color }};border:1px solid {{ plan.category.color }}33;">
+                            {{ plan.category.name }}
+                        </span>
+                    </div>
+                    <p class="text-[11px]" style="color:#525252;">Conta vinculada: {{ plan.account.name }}</p>
+                </div>
+                <div class="text-left lg:text-right">
+                    <p class="text-[11px]" style="color:#525252;">Valor restante</p>
+                    <p class="text-lg font-semibold font-mono" style="color:#f5f5f5;">{{ plan.remaining_amount|format_currency }}</p>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <div class="mb-2 flex items-center justify-between text-[11px]">
+                    <span style="color:#a3a3a3;">{{ plan.paid_count }} de {{ plan.installment_count }} parcelas pagas</span>
+                    <span style="color:#525252;">{{ plan.progress_percentage|floatformat:0 }}%</span>
+                </div>
+                <div class="h-2 overflow-hidden rounded-full" style="background:#1a1a1a;">
+                    <div class="h-full rounded-full transition-all duration-300" style="width:{{ plan.progress_percentage }}%;background:#22c55e;"></div>
+                </div>
+            </div>
+
+            <div class="mt-4 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+                <div class="text-xs" style="color:#a3a3a3;">
+                    {% if plan.next_installment %}
+                    Próxima parcela: {{ plan.next_installment.due_date|date:"d/m/Y" }} · {{ plan.next_installment.amount|format_currency }}
+                    {% else %}
+                    Nenhuma parcela pendente.
+                    {% endif %}
+                </div>
+                <div class="flex flex-col gap-2 sm:flex-row">
+                    <a href="{% url 'installments:detail' plan.pk %}"
+                       class="inline-flex items-center justify-center rounded-lg px-4 py-2 text-sm font-medium transition-all duration-150"
+                       style="background:#1a1a1a;color:#f5f5f5;border:1px solid #262626;">
+                        Ver parcelas
+                    </a>
+                    <a href="{% url 'installments:delete' plan.pk %}"
+                       class="inline-flex items-center justify-center rounded-lg px-4 py-2 text-sm font-medium transition-all duration-150"
+                       style="background:rgba(239,68,68,0.08);color:#ef4444;border:1px solid rgba(239,68,68,0.2);">
+                        Excluir
+                    </a>
+                </div>
+            </div>
+        </article>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p class="text-xs" style="color:#525252;">Nenhum parcelamento em andamento no momento.</p>
+    {% endif %}
+</section>
+
+<section class="rounded-lg p-5" style="background:#111111;border:1px solid #262626;">
+    <button id="toggleCompletedPlans"
+            type="button"
+            class="flex w-full items-center justify-between text-left"
+            aria-expanded="false"
+            aria-controls="completedPlansSection">
+        <span class="text-sm font-semibold" style="color:#f5f5f5;">Concluídos</span>
+        <span class="flex items-center gap-3">
+            <span class="text-[11px]" style="color:#525252;">{{ completed_plans|length }} plano{{ completed_plans|length|pluralize:",s" }}</span>
+            <svg id="completedPlansIcon" class="h-4 w-4 transition-transform duration-150" style="color:#525252;" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+            </svg>
+        </span>
+    </button>
+
+    <div id="completedPlansSection" class="hidden mt-4">
+        {% if completed_plans %}
+        <div class="space-y-4">
+            {% for plan in completed_plans %}
+            <article class="rounded-lg p-4" style="background:#0a0a0a;border:1px solid #262626;">
+                <div class="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
+                    <div class="min-w-0">
+                        <div class="flex flex-wrap items-center gap-2 mb-2">
+                            <h3 class="text-sm font-semibold" style="color:#f5f5f5;">{{ plan.name }}</h3>
+                            <span class="inline-flex items-center rounded-full px-2.5 py-1 text-[10px] font-medium"
+                                  style="background:{{ plan.category.color }}22;color:{{ plan.category.color }};border:1px solid {{ plan.category.color }}33;">
+                                {{ plan.category.name }}
+                            </span>
+                        </div>
+                        <p class="text-[11px]" style="color:#525252;">Conta vinculada: {{ plan.account.name }}</p>
+                    </div>
+                    <div class="text-left lg:text-right">
+                        <p class="text-[11px]" style="color:#525252;">Valor restante</p>
+                        <p class="text-lg font-semibold font-mono" style="color:#22c55e;">{{ plan.remaining_amount|format_currency }}</p>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <div class="mb-2 flex items-center justify-between text-[11px]">
+                        <span style="color:#a3a3a3;">{{ plan.paid_count }} de {{ plan.installment_count }} parcelas pagas</span>
+                        <span style="color:#525252;">{{ plan.progress_percentage|floatformat:0 }}%</span>
+                    </div>
+                    <div class="h-2 overflow-hidden rounded-full" style="background:#1a1a1a;">
+                        <div class="h-full rounded-full transition-all duration-300" style="width:{{ plan.progress_percentage }}%;background:#22c55e;"></div>
+                    </div>
+                </div>
+
+                <div class="mt-4 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+                    <div class="text-xs" style="color:#a3a3a3;">Plano concluído com todas as parcelas pagas.</div>
+                    <a href="{% url 'installments:detail' plan.pk %}"
+                       class="inline-flex items-center justify-center rounded-lg px-4 py-2 text-sm font-medium transition-all duration-150"
+                       style="background:#1a1a1a;color:#f5f5f5;border:1px solid #262626;">
+                        Ver parcelas
+                    </a>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="text-xs" style="color:#525252;">Nenhum parcelamento concluído ainda.</p>
+        {% endif %}
+    </div>
+</section>
+{% else %}
+<div class="rounded-lg p-8 text-center" style="background:#111111;border:1px solid #262626;">
+    <p class="text-sm font-medium mb-2" style="color:#f5f5f5;">Nenhum parcelamento cadastrado ainda.</p>
+    <p class="text-xs mb-5" style="color:#525252;">Cadastre compras parceladas para acompanhar vencimentos, progresso e saldo restante em um só lugar.</p>
+    <a href="{% url 'installments:create' %}"
+       class="inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium text-black transition-all duration-150 hover:opacity-90"
+       style="background:#22c55e;">
+        Criar primeiro parcelamento
+    </a>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block extra_js %}
+{{ block.super }}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const toggleCompletedPlans = document.getElementById('toggleCompletedPlans');
+        const completedPlansSection = document.getElementById('completedPlansSection');
+        const completedPlansIcon = document.getElementById('completedPlansIcon');
+
+        if (!toggleCompletedPlans || !completedPlansSection || !completedPlansIcon) {
+            return;
+        }
+
+        toggleCompletedPlans.addEventListener('click', function() {
+            const isHidden = completedPlansSection.classList.contains('hidden');
+            completedPlansSection.classList.toggle('hidden');
+            toggleCompletedPlans.setAttribute('aria-expanded', isHidden ? 'true' : 'false');
+            completedPlansIcon.style.transform = isHidden ? 'rotate(180deg)' : 'rotate(0deg)';
+        });
+    });
+</script>
+{% endblock %}

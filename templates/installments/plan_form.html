@@ -1,0 +1,313 @@
+{% extends 'base_dashboard.html' %}
+
+{% block dashboard_title %}Novo Parcelamento{% endblock %}
+
+{% block breadcrumbs %}
+<nav class="mb-5" aria-label="Breadcrumb">
+    <ol class="flex items-center gap-2 text-xs" style="color:#525252;">
+        <li><a href="{% url 'dashboard' %}" class="transition-colors duration-150 hover:text-[#a3a3a3]" style="color:#525252;">Dashboard</a></li>
+        <li aria-hidden="true">/</li>
+        <li><a href="{% url 'installments:list' %}" class="transition-colors duration-150 hover:text-[#a3a3a3]" style="color:#525252;">Parcelamentos</a></li>
+        <li aria-hidden="true">/</li>
+        <li style="color:#a3a3a3;">Novo</li>
+    </ol>
+</nav>
+{% endblock %}
+
+{% block dashboard_content %}
+<div class="mb-6">
+    <div class="flex items-center gap-3 mb-1">
+        <a href="{% url 'installments:list' %}" class="transition-colors duration-150" style="color:#525252;">
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+            </svg>
+        </a>
+        <h1 class="text-lg font-semibold" style="color:#f5f5f5;">Novo Parcelamento</h1>
+    </div>
+    <p class="text-xs" style="color:#525252;">Cadastre uma compra parcelada e acompanhe automaticamente as próximas cobranças.</p>
+</div>
+
+<div class="grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_320px] gap-5 max-w-6xl">
+    <form method="post" class="rounded-lg p-6" style="background:#111111;border:1px solid #262626;">
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+        <div role="alert" class="rounded-lg p-4 flex items-start mb-5" style="background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);">
+            <svg class="w-4 h-4 mr-3 mt-0.5 flex-shrink-0" style="color:#ef4444;" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+            </svg>
+            <div>
+                {% for error in form.non_field_errors %}
+                <p class="text-sm" style="color:#ef4444;">{{ error }}</p>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <h2 class="text-sm font-semibold mb-5" style="color:#f5f5f5;">Dados do Plano</h2>
+
+        <div class="mb-5">
+            <label for="{{ form.name.id_for_label }}" class="block text-xs font-medium mb-1.5" style="color:#a3a3a3;">
+                Nome <span style="color:#ef4444;">*</span>
+            </label>
+            <input type="text"
+                   name="{{ form.name.name }}"
+                   id="{{ form.name.id_for_label }}"
+                   value="{{ form.name.value|default:'' }}"
+                   class="w-full px-4 py-2.5 rounded-lg text-sm transition-all duration-150"
+                   style="background:#0a0a0a;border:1px solid {% if form.name.errors %}#ef4444{% else %}#262626{% endif %};color:#f5f5f5;"
+                   placeholder="Ex.: iPhone 15 Pro - Magazine Luiza"
+                   required>
+            {% if form.name.errors %}
+            <div class="mt-1.5">
+                {% for error in form.name.errors %}
+                <p class="text-xs" style="color:#ef4444;">{{ error }}</p>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
+            <div>
+                <label for="{{ form.total_amount.id_for_label }}" class="block text-xs font-medium mb-1.5" style="color:#a3a3a3;">
+                    Valor Total <span style="color:#ef4444;">*</span>
+                </label>
+                <div class="relative">
+                    <span class="absolute left-4 top-1/2 -translate-y-1/2 text-xs font-mono" style="color:#525252;">R$</span>
+                    <input type="number"
+                           name="{{ form.total_amount.name }}"
+                           id="{{ form.total_amount.id_for_label }}"
+                           value="{{ form.total_amount.value|default:'' }}"
+                           step="0.01"
+                           min="0.01"
+                           class="w-full pl-10 pr-4 py-2.5 rounded-lg text-sm font-mono transition-all duration-150"
+                           style="background:#0a0a0a;border:1px solid {% if form.total_amount.errors %}#ef4444{% else %}#262626{% endif %};color:#f5f5f5;"
+                           placeholder="0.00"
+                           required>
+                </div>
+                {% if form.total_amount.errors %}
+                <div class="mt-1.5">
+                    {% for error in form.total_amount.errors %}
+                    <p class="text-xs" style="color:#ef4444;">{{ error }}</p>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+
+            <div>
+                <label for="{{ form.installment_count.id_for_label }}" class="block text-xs font-medium mb-1.5" style="color:#a3a3a3;">
+                    Quantidade de Parcelas <span style="color:#ef4444;">*</span>
+                </label>
+                <input type="number"
+                       name="{{ form.installment_count.name }}"
+                       id="{{ form.installment_count.id_for_label }}"
+                       value="{{ form.installment_count.value|default:'' }}"
+                       min="2"
+                       max="120"
+                       class="w-full px-4 py-2.5 rounded-lg text-sm font-mono transition-all duration-150"
+                       style="background:#0a0a0a;border:1px solid {% if form.installment_count.errors %}#ef4444{% else %}#262626{% endif %};color:#f5f5f5;"
+                       required>
+                {% if form.installment_count.errors %}
+                <div class="mt-1.5">
+                    {% for error in form.installment_count.errors %}
+                    <p class="text-xs" style="color:#ef4444;">{{ error }}</p>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-5">
+            <div>
+                <label for="{{ form.start_date.id_for_label }}" class="block text-xs font-medium mb-1.5" style="color:#a3a3a3;">
+                    Data da Primeira Parcela <span style="color:#ef4444;">*</span>
+                </label>
+                <input type="date"
+                       name="{{ form.start_date.name }}"
+                       id="{{ form.start_date.id_for_label }}"
+                       value="{{ form.start_date.value|default:'' }}"
+                       class="w-full px-4 py-2.5 rounded-lg text-sm transition-all duration-150"
+                       style="background:#0a0a0a;border:1px solid {% if form.start_date.errors %}#ef4444{% else %}#262626{% endif %};color:#f5f5f5;"
+                       required>
+                {% if form.start_date.errors %}
+                <div class="mt-1.5">
+                    {% for error in form.start_date.errors %}
+                    <p class="text-xs" style="color:#ef4444;">{{ error }}</p>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+
+            <div>
+                <label for="{{ form.category.id_for_label }}" class="block text-xs font-medium mb-1.5" style="color:#a3a3a3;">
+                    Categoria <span style="color:#ef4444;">*</span>
+                </label>
+                <select name="{{ form.category.name }}"
+                        id="{{ form.category.id_for_label }}"
+                        class="w-full px-4 py-2.5 rounded-lg text-sm transition-all duration-150"
+                        style="background:#0a0a0a;border:1px solid {% if form.category.errors %}#ef4444{% else %}#262626{% endif %};color:#f5f5f5;"
+                        required>
+                    <option value="">Selecione a categoria</option>
+                    {% for value, label in form.category.field.choices %}
+                    {% if value %}
+                    <option value="{{ value }}" {% if form.category.value|stringformat:"s" == value|stringformat:"s" %}selected{% endif %}>{{ label }}</option>
+                    {% endif %}
+                    {% endfor %}
+                </select>
+                {% if form.category.errors %}
+                <div class="mt-1.5">
+                    {% for error in form.category.errors %}
+                    <p class="text-xs" style="color:#ef4444;">{{ error }}</p>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+
+            <div>
+                <label for="{{ form.account.id_for_label }}" class="block text-xs font-medium mb-1.5" style="color:#a3a3a3;">
+                    Conta <span style="color:#ef4444;">*</span>
+                </label>
+                <select name="{{ form.account.name }}"
+                        id="{{ form.account.id_for_label }}"
+                        class="w-full px-4 py-2.5 rounded-lg text-sm transition-all duration-150"
+                        style="background:#0a0a0a;border:1px solid {% if form.account.errors %}#ef4444{% else %}#262626{% endif %};color:#f5f5f5;"
+                        required>
+                    <option value="">Selecione a conta</option>
+                    {% for value, label in form.account.field.choices %}
+                    {% if value %}
+                    <option value="{{ value }}" {% if form.account.value|stringformat:"s" == value|stringformat:"s" %}selected{% endif %}>{{ label }}</option>
+                    {% endif %}
+                    {% endfor %}
+                </select>
+                {% if form.account.errors %}
+                <div class="mt-1.5">
+                    {% for error in form.account.errors %}
+                    <p class="text-xs" style="color:#ef4444;">{{ error }}</p>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="mb-6">
+            <label for="{{ form.notes.id_for_label }}" class="block text-xs font-medium mb-1.5" style="color:#a3a3a3;">
+                Observações
+            </label>
+            <textarea name="{{ form.notes.name }}"
+                      id="{{ form.notes.id_for_label }}"
+                      rows="4"
+                      class="w-full px-4 py-2.5 rounded-lg text-sm transition-all duration-150"
+                      style="background:#0a0a0a;border:1px solid {% if form.notes.errors %}#ef4444{% else %}#262626{% endif %};color:#f5f5f5;"
+                      placeholder="Observações opcionais">{{ form.notes.value|default:'' }}</textarea>
+            {% if form.notes.errors %}
+            <div class="mt-1.5">
+                {% for error in form.notes.errors %}
+                <p class="text-xs" style="color:#ef4444;">{{ error }}</p>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-3 pt-5" style="border-top:1px solid #262626;">
+            <button type="submit"
+                    class="px-5 py-2.5 rounded-lg text-sm font-medium text-black transition-all duration-150 hover:opacity-90 flex items-center justify-center"
+                    style="background:#22c55e;">
+                <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                </svg>
+                Salvar
+            </button>
+            <a href="{% url 'installments:list' %}"
+               class="px-5 py-2.5 rounded-lg text-sm font-medium transition-all duration-150 flex items-center justify-center"
+               style="background:#1a1a1a;color:#a3a3a3;border:1px solid #262626;">
+                Cancelar
+            </a>
+        </div>
+    </form>
+
+    <aside class="rounded-lg p-5 h-fit" style="background:#111111;border:1px solid #262626;">
+        <h2 class="text-sm font-semibold mb-3" style="color:#f5f5f5;">Preview</h2>
+        <div class="rounded-lg p-4 mb-4" style="background:#0a0a0a;border:1px solid #262626;">
+            <p class="text-[11px] mb-1" style="color:#525252;">Valor por parcela</p>
+            <p id="installmentAmountPreview" class="text-base font-semibold font-mono" style="color:#f5f5f5;">Valor por parcela: R$ 0,00</p>
+        </div>
+        <div class="rounded-lg p-4" style="background:#0a0a0a;border:1px solid #262626;">
+            <p class="text-[11px] mb-2" style="color:#525252;">Primeiros vencimentos previstos</p>
+            <ul id="firstDueDatesPreview" class="space-y-1 text-sm" style="color:#a3a3a3;">
+                <li>-</li>
+                <li>-</li>
+                <li>-</li>
+            </ul>
+        </div>
+    </aside>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+{{ block.super }}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const totalAmountField = document.getElementById('{{ form.total_amount.id_for_label }}');
+        const installmentCountField = document.getElementById('{{ form.installment_count.id_for_label }}');
+        const startDateField = document.getElementById('{{ form.start_date.id_for_label }}');
+        const installmentAmountPreview = document.getElementById('installmentAmountPreview');
+        const firstDueDatesPreview = document.getElementById('firstDueDatesPreview');
+
+        function formatCurrency(value) {
+            return new Intl.NumberFormat('pt-BR', {
+                style: 'currency',
+                currency: 'BRL'
+            }).format(value || 0);
+        }
+
+        function addMonths(baseDate, monthsToAdd) {
+            const date = new Date(baseDate.getTime());
+            const day = date.getDate();
+            date.setDate(1);
+            date.setMonth(date.getMonth() + monthsToAdd);
+            const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+            date.setDate(Math.min(day, lastDay));
+            return date;
+        }
+
+        function formatDate(date) {
+            return date.toLocaleDateString('pt-BR');
+        }
+
+        function updateInstallmentAmountPreview() {
+            const totalAmount = parseFloat(totalAmountField.value || '0');
+            const installmentCount = parseInt(installmentCountField.value || '0', 10);
+
+            if (totalAmount > 0 && installmentCount >= 2) {
+                installmentAmountPreview.textContent = 'Valor por parcela: ' + formatCurrency(totalAmount / installmentCount);
+            } else {
+                installmentAmountPreview.textContent = 'Valor por parcela: R$ 0,00';
+            }
+        }
+
+        function updateDueDatesPreview() {
+            const startDateValue = startDateField.value;
+            firstDueDatesPreview.innerHTML = '';
+
+            if (!startDateValue) {
+                firstDueDatesPreview.innerHTML = '<li>-</li><li>-</li><li>-</li>';
+                return;
+            }
+
+            const baseDate = new Date(startDateValue + 'T12:00:00');
+            for (let index = 0; index < 3; index += 1) {
+                const item = document.createElement('li');
+                item.textContent = formatDate(addMonths(baseDate, index));
+                firstDueDatesPreview.appendChild(item);
+            }
+        }
+
+        totalAmountField.addEventListener('input', updateInstallmentAmountPreview);
+        installmentCountField.addEventListener('input', updateInstallmentAmountPreview);
+        startDateField.addEventListener('input', updateDueDatesPreview);
+
+        updateInstallmentAmountPreview();
+        updateDueDatesPreview();
+    });
+</script>
+{% endblock %}

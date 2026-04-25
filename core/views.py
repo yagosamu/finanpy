@@ -9,11 +9,13 @@ from django.utils import timezone
 from django.views import View
 from django.views.generic import TemplateView
 
-from accounts.models import Account
+from accounts.models import Account, CreditCard
 from ai.models import AIAnalysis
 from budgets.views import get_budget_queryset
 from categories.models import Category
 from goals.models import Goal
+from installments.models import Installment
+from recurrences.services import get_pending_recurrences_count
 from transactions.models import Transaction
 
 logger = logging.getLogger(__name__)
@@ -219,6 +221,29 @@ class DashboardView(LoginRequiredMixin, TemplateView):
             budget_alerts = budget_alerts[:3]
             budgets_count = len(monthly_budgets)
             budgets_exceeded_count = sum(1 for budget in monthly_budgets if budget.spent > budget.amount)
+            pending_recurrences_count = get_pending_recurrences_count(user)
+            installments_due_this_month_queryset = Installment.objects.filter(
+                plan__user=user,
+                status=Installment.PENDING,
+                due_date__year=now.year,
+                due_date__month=now.month,
+            ).select_related('plan').order_by('due_date', 'number')
+            installments_due_this_month = list(installments_due_this_month_queryset[:3])
+            installments_total_this_month = installments_due_this_month_queryset.aggregate(
+                total=Sum('amount'),
+            )['total'] or Decimal('0.00')
+            active_cards = CreditCard.objects.filter(
+                user=user,
+                is_active=True,
+            ).order_by('name')
+            cards_summary = [
+                card for card in active_cards
+                if card.current_bill_amount > 0
+            ]
+            total_card_debt = sum(
+                (card.current_bill_amount for card in cards_summary),
+                Decimal('0.00'),
+            )
 
             # Add all data to context
             context.update({
@@ -250,6 +275,11 @@ class DashboardView(LoginRequiredMixin, TemplateView):
                 'budget_alerts': budget_alerts,
                 'budgets_count': budgets_count,
                 'budgets_exceeded_count': budgets_exceeded_count,
+                'pending_recurrences_count': pending_recurrences_count,
+                'installments_due_this_month': installments_due_this_month,
+                'installments_total_this_month': installments_total_this_month,
+                'cards_summary': cards_summary,
+                'total_card_debt': total_card_debt,
             })
 
         except Exception:
@@ -279,6 +309,11 @@ class DashboardView(LoginRequiredMixin, TemplateView):
                 'budget_alerts': [],
                 'budgets_count': 0,
                 'budgets_exceeded_count': 0,
+                'pending_recurrences_count': 0,
+                'installments_due_this_month': [],
+                'installments_total_this_month': Decimal('0.00'),
+                'cards_summary': [],
+                'total_card_debt': Decimal('0.00'),
                 'dashboard_error': True,
             })
 

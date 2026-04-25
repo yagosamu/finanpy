@@ -1,0 +1,77 @@
+{% extends 'base_dashboard.html' %}
+{% load format_filters %}
+
+{% block dashboard_title %}Desativar Recorrência{% endblock %}
+
+{% block breadcrumbs %}
+<nav class="mb-5" aria-label="Breadcrumb">
+    <ol class="flex items-center gap-2 text-xs" style="color:#525252;">
+        <li><a href="{% url 'dashboard' %}" class="transition-colors duration-150 hover:text-[#a3a3a3]" style="color:#525252;">Dashboard</a></li>
+        <li aria-hidden="true">/</li>
+        <li><a href="{% url 'recurrences:list' %}" class="transition-colors duration-150 hover:text-[#a3a3a3]" style="color:#525252;">Recorrências</a></li>
+        <li aria-hidden="true">/</li>
+        <li style="color:#a3a3a3;">Excluir</li>
+    </ol>
+</nav>
+{% endblock %}
+
+{% block dashboard_content %}
+<div class="mb-6">
+    <a href="{% url 'recurrences:list' %}"
+       class="inline-flex items-center text-xs mb-3 transition-colors duration-150"
+       style="color:#525252;">
+        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+        </svg>
+        Voltar para Recorrências
+    </a>
+    <h1 class="text-lg font-semibold" style="color:#f5f5f5;">Desativar Recorrência</h1>
+    <p class="text-xs mt-0.5" style="color:#525252;">Confirme a desativação deste lançamento fixo.</p>
+</div>
+
+<div class="max-w-2xl">
+    <div class="rounded-lg p-6" style="background:#111111;border:1px solid rgba(239,68,68,0.2);">
+        <div class="flex items-center justify-center w-12 h-12 mx-auto mb-5 rounded-full" style="background:rgba(239,68,68,0.08);">
+            <svg class="w-6 h-6" style="color:#ef4444;" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+            </svg>
+        </div>
+
+        <div class="text-center mb-6">
+            <h2 class="text-base font-semibold mb-2" style="color:#f5f5f5;">Atenção</h2>
+            <p class="text-sm font-light" style="color:#a3a3a3;">A recorrência será desativada e não gerará novos lançamentos.</p>
+        </div>
+
+        <div class="rounded-lg p-4 mb-6 space-y-3" style="background:#0a0a0a;border:1px solid #262626;">
+            <div class="flex justify-between items-center pb-3 gap-3" style="border-bottom:1px solid #262626;">
+                <span class="text-xs font-medium" style="color:#525252;">Nome</span>
+                <span class="text-xs font-semibold text-right" style="color:#f5f5f5;">{{ object.name }}</span>
+            </div>
+            <div class="flex justify-between items-center pb-3 gap-3" style="border-bottom:1px solid #262626;">
+                <span class="text-xs font-medium" style="color:#525252;">Valor mensal</span>
+                <span class="text-xs font-mono font-semibold" style="color:#f5f5f5;">{{ object.amount|format_currency }}</span>
+            </div>
+            <div class="flex justify-between items-center gap-3">
+                <span class="text-xs font-medium" style="color:#525252;">Dia de lançamento</span>
+                <span class="text-xs" style="color:#f5f5f5;">Todo dia {{ object.day_of_month }}</span>
+            </div>
+        </div>
+
+        <form method="post">
+            {% csrf_token %}
+            <div class="flex flex-col sm:flex-row gap-3">
+                <button type="submit"
+                        class="flex-1 px-5 py-2.5 rounded-lg text-sm font-medium transition-all duration-150 hover:opacity-90"
+                        style="background:#ef4444;color:#fff;">
+                    Confirmar desativação
+                </button>
+                <a href="{% url 'recurrences:list' %}"
+                   class="flex-1 px-5 py-2.5 rounded-lg text-sm font-medium transition-all duration-150 text-center"
+                   style="background:#1a1a1a;color:#a3a3a3;border:1px solid #262626;">
+                    Cancelar
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

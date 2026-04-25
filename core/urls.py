@@ -25,9 +25,11 @@ urlpatterns = [
     path('accounts/', include('accounts.urls', namespace='accounts')),
     path('orcamentos/', include('budgets.urls', namespace='budgets')),
     path('categorias/', include('categories.urls', namespace='categories')),
+    path('recorrencias/', include('recurrences.urls', namespace='recurrences')),
     path('relatorios/', include('reports.urls', namespace='reports')),
     path('transacoes/', include('transactions.urls', namespace='transactions')),
     path('ai/', include('ai.urls', namespace='ai')),
+    path('parcelamentos/', include('installments.urls', namespace='installments')),
     path('metas/', include('goals.urls', namespace='goals')),
 ]
 

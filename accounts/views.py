@@ -1,9 +1,10 @@
 import logging
+from decimal import Decimal
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.db.models import Sum
-from django.http import HttpResponseRedirect
+from django.http import Http404, HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import (
@@ -18,8 +19,14 @@ from django.views.generic import (
 from categories.models import Category
 from transactions.models import Transaction
 
-from .forms import AccountForm, AccountUpdateForm, TransferForm
-from .models import Account
+from .forms import (
+    AccountForm,
+    AccountUpdateForm,
+    CardBillPayForm,
+    CreditCardForm,
+    TransferForm,
+)
+from .models import Account, CardBill, CreditCard
 from .services import debit_account
 
 logger = logging.getLogger(__name__)
@@ -246,3 +253,128 @@ class TransferView(LoginRequiredMixin, FormView):
 
         messages.success(self.request, 'Transferência realizada com sucesso!')
         return super().form_valid(form)
+
+
+class CardListView(LoginRequiredMixin, ListView):
+    model = CreditCard
+    template_name = 'accounts/card_list.html'
+    context_object_name = 'cards'
+
+    def get_queryset(self):
+        return CreditCard.objects.filter(
+            user=self.request.user,
+            is_active=True,
+        ).order_by('name')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        total_card_debt = CardBill.objects.filter(
+            credit_card__user=self.request.user,
+            credit_card__is_active=True,
+            status__in=[CardBill.OPEN, CardBill.CLOSED],
+        ).aggregate(total=Sum('total_amount'))['total'] or Decimal('0.00')
+        context['total_card_debt'] = total_card_debt
+        return context
+
+
+class CardCreateView(LoginRequiredMixin, CreateView):
+    model = CreditCard
+    form_class = CreditCardForm
+    template_name = 'accounts/card_form.html'
+    success_url = reverse_lazy('accounts:card_list')
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        response = super().form_valid(form)
+        messages.success(self.request, f'Cartão "{self.object.name}" criado com sucesso!')
+        return response
+
+
+class CardUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = CreditCard
+    form_class = CreditCardForm
+    template_name = 'accounts/card_form.html'
+    success_url = reverse_lazy('accounts:card_list')
+    context_object_name = 'card'
+
+    def get_queryset(self):
+        return CreditCard.objects.all()
+
+    def test_func(self):
+        card = self.get_object()
+        return card.user == self.request.user
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        messages.success(self.request, f'Cartão "{self.object.name}" atualizado com sucesso!')
+        return response
+
+
+class CardDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = CreditCard
+    template_name = 'accounts/card_confirm_delete.html'
+    success_url = reverse_lazy('accounts:card_list')
+    context_object_name = 'card'
+
+    def get_queryset(self):
+        return CreditCard.objects.all()
+
+    def test_func(self):
+        card = self.get_object()
+        return card.user == self.request.user
+
+    def form_valid(self, form):
+        self.object.is_active = False
+        self.object.save(update_fields=['is_active'])
+        messages.success(self.request, f'Cartão "{self.object.name}" excluído com sucesso!')
+        return HttpResponseRedirect(self.get_success_url())
+
+
+class CardDetailView(LoginRequiredMixin, DetailView):
+    model = CreditCard
+    template_name = 'accounts/card_detail.html'
+    context_object_name = 'card'
+
+    def get_queryset(self):
+        return CreditCard.objects.filter(user=self.request.user)
+
+    def get_object(self, queryset=None):
+        queryset = queryset or self.get_queryset()
+        try:
+            return queryset.get(pk=self.kwargs['pk'])
+        except CreditCard.DoesNotExist as exc:
+            raise Http404 from exc
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['current_bill_transactions'] = self.object.transactions.filter(
+            date__gte=self.object.current_billing_start,
+            date__lte=self.object.current_billing_end,
+        ).select_related('category', 'account').order_by('-date', '-created_at')
+        context['bill_history'] = self.object.bills.select_related('payment_account')[:6]
+        context['payment_form'] = CardBillPayForm(user=self.request.user)
+        return context
+
+
+class CardBillPayView(LoginRequiredMixin, View):
+    def post(self, request, *args, **kwargs):
+        try:
+            card = CreditCard.objects.get(pk=kwargs['pk'], user=request.user)
+        except CreditCard.DoesNotExist:
+            raise Http404
+
+        form = CardBillPayForm(request.POST, user=request.user)
+        if not form.is_valid():
+            messages.error(request, 'Selecione uma conta válida para pagar a fatura.')
+            return HttpResponseRedirect(reverse_lazy('accounts:card_detail', kwargs={'pk': card.pk}))
+
+        payment_account = form.cleaned_data['payment_account']
+        try:
+            card.pay_bill(payment_account)
+        except Exception:
+            logger.exception('Erro ao pagar fatura do cartão %s', card.pk)
+            messages.error(request, 'Ocorreu um erro ao pagar a fatura. Tente novamente.')
+            return HttpResponseRedirect(reverse_lazy('accounts:card_detail', kwargs={'pk': card.pk}))
+
+        messages.success(request, f'Fatura do cartão "{card.name}" paga com sucesso!')
+        return HttpResponseRedirect(reverse_lazy('accounts:card_detail', kwargs={'pk': card.pk}))

@@ -26,11 +26,13 @@ def store_old_transaction_values(sender, instance, **kwargs):
             instance._old_account = old_transaction.account
             instance._old_amount = old_transaction.amount
             instance._old_transaction_type = old_transaction.transaction_type
+            instance._old_credit_card_id = old_transaction.credit_card_id
         except Transaction.DoesNotExist:
             # In case the transaction was deleted between pre_save and now
             instance._old_account = None
             instance._old_amount = None
             instance._old_transaction_type = None
+            instance._old_credit_card_id = None
 
 
 @receiver(post_save, sender=Transaction)
@@ -50,28 +52,30 @@ def update_account_balance_on_save(sender, instance, created, **kwargs):
         **kwargs: Additional keyword arguments
     """
     if created:
-        # New transaction: apply the transaction effect
-        _apply_transaction_to_account(
-            instance.account,
-            instance.amount,
-            instance.transaction_type
-        )
+        if _should_affect_balance(instance.credit_card_id):
+            _apply_transaction_to_account(
+                instance.account,
+                instance.amount,
+                instance.transaction_type
+            )
     else:
-        # Editing existing transaction
-        # First, reverse the old transaction effect
-        if hasattr(instance, '_old_account') and instance._old_account:
+        if (
+            hasattr(instance, '_old_account')
+            and instance._old_account
+            and _should_affect_balance(getattr(instance, '_old_credit_card_id', None))
+        ):
             _reverse_transaction_from_account(
                 instance._old_account,
                 instance._old_amount,
                 instance._old_transaction_type
             )
 
-        # Then, apply the new transaction effect
-        _apply_transaction_to_account(
-            instance.account,
-            instance.amount,
-            instance.transaction_type
-        )
+        if _should_affect_balance(instance.credit_card_id):
+            _apply_transaction_to_account(
+                instance.account,
+                instance.amount,
+                instance.transaction_type
+            )
 
 
 @receiver(pre_delete, sender=Transaction)
@@ -88,11 +92,16 @@ def update_account_balance_on_delete(sender, instance, **kwargs):
         instance: The actual instance being deleted
         **kwargs: Additional keyword arguments
     """
-    _reverse_transaction_from_account(
-        instance.account,
-        instance.amount,
-        instance.transaction_type
-    )
+    if _should_affect_balance(instance.credit_card_id):
+        _reverse_transaction_from_account(
+            instance.account,
+            instance.amount,
+            instance.transaction_type
+        )
+
+
+def _should_affect_balance(credit_card_id):
+    return credit_card_id is None
 
 
 def _apply_transaction_to_account(account, amount, transaction_type):

@@ -2,13 +2,23 @@ from datetime import date
 from decimal import Decimal
 
 from django.contrib.auth import get_user_model
+from django.http import Http404
 from django.test import TestCase
+from django.test.client import RequestFactory
 from django.urls import reverse
 
-from .forms import AccountForm, AccountUpdateForm, TransferForm
-from .models import Account
+from .forms import (
+    AccountForm,
+    AccountUpdateForm,
+    CardBillPayForm,
+    CreditCardForm,
+    TransferForm,
+)
+from .models import Account, CardBill, CreditCard
 from .services import debit_account, get_default_account
 from .templatetags.account_tags import get_bank_icon_path
+from .views import CardDetailView, CardListView
+from categories.models import Category
 from transactions.models import Transaction
 
 
@@ -56,6 +66,99 @@ class AccountModelTests(TestCase):
 
         self.assertFalse(account.is_default)
         self.assertIsNone(account.bank_code)
+
+
+class CreditCardModelTests(TestCase):
+    def setUp(self):
+        self.user = get_user_model().objects.create_user(
+            email='credit-card@example.com',
+            password='secret123'
+        )
+        self.account = Account.objects.create(
+            user=self.user,
+            name='Conta Principal',
+            account_type=Account.CHECKING,
+            bank_code=Account.ITAU,
+            initial_balance=Decimal('1000.00'),
+            is_default=True,
+        )
+        self.card = CreditCard.objects.create(
+            user=self.user,
+            name='Nubank Roxinho',
+            bank_code=Account.NUBANK,
+            credit_limit=Decimal('5000.00'),
+            closing_day=10,
+            due_day=20,
+        )
+        self.category = Category.objects.create(
+            user=self.user,
+            name='Cartão',
+            category_type=Category.EXPENSE,
+            color='#ef4444',
+        )
+
+    def test_credit_card_current_bill_amount_and_available_limit_use_current_cycle(self):
+        Transaction.objects.create(
+            user=self.user,
+            account=self.account,
+            category=self.category,
+            transaction_type=Transaction.EXPENSE,
+            amount=Decimal('300.00'),
+            date=self.card.current_billing_start,
+            description='Compra parcelada',
+            credit_card=self.card,
+        )
+        Transaction.objects.create(
+            user=self.user,
+            account=self.account,
+            category=self.category,
+            transaction_type=Transaction.EXPENSE,
+            amount=Decimal('120.00'),
+            date=self.card.current_billing_end,
+            description='Compra dentro da fatura',
+            credit_card=self.card,
+        )
+        Transaction.objects.create(
+            user=self.user,
+            account=self.account,
+            category=self.category,
+            transaction_type=Transaction.EXPENSE,
+            amount=Decimal('999.99'),
+            date=self.card.current_billing_start.replace(day=1),
+            description='Compra fora da fatura',
+            credit_card=self.card,
+        )
+
+        self.assertEqual(self.card.current_bill_amount, Decimal('420.00'))
+        self.assertEqual(self.card.available_limit, Decimal('4580.00'))
+        self.assertLessEqual(self.card.current_billing_start, self.card.current_billing_end)
+        self.assertGreaterEqual(self.card.next_due_date, date.today())
+
+    def test_card_bill_pay_bill_creates_expense_transaction_and_marks_bill_paid(self):
+        bill = CardBill.objects.create(
+            credit_card=self.card,
+            reference_month=date.today().replace(day=1),
+            closing_date=self.card.current_billing_end,
+            due_date=self.card.next_due_date,
+            total_amount=Decimal('450.00'),
+            status=CardBill.CLOSED,
+        )
+
+        bill.pay_bill(self.account)
+        bill.refresh_from_db()
+        self.account.refresh_from_db()
+
+        self.assertEqual(bill.status, CardBill.PAID)
+        self.assertEqual(bill.payment_date, date.today())
+        self.assertEqual(bill.payment_account, self.account)
+        payment_transaction = Transaction.objects.get(
+            user=self.user,
+            account=self.account,
+            amount=Decimal('450.00'),
+            transaction_type=Transaction.EXPENSE,
+        )
+        self.assertIn(self.card.name, payment_transaction.description)
+        self.assertEqual(self.account.current_balance, Decimal('550.00'))
 
 
 class AccountFormTests(TestCase):
@@ -143,6 +246,66 @@ class AccountFormTests(TestCase):
         form = TransferForm(user=self.user)
 
         self.assertEqual(form.fields['from_account'].initial, default_account)
+
+
+class CreditCardFormTests(TestCase):
+    def setUp(self):
+        self.user = get_user_model().objects.create_user(
+            email='credit-card-forms@example.com',
+            password='secret123'
+        )
+        self.active_account = Account.objects.create(
+            user=self.user,
+            name='Conta Ativa',
+            account_type=Account.CHECKING,
+            bank_code=Account.ITAU,
+            initial_balance=Decimal('100.00'),
+        )
+        self.inactive_account = Account.objects.create(
+            user=self.user,
+            name='Conta Inativa',
+            account_type=Account.SAVINGS,
+            initial_balance=Decimal('50.00'),
+            is_active=False,
+        )
+
+    def test_credit_card_form_uses_color_input_and_validates_day_range(self):
+        form = CreditCardForm(
+            data={
+                'name': 'Cartao Teste',
+                'bank_code': Account.NUBANK,
+                'credit_limit': '3000.00',
+                'closing_day': '0',
+                'due_day': '29',
+                'color': '#22c55e',
+            }
+        )
+
+        self.assertEqual(form.fields['color'].widget.input_type, 'color')
+        self.assertFalse(form.is_valid())
+        self.assertIn('closing_day', form.errors)
+        self.assertIn('due_day', form.errors)
+
+    def test_card_bill_pay_form_filters_only_active_user_accounts(self):
+        other_user = get_user_model().objects.create_user(
+            email='other-bill@example.com',
+            password='secret123'
+        )
+        Account.objects.create(
+            user=other_user,
+            name='Conta Alheia',
+            account_type=Account.CHECKING,
+            bank_code=Account.NUBANK,
+            initial_balance=Decimal('10.00'),
+        )
+
+        form = CardBillPayForm(user=self.user)
+
+        self.assertQuerySetEqual(
+            form.fields['payment_account'].queryset.order_by('pk'),
+            [self.active_account],
+            transform=lambda account: account,
+        )
 
 
 class AccountTemplateTagTests(TestCase):
@@ -299,3 +462,170 @@ class AccountTransferViewTests(TestCase):
         self.assertEqual(dashboard_response.status_code, 200)
         self.assertContains(list_response, reverse('accounts:transfer'))
         self.assertContains(dashboard_response, reverse('accounts:transfer'))
+
+
+class CreditCardViewTests(TestCase):
+    def setUp(self):
+        self.user = get_user_model().objects.create_user(
+            email='credit-card-views@example.com',
+            password='secret123'
+        )
+        self.other_user = get_user_model().objects.create_user(
+            email='credit-card-views-other@example.com',
+            password='secret123'
+        )
+        self.account = Account.objects.create(
+            user=self.user,
+            name='Conta Principal',
+            account_type=Account.CHECKING,
+            bank_code=Account.ITAU,
+            initial_balance=Decimal('1000.00'),
+            is_default=True,
+        )
+        self.card = CreditCard.objects.create(
+            user=self.user,
+            name='Cartao Principal',
+            bank_code=Account.NUBANK,
+            credit_limit=Decimal('4000.00'),
+            closing_day=10,
+            due_day=20,
+        )
+        self.bill = CardBill.objects.create(
+            credit_card=self.card,
+            reference_month=date.today().replace(day=1),
+            closing_date=self.card.current_billing_end,
+            due_date=self.card.next_due_date,
+            total_amount=Decimal('250.00'),
+            status=CardBill.CLOSED,
+        )
+        self.client.force_login(self.user)
+        self.factory = RequestFactory()
+
+    def test_card_create_view_creates_card_for_logged_user(self):
+        response = self.client.post(
+            reverse('accounts:card_create'),
+            data={
+                'name': 'Cartao Backup',
+                'bank_code': Account.ITAU,
+                'credit_limit': '5000.00',
+                'closing_day': '12',
+                'due_day': '22',
+                'color': '#16a34a',
+            },
+        )
+
+        self.assertRedirects(
+            response,
+            reverse('accounts:card_list'),
+            fetch_redirect_response=False,
+        )
+        self.assertTrue(
+            CreditCard.objects.filter(
+                user=self.user,
+                name='Cartao Backup',
+                is_active=True,
+            ).exists()
+        )
+
+    def test_card_update_view_denies_access_to_other_user(self):
+        self.client.force_login(self.other_user)
+
+        response = self.client.post(
+            reverse('accounts:card_update', args=[self.card.pk]),
+            data={
+                'name': 'Nao Pode',
+                'bank_code': Account.ITAU,
+                'credit_limit': '5000.00',
+                'closing_day': '12',
+                'due_day': '22',
+                'color': '#16a34a',
+            },
+        )
+
+        self.assertEqual(response.status_code, 403)
+
+    def test_card_delete_view_soft_deletes_card(self):
+        response = self.client.post(reverse('accounts:card_delete', args=[self.card.pk]))
+
+        self.assertRedirects(
+            response,
+            reverse('accounts:card_list'),
+            fetch_redirect_response=False,
+        )
+        self.card.refresh_from_db()
+        self.assertFalse(self.card.is_active)
+
+    def test_card_bill_pay_view_pays_bill_and_redirects_to_detail(self):
+        response = self.client.post(
+            reverse('accounts:card_bill_pay', args=[self.card.pk]),
+            data={'payment_account': str(self.account.pk)},
+        )
+
+        self.bill.refresh_from_db()
+        self.account.refresh_from_db()
+
+        self.assertRedirects(
+            response,
+            reverse('accounts:card_detail', args=[self.card.pk]),
+            fetch_redirect_response=False,
+        )
+        self.assertEqual(self.bill.status, CardBill.PAID)
+        self.assertEqual(self.bill.payment_account, self.account)
+        self.assertEqual(self.account.current_balance, Decimal('750.00'))
+
+    def test_card_detail_view_raises_404_for_non_owner(self):
+        request = self.factory.get(reverse('accounts:card_detail', args=[self.card.pk]))
+        request.user = self.other_user
+        view = CardDetailView()
+        view.request = request
+        view.kwargs = {'pk': self.card.pk}
+
+        with self.assertRaises(Http404):
+            view.get_object()
+
+    def test_card_list_view_context_includes_active_cards_and_total_debt(self):
+        inactive_card = CreditCard.objects.create(
+            user=self.user,
+            name='Cartao Inativo',
+            bank_code=Account.C6,
+            credit_limit=Decimal('2000.00'),
+            closing_day=5,
+            due_day=15,
+            is_active=False,
+        )
+        CardBill.objects.create(
+            credit_card=inactive_card,
+            reference_month=date.today().replace(day=1),
+            closing_date=inactive_card.current_billing_end,
+            due_date=inactive_card.next_due_date,
+            total_amount=Decimal('900.00'),
+            status=CardBill.OPEN,
+        )
+        request = self.factory.get(reverse('accounts:card_list'))
+        request.user = self.user
+        view = CardListView()
+        view.request = request
+        view.object_list = view.get_queryset()
+
+        context = view.get_context_data()
+
+        self.assertEqual(list(context['cards']), [self.card])
+        self.assertEqual(context['total_card_debt'], Decimal('250.00'))
+
+    def test_card_pages_render_expected_credit_card_sections(self):
+        list_response = self.client.get(reverse('accounts:card_list'))
+        detail_response = self.client.get(reverse('accounts:card_detail', args=[self.card.pk]))
+        create_response = self.client.get(reverse('accounts:card_create'))
+        update_response = self.client.get(reverse('accounts:card_update', args=[self.card.pk]))
+
+        self.assertEqual(list_response.status_code, 200)
+        self.assertEqual(detail_response.status_code, 200)
+        self.assertEqual(create_response.status_code, 200)
+        self.assertEqual(update_response.status_code, 200)
+
+        self.assertContains(list_response, 'Cartões de Crédito')
+        self.assertContains(list_response, reverse('accounts:card_create'))
+        self.assertContains(detail_response, 'Pagar fatura')
+        self.assertContains(detail_response, 'Histórico de faturas')
+        self.assertContains(create_response, 'Sua fatura fecha todo dia')
+        self.assertContains(update_response, 'Sua fatura fecha todo dia')

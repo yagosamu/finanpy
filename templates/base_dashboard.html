@@ -45,6 +45,16 @@
                 <span class="font-medium">Contas</span>
             </a>
 
+            <a href="{% url 'accounts:card_list' %}"
+               data-nav="cartoes"
+               class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg transition-all duration-150"
+               style="color:#a3a3a3;">
+                <svg class="w-4 h-4 flex-shrink-0" aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M5.25 4.5h13.5A1.5 1.5 0 0120.25 6v12A1.5 1.5 0 0118.75 19.5H5.25A1.5 1.5 0 013.75 18V6A1.5 1.5 0 015.25 4.5zm0 5.25h13.5m-9 4.5h2.25" />
+                </svg>
+                <span class="font-medium">Cartões</span>
+            </a>
+
             <!-- Categorias -->
             <a href="{% url 'categories:list' %}"
                data-nav="categorias"
@@ -81,7 +91,32 @@
                 <span class="font-medium">Metas</span>
             </a>
 
-            <!-- Relatórios -->
+            <a href="{% url 'recurrences:list' %}"
+               data-nav="recorrencias"
+               class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg transition-all duration-150"
+               style="color:#a3a3a3;">
+                <svg class="w-4 h-4 flex-shrink-0" aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3.75 8.25h16.5M5.25 4.5h13.5A1.5 1.5 0 0120.25 6v12.75a1.5 1.5 0 01-1.5 1.5H5.25a1.5 1.5 0 01-1.5-1.5V6a1.5 1.5 0 011.5-1.5zm4.5 7.5h4.5m-4.5 3h6.75" />
+                </svg>
+                <span class="font-medium">Recorrências</span>
+                {% if pending_recurrences_count > 0 %}
+                <span class="ml-auto inline-flex min-w-5 items-center justify-center rounded-full px-1.5 py-0.5 text-[10px] font-semibold font-mono"
+                      style="background:rgba(234,179,8,0.12);color:#eab308;border:1px solid rgba(234,179,8,0.18);">
+                    {{ pending_recurrences_count }}
+                </span>
+                {% endif %}
+            </a>
+
+            <a href="{% url 'installments:list' %}"
+               data-nav="parcelamentos"
+               class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg transition-all duration-150"
+               style="color:#a3a3a3;">
+                <svg class="w-4 h-4 flex-shrink-0" aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 6.75h6m-7.5 4.5h9m-9 4.5h4.5M6 3.75h12A2.25 2.25 0 0120.25 6v12A2.25 2.25 0 0118 20.25H6A2.25 2.25 0 013.75 18V6A2.25 2.25 0 016 3.75z" />
+                </svg>
+                <span class="font-medium">Parcelamentos</span>
+            </a>
+
             <a href="{% url 'budgets:list' %}"
                data-nav="orcamentos"
                class="sidebar-link flex items-center gap-3 px-4 py-2.5 rounded-lg transition-all duration-150"
@@ -348,6 +383,9 @@
             'categorias': /^\/categorias\//,
             'transacoes': /^\/transacoes\//,
             'metas': /^\/metas\//,
+            'recorrencias': /^\/recorrencias\//,
+            'parcelamentos': /^\/parcelamentos\//,
+            'cartoes': /^\/accounts\/cartoes\//,
             'orcamentos': /^\/orcamentos\//,
             'relatorios': /^\/relatorios\//
         };

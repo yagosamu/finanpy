@@ -6,6 +6,7 @@ from django.core.exceptions import ValidationError
 from django.db.models import Q
 
 from accounts.services import get_default_account
+from accounts.models import CreditCard
 
 from .models import Transaction
 
@@ -21,13 +22,14 @@ class TransactionForm(forms.ModelForm):
 
     class Meta:
         model = Transaction
-        fields = ['transaction_type', 'amount', 'date', 'description', 'account', 'category']
+        fields = ['transaction_type', 'amount', 'date', 'description', 'account', 'credit_card', 'category']
         labels = {
             'transaction_type': 'Tipo de Transação',
             'amount': 'Valor',
             'date': 'Data',
             'description': 'Descrição',
             'account': 'Conta',
+            'credit_card': 'Cartão de Crédito',
             'category': 'Categoria',
         }
         help_texts = {
@@ -55,6 +57,11 @@ class TransactionForm(forms.ModelForm):
             }),
             'account': forms.Select(attrs={
                 'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm',
+                'data-account-field': 'true',
+            }),
+            'credit_card': forms.Select(attrs={
+                'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm',
+                'data-credit-card-field': 'true',
             }),
             'category': forms.Select(attrs={
                 'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm',
@@ -70,6 +77,12 @@ class TransactionForm(forms.ModelForm):
             self.fields['account'].queryset = self.user.accounts.filter(is_active=True)
             if not self.is_bound and not getattr(self.instance, 'pk', None):
                 self.fields['account'].initial = get_default_account(self.user)
+            self.fields['credit_card'].queryset = CreditCard.objects.filter(
+                user=self.user,
+                is_active=True,
+            ).order_by('name')
+            self.fields['credit_card'].required = False
+            self.fields['credit_card'].empty_label = 'Débito em conta (padrão)'
 
             from categories.models import Category
             categories = Category.objects.filter(
@@ -125,6 +138,7 @@ class TransactionForm(forms.ModelForm):
         transaction_type = cleaned_data.get('transaction_type')
         category = cleaned_data.get('category')
         account = cleaned_data.get('account')
+        credit_card = cleaned_data.get('credit_card')
 
         if transaction_type and category:
             if transaction_type != category.category_type:
@@ -142,5 +156,10 @@ class TransactionForm(forms.ModelForm):
                 raise ValidationError({
                     'category': 'Categoria inválida.'
                 })
+
+        if credit_card and self.user and credit_card.user != self.user:
+            raise ValidationError({
+                'credit_card': 'Cartão inválido.'
+            })
 
         return cleaned_data

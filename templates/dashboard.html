@@ -38,6 +38,35 @@
     </a>
 </div>
 
+{% if pending_recurrences_count > 0 %}
+<div class="rounded-lg p-4 mb-5" style="background:#111111;border:1px solid rgba(234,179,8,0.18);">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <div class="flex items-start gap-3 min-w-0">
+            <div class="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style="background:rgba(234,179,8,0.1);">
+                <svg class="w-4 h-4" style="color:#eab308;" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 4.5h.008v.008H12v-.008z"/>
+                </svg>
+            </div>
+            <div class="min-w-0">
+                <div class="flex items-center gap-2 flex-wrap mb-1">
+                    <h2 class="text-sm font-semibold" style="color:#f5f5f5;">{{ pending_recurrences_count }} lançamento{{ pending_recurrences_count|pluralize:",s" }} fixo{{ pending_recurrences_count|pluralize:",s" }} pendente{{ pending_recurrences_count|pluralize:",s" }} este mês</h2>
+                    <span class="inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium"
+                          style="background:rgba(234,179,8,0.12);color:#eab308;border:1px solid rgba(234,179,8,0.18);">
+                        Pendente
+                    </span>
+                </div>
+                <p class="text-xs" style="color:#a3a3a3;">Revise os lançamentos fixos do mês e gere tudo de uma vez.</p>
+            </div>
+        </div>
+        <a href="{% url 'recurrences:list' %}"
+           class="inline-flex items-center justify-center px-4 py-2 rounded-lg text-xs font-medium transition-all duration-150 flex-shrink-0"
+           style="background:#1a1a1a;color:#f5f5f5;border:1px solid #262626;">
+            Lançar agora
+        </a>
+    </div>
+</div>
+{% endif %}
+
 <!-- 3 stat cards -->
 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-5">
 
@@ -369,6 +398,101 @@
            style="background:#22c55e;">
             Criar Meta
         </a>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Installments Summary Card -->
+<div class="rounded-lg p-5 mb-5" style="background:#111111;border:1px solid #262626;">
+    <div class="flex items-center justify-between mb-4">
+        <div class="flex items-center gap-2">
+            <svg class="w-4 h-4" style="color:#22c55e;" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 6.75h6m-7.5 4.5h9m-9 4.5h4.5M6 3.75h12A2.25 2.25 0 0120.25 6v12A2.25 2.25 0 0118 20.25H6A2.25 2.25 0 013.75 18V6A2.25 2.25 0 016 3.75z" />
+            </svg>
+            <h2 class="text-sm font-semibold" style="color:#f5f5f5;">Parcelas do Mês</h2>
+        </div>
+        <a href="{% url 'installments:list' %}" class="text-[11px] flex items-center gap-1 transition-colors duration-150" style="color:#525252;">
+            Ver todos os parcelamentos
+            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            </svg>
+        </a>
+    </div>
+
+    <div class="flex items-end justify-between gap-4 mb-4">
+        <div>
+            <p class="text-[11px] uppercase tracking-wider mb-1" style="color:#525252;">Total vencendo no mês</p>
+            <p class="text-2xl font-semibold font-mono" style="color:#f5f5f5;">{{ installments_total_this_month|format_currency }}</p>
+        </div>
+        <span class="text-[11px] flex-shrink-0" style="color:#525252;">{{ installments_due_this_month|length }} próxima{{ installments_due_this_month|length|pluralize:",s" }}</span>
+    </div>
+
+    {% if installments_due_this_month %}
+    <div class="space-y-3">
+        {% for installment in installments_due_this_month %}
+        <div class="rounded-lg p-3" style="background:#0a0a0a;border:1px solid #262626;">
+            <div class="flex items-center justify-between gap-3">
+                <div class="min-w-0">
+                    <p class="text-xs font-medium truncate" style="color:#f5f5f5;">{{ installment.plan.name }}</p>
+                    <p class="text-[11px]" style="color:#525252;">{{ installment.due_date|date:"d/m/Y" }}</p>
+                </div>
+                <span class="text-xs font-mono flex-shrink-0" style="color:#f5f5f5;">{{ installment.amount|format_currency }}</span>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="text-center py-4">
+        <p class="text-xs mb-2" style="color:#a3a3a3;">Nenhuma parcela vencendo neste mês.</p>
+        <p class="text-[11px]" style="color:#525252;">Seus parcelamentos deste mês já estão quitados ou começam depois.</p>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Credit Cards Summary Card -->
+<div class="rounded-lg p-5 mb-5" style="background:#111111;border:1px solid #262626;">
+    <div class="flex items-center justify-between mb-4">
+        <div class="flex items-center gap-2">
+            <svg class="w-4 h-4" style="color:#22c55e;" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M5.25 4.5h13.5A1.5 1.5 0 0120.25 6v12A1.5 1.5 0 0118.75 19.5H5.25A1.5 1.5 0 013.75 18V6A1.5 1.5 0 015.25 4.5zm0 5.25h13.5m-9 4.5h2.25" />
+            </svg>
+            <h2 class="text-sm font-semibold" style="color:#f5f5f5;">Cartões de Crédito</h2>
+        </div>
+        <a href="{% url 'accounts:card_list' %}" class="text-[11px] flex items-center gap-1 transition-colors duration-150" style="color:#525252;">
+            Ver cartões
+            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            </svg>
+        </a>
+    </div>
+
+    <div class="flex items-end justify-between gap-4 mb-4">
+        <div>
+            <p class="text-[11px] uppercase tracking-wider mb-1" style="color:#525252;">Total de faturas abertas</p>
+            <p class="text-2xl font-semibold font-mono" style="color:#f5f5f5;">{{ total_card_debt|format_currency }}</p>
+        </div>
+        <span class="text-[11px] flex-shrink-0" style="color:#525252;">{{ cards_summary|length }} cartão{{ cards_summary|length|pluralize:",s" }}</span>
+    </div>
+
+    {% if cards_summary %}
+    <div class="space-y-3">
+        {% for card in cards_summary %}
+        <div class="rounded-lg p-3" style="background:#0a0a0a;border:1px solid #262626;">
+            <div class="flex items-center justify-between gap-3 mb-2">
+                <div class="min-w-0">
+                    <p class="text-xs font-medium truncate" style="color:#f5f5f5;">{{ card.name }}</p>
+                    <p class="text-[11px]" style="color:#525252;">Vence em {{ card.next_due_date|date:"d/m/Y" }}</p>
+                </div>
+                <span class="text-xs font-mono flex-shrink-0" style="color:#f5f5f5;">{{ card.current_bill_amount|format_currency }}</span>
+            </div>
+            <p class="text-[11px]" style="color:#a3a3a3;">Limite disponível: <span class="font-mono" style="color:#f5f5f5;">{{ card.available_limit|format_currency }}</span></p>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="text-center py-4">
+        <p class="text-xs mb-2" style="color:#a3a3a3;">Nenhum cartão com fatura aberta no momento.</p>
+        <p class="text-[11px]" style="color:#525252;">Cadastre cartões ou aguarde novas compras para acompanhar o resumo aqui.</p>
     </div>
     {% endif %}
 </div>
