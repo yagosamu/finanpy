@@ -1,148 +1,1339 @@
 {% extends 'base.html' %}
 
-{% block title %}Finanpy - Gestão Financeira Pessoal Inteligente{% endblock %}
+{% block title %}Finova — Gestão Financeira Inteligente{% endblock %}
 
-{% block meta_description %}Finanpy é a ferramenta gratuita de gestão financeira pessoal. Controle suas contas bancárias, categorize transações, acompanhe receitas e despesas com gráficos intuitivos. Comece agora!{% endblock %}
+{% block meta_description %}Controle completo das suas finanças com dashboard intuitivo, análise por IA e metas personalizadas. Gratuito para sempre.{% endblock %}
 
-{% block meta_keywords %}gestão financeira pessoal, controle de gastos, finanças pessoais, orçamento familiar, app financeiro gratuito, controle de despesas, receitas e despesas, planejamento financeiro, economia pessoal, Finanpy{% endblock %}
+{% block meta_keywords %}gestão financeira pessoal, controle de gastos, finanças pessoais, orçamento familiar, app financeiro gratuito, controle de despesas, receitas e despesas, planejamento financeiro, Finova{% endblock %}
 
-{% block og_title %}Finanpy - Gestão Financeira Pessoal Inteligente{% endblock %}
-{% block og_description %}Controle suas finanças de forma simples e gratuita. Gerencie múltiplas contas, categorize transações e visualize seus gastos com gráficos analíticos. Comece hoje!{% endblock %}
+{% block og_title %}Finova — Gestão Financeira Inteligente{% endblock %}
+{% block og_description %}Controle completo das suas finanças com dashboard intuitivo, análise por IA e metas personalizadas. Gratuito para sempre.{% endblock %}
+{% block twitter_title %}Finova — Gestão Financeira Inteligente{% endblock %}
+{% block twitter_description %}Controle completo das suas finanças com dashboard intuitivo, análise por IA e metas personalizadas.{% endblock %}
 
-{% block twitter_title %}Finanpy - Gestão Financeira Pessoal Inteligente{% endblock %}
-{% block twitter_description %}Controle suas finanças de forma simples e gratuita. Gerencie múltiplas contas, categorize transações e visualize seus gastos com gráficos analíticos.{% endblock %}
+{% block extra_css %}
+<style>
+/* ── Marquee ───────────────────────────────────────────────── */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 32s linear infinite;
+}
+.marquee-set {
+  display: flex;
+  align-items: center;
+  gap: 3.5rem;
+  padding-right: 3.5rem;
+  flex-shrink: 0;
+}
+.marquee-wrap {
+  overflow: hidden;
+  mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+}
+.marquee-wrap:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+/* ── Scroll-reveal ─────────────────────────────────────────── */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+[data-reveal="left"] {
+  transform: translateX(-36px);
+}
+[data-reveal="right"] {
+  transform: translateX(36px);
+}
+[data-reveal].revealed {
+  opacity: 1;
+  transform: translate(0, 0);
+}
+
+/* ── Navbar scroll effect ──────────────────────────────────── */
+#landing-nav {
+  background: transparent;
+  border-bottom: 1px solid transparent;
+  transition: background 0.35s ease, border-color 0.35s ease, backdrop-filter 0.35s ease;
+}
+#landing-nav.scrolled {
+  background: rgba(10, 10, 10, 0.9);
+  border-bottom-color: #262626;
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+/* ── Typography & Colour helpers ───────────────────────────── */
+.text-gradient-green {
+  background: linear-gradient(130deg, #f5f5f5 0%, #22c55e 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.lp-label {
+  display: block;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #22c55e;
+}
+
+/* ── Hero glow ─────────────────────────────────────────────── */
+.hero-radial {
+  background: radial-gradient(ellipse 70% 50% at 50% -5%, rgba(34,197,94,0.11) 0%, transparent 68%);
+}
+
+/* ── Card hover glow ───────────────────────────────────────── */
+.card-lp {
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+.card-lp:hover {
+  border-color: rgba(34,197,94,0.3) !important;
+  box-shadow: 0 0 0 1px rgba(34,197,94,0.08), 0 8px 36px rgba(34,197,94,0.07);
+}
+
+/* ── Badge pulse ───────────────────────────────────────────── */
+@keyframes badge-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(34,197,94,0.25); }
+  50%       { box-shadow: 0 0 0 5px rgba(34,197,94,0);  }
+}
+.badge-hero {
+  animation: badge-glow 2.8s ease infinite;
+}
+
+/* ── SVG chart line ────────────────────────────────────────── */
+.chart-line {
+  stroke-dasharray: 500;
+  stroke-dashoffset: 500;
+  transition: stroke-dashoffset 1.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.chart-line.drawn {
+  stroke-dashoffset: 0;
+}
+
+/* ── Mobile menu overlay ───────────────────────────────────── */
+#mobile-menu {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background: rgba(10, 10, 10, 0.97);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+}
+#mobile-menu.open { display: flex; }
+
+/* ── CTA dotted bg ─────────────────────────────────────────── */
+.dotted-lp {
+  background-image: radial-gradient(rgba(34,197,94,0.07) 1px, transparent 1px);
+  background-size: 14px 14px;
+}
+
+/* ── Nav link underline ────────────────────────────────────── */
+.nav-link-lp {
+  position: relative;
+}
+.nav-link-lp::after {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: #22c55e;
+  transition: width 0.3s ease;
+}
+.nav-link-lp:hover::after { width: 100%; }
+</style>
+{% endblock %}
 
 {% block content %}
-<!-- Navbar -->
-<nav class="sticky top-0 z-50" style="background:rgba(10,10,10,0.95);border-bottom:1px solid #262626;backdrop-filter:blur(8px);">
-    <div class="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
-        <!-- Logo -->
-        <a href="{% url 'home' %}" class="flex items-center gap-1 font-bold text-xl tracking-tight select-none">
-            <span style="color:#22c55e;">F</span><span style="color:#f5f5f5;">inanpy</span>
-        </a>
 
-        <!-- Desktop nav links -->
-        <div class="hidden md:flex items-center gap-7 text-sm" style="color:#a3a3a3;">
-            <a href="#recursos" class="transition-colors duration-150 hover:text-[#f5f5f5]" style="color:#a3a3a3;">Recursos</a>
-            <a href="#precos" class="transition-colors duration-150 hover:text-[#f5f5f5]" style="color:#a3a3a3;">Preços</a>
-            <a href="#sobre" class="transition-colors duration-150 hover:text-[#f5f5f5]" style="color:#a3a3a3;">Sobre</a>
-        </div>
+<!-- ══════════════════════════════════════════════════════════
+     NAVBAR
+     ══════════════════════════════════════════════════════════ -->
+<nav id="landing-nav" class="fixed top-0 left-0 right-0 z-50">
+  <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
 
-        <!-- CTAs -->
-        <div class="flex items-center gap-3">
-            <a href="{% url 'users:login' %}" class="text-sm px-3 py-1.5 transition-colors duration-150 hover:text-[#f5f5f5]" style="color:#a3a3a3;">
-                Entrar
-            </a>
-            <a href="{% url 'users:signup' %}" class="text-sm font-medium px-4 py-1.5 rounded-lg text-black transition-all duration-150 hover:opacity-90" style="background:#22c55e;">
-                Criar conta grátis
-            </a>
-        </div>
+    <!-- Logo -->
+    <a href="{% url 'home' %}" class="flex items-center select-none" aria-label="Finova — início">
+      <span class="font-bold text-xl tracking-tight" style="color:#22c55e;">F</span>
+      <span class="font-bold text-xl tracking-tight" style="color:#f5f5f5;">inova</span>
+    </a>
+
+    <!-- Desktop nav links -->
+    <div class="hidden md:flex items-center gap-8">
+      <a href="#por-que" class="nav-link-lp text-sm transition-colors duration-150 hover:text-[#f5f5f5]" style="color:#a3a3a3;">Por que o Finova?</a>
+      <a href="#funcionalidades" class="nav-link-lp text-sm transition-colors duration-150 hover:text-[#f5f5f5]" style="color:#a3a3a3;">Funcionalidades</a>
+      <a href="#depoimentos" class="nav-link-lp text-sm transition-colors duration-150 hover:text-[#f5f5f5]" style="color:#a3a3a3;">Depoimentos</a>
     </div>
+
+    <!-- Desktop CTAs -->
+    <div class="hidden md:flex items-center gap-3">
+      {% if user.is_authenticated %}
+      <a href="{% url 'dashboard' %}" class="text-sm font-medium px-5 py-2 rounded-lg transition-all duration-150 hover:opacity-90" style="background:#22c55e;color:#000;">
+        Ir para o app
+      </a>
+      {% else %}
+      <a href="{% url 'users:login' %}" class="text-sm px-4 py-2 rounded-lg transition-colors duration-150 hover:text-[#f5f5f5]" style="color:#a3a3a3;">
+        Entrar
+      </a>
+      <a href="{% url 'users:signup' %}" class="text-sm font-semibold px-5 py-2 rounded-lg transition-all duration-150 hover:opacity-90" style="background:#22c55e;color:#000;">
+        Criar conta grátis
+      </a>
+      {% endif %}
+    </div>
+
+    <!-- Mobile hamburger -->
+    <button id="menu-btn" class="md:hidden p-2 rounded-md" style="color:#a3a3a3;" aria-label="Abrir menu" aria-expanded="false" aria-controls="mobile-menu">
+      <i data-lucide="menu" class="w-5 h-5"></i>
+    </button>
+  </div>
 </nav>
 
-<!-- Hero -->
-<section class="hero-glow min-h-[88vh] flex flex-col items-center justify-center text-center px-6 pt-16 pb-20">
-    <!-- Badge pill -->
-    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium mb-8" style="border:1px solid #262626;background:#111111;color:#a3a3a3;">
-        <span class="w-1.5 h-1.5 rounded-full inline-block animate-pulse" style="background:#22c55e;"></span>
-        Controle total das suas finanças
+<!-- Mobile overlay menu -->
+<div id="mobile-menu" role="dialog" aria-modal="true" aria-label="Menu principal">
+  <button id="menu-close" class="absolute top-5 right-6 p-2" style="color:#a3a3a3;" aria-label="Fechar menu">
+    <i data-lucide="x" class="w-5 h-5"></i>
+  </button>
+  <nav class="flex flex-col items-center gap-7 text-lg">
+    <a href="#por-que"        class="transition-colors hover:text-[#22c55e]" style="color:#f5f5f5;" data-close-menu>Por que o Finova?</a>
+    <a href="#funcionalidades" class="transition-colors hover:text-[#22c55e]" style="color:#f5f5f5;" data-close-menu>Funcionalidades</a>
+    <a href="#depoimentos"    class="transition-colors hover:text-[#22c55e]" style="color:#f5f5f5;" data-close-menu>Depoimentos</a>
+    <div class="flex flex-col items-center gap-3 pt-4 w-52" style="border-top:1px solid #262626;">
+      {% if user.is_authenticated %}
+      <a href="{% url 'dashboard' %}" class="w-full text-center py-2.5 rounded-lg text-sm font-semibold" style="background:#22c55e;color:#000;" data-close-menu>Ir para o app</a>
+      {% else %}
+      <a href="{% url 'users:login' %}"  class="w-full text-center py-2.5 rounded-lg text-sm" style="border:1px solid #262626;color:#a3a3a3;" data-close-menu>Entrar</a>
+      <a href="{% url 'users:signup' %}" class="w-full text-center py-2.5 rounded-lg text-sm font-semibold" style="background:#22c55e;color:#000;" data-close-menu>Criar conta grátis</a>
+      {% endif %}
     </div>
+  </nav>
+</div>
 
-    <!-- Headline -->
-    <h1 class="max-w-2xl text-4xl md:text-5xl font-semibold leading-tight tracking-tight mb-5" style="color:#f5f5f5;">
-        Controle financeiro para quem leva<br>
-        <span style="color:#22c55e;">dinheiro a sério.</span>
-    </h1>
 
-    <!-- Subtitle -->
-    <p class="max-w-md text-base font-light leading-relaxed mb-10" style="color:#a3a3a3;">
-        Visão completa das suas finanças, análise com inteligência artificial e metas que você realmente atinge.
+<!-- ══════════════════════════════════════════════════════════
+     HERO
+     ══════════════════════════════════════════════════════════ -->
+<section class="hero-radial min-h-screen flex flex-col items-center justify-center text-center px-6 pt-24 pb-24">
+
+  <!-- Badge pill -->
+  <div data-reveal class="badge-hero inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-10"
+       style="border:1px solid rgba(34,197,94,0.28);background:rgba(34,197,94,0.06);color:#22c55e;">
+    <span class="w-1.5 h-1.5 rounded-full animate-pulse" style="background:#22c55e;box-shadow:0 0 6px #22c55e;"></span>
+    Controle financeiro com inteligência artificial
+  </div>
+
+  <!-- Headline -->
+  <h1 data-reveal class="max-w-3xl text-4xl md:text-6xl font-bold leading-[1.07] tracking-tight mb-6" style="color:#f5f5f5;transition-delay:0.1s;">
+    Controle total das<br>suas <span class="text-gradient-green">finanças pessoais.</span>
+  </h1>
+
+  <!-- Subtitle -->
+  <p data-reveal class="max-w-lg text-base md:text-lg font-light leading-relaxed mb-10" style="color:#a3a3a3;transition-delay:0.18s;">
+    Dashboard intuitivo, categorização automática, análise com IA e metas que você realmente atinge. Gratuito para sempre.
+  </p>
+
+  <!-- CTAs -->
+  <div data-reveal class="flex items-center gap-4 flex-wrap justify-center mb-16" style="transition-delay:0.26s;">
+    <a href="{% url 'users:signup' %}" class="inline-flex items-center gap-2 px-7 py-3 rounded-lg text-sm font-semibold transition-all duration-200 hover:opacity-90 hover:-translate-y-px active:translate-y-0" style="background:#22c55e;color:#000;box-shadow:0 0 28px rgba(34,197,94,0.2);">
+      Começar gratuitamente
+      <i data-lucide="arrow-right" class="w-4 h-4"></i>
+    </a>
+    <a href="{% url 'users:login' %}" class="inline-flex items-center gap-2 px-7 py-3 rounded-lg text-sm font-medium transition-all duration-150 hover:border-[#3f3f3f]" style="border:1px solid #262626;color:#a3a3a3;">
+      Já tenho conta
+    </a>
+  </div>
+
+  <!-- Dashboard mock — full layout (Mockup 1) -->
+  <div data-reveal class="w-full max-w-3xl mx-auto" style="transition-delay:0.36s;">
+    <div class="rounded-2xl overflow-hidden"
+         style="background:#0a0a0a;border:1px solid #262626;
+                box-shadow:0 40px 100px rgba(0,0,0,0.75),0 0 0 1px rgba(34,197,94,0.06);
+                mask-image:linear-gradient(to bottom,black 65%,transparent 100%);
+                -webkit-mask-image:linear-gradient(to bottom,black 65%,transparent 100%);">
+
+      <!-- Browser chrome bar -->
+      <div class="flex items-center gap-1.5 px-4 py-2.5" style="background:#0d0d0d;border-bottom:1px solid #1a1a1a;">
+        <div class="w-2.5 h-2.5 rounded-full" style="background:#ef4444;"></div>
+        <div class="w-2.5 h-2.5 rounded-full" style="background:#fbbf24;"></div>
+        <div class="w-2.5 h-2.5 rounded-full" style="background:#22c55e;"></div>
+        <div class="flex-1 h-4 rounded mx-4" style="background:#1a1a1a;"></div>
+        <div class="w-6 h-4 rounded" style="background:#1a1a1a;"></div>
+      </div>
+
+      <!-- App layout: sidebar + main -->
+      <div class="flex" style="height:410px;">
+
+        <!-- ── Sidebar ── -->
+        <div class="flex-shrink-0 flex flex-col" style="width:148px;background:#111111;border-right:1px solid #262626;">
+          <!-- Logo -->
+          <div class="px-4 py-2.5 flex items-center gap-0.5" style="border-bottom:1px solid #262626;">
+            <span class="font-bold tracking-tight" style="font-size:14px;color:#22c55e;">F</span>
+            <span class="font-bold tracking-tight" style="font-size:14px;color:#f5f5f5;">inova</span>
+          </div>
+          <!-- Nav items -->
+          <nav class="flex-1 py-2 px-2 overflow-hidden" style="font-size:11px;">
+            <!-- Dashboard (active) -->
+            <div class="flex items-center gap-2 px-2.5 py-1.5 rounded-md mb-0.5"
+                 style="background:rgba(34,197,94,0.08);color:#22c55e;">
+              <svg class="w-3 h-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 3m8.5-3l1 3m0 0l.5 1.5m-.5-1.5h-9.5m0 0l-.5 1.5"/>
+              </svg>
+              <span class="font-medium">Dashboard</span>
+            </div>
+            <!-- Contas -->
+            <div class="flex items-center gap-2 px-2.5 py-1.5 rounded-md mb-0.5" style="color:#525252;">
+              <svg class="w-3 h-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z"/>
+              </svg>
+              <span>Contas</span>
+            </div>
+            <!-- Cartões -->
+            <div class="flex items-center gap-2 px-2.5 py-1.5 rounded-md mb-0.5" style="color:#525252;">
+              <svg class="w-3 h-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M5.25 4.5h13.5A1.5 1.5 0 0120.25 6v12A1.5 1.5 0 0118.75 19.5H5.25A1.5 1.5 0 013.75 18V6A1.5 1.5 0 015.25 4.5zm0 5.25h13.5m-9 4.5h2.25"/>
+              </svg>
+              <span>Cartões</span>
+            </div>
+            <!-- Categorias -->
+            <div class="flex items-center gap-2 px-2.5 py-1.5 rounded-md mb-0.5" style="color:#525252;">
+              <svg class="w-3 h-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z"/>
+              </svg>
+              <span>Categorias</span>
+            </div>
+            <!-- Transações -->
+            <div class="flex items-center gap-2 px-2.5 py-1.5 rounded-md" style="color:#525252;">
+              <svg class="w-3 h-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5"/>
+              </svg>
+              <span>Transações</span>
+            </div>
+            <div class="my-1.5" style="border-top:1px solid #1a1a1a;"></div>
+            <!-- Metas -->
+            <div class="flex items-center gap-2 px-2.5 py-1.5 rounded-md mb-0.5" style="color:#525252;">
+              <svg class="w-3 h-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z"/>
+              </svg>
+              <span>Metas</span>
+            </div>
+            <!-- Orçamentos -->
+            <div class="flex items-center gap-2 px-2.5 py-1.5 rounded-md mb-0.5" style="color:#525252;">
+              <svg class="w-3 h-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 6.75h15m-15 5.25h15m-15 5.25h9"/>
+              </svg>
+              <span>Orçamentos</span>
+            </div>
+            <!-- Recorrências -->
+            <div class="flex items-center gap-2 px-2.5 py-1.5 rounded-md mb-0.5" style="color:#525252;">
+              <svg class="w-3 h-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3.75 8.25h16.5M5.25 4.5h13.5A1.5 1.5 0 0120.25 6v12.75a1.5 1.5 0 01-1.5 1.5H5.25a1.5 1.5 0 01-1.5-1.5V6a1.5 1.5 0 011.5-1.5zm4.5 7.5h4.5m-4.5 3h6.75"/>
+              </svg>
+              <span>Recorrências</span>
+            </div>
+            <!-- Parcelamentos -->
+            <div class="flex items-center gap-2 px-2.5 py-1.5 rounded-md mb-0.5" style="color:#525252;">
+              <svg class="w-3 h-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 6.75h6m-7.5 4.5h9m-9 4.5h4.5M6 3.75h12A2.25 2.25 0 0120.25 6v12A2.25 2.25 0 0118 20.25H6A2.25 2.25 0 013.75 18V6A2.25 2.25 0 016 3.75z"/>
+              </svg>
+              <span>Parcelamentos</span>
+            </div>
+            <!-- Relatórios -->
+            <div class="flex items-center gap-2 px-2.5 py-1.5 rounded-md" style="color:#525252;">
+              <svg class="w-3 h-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+              </svg>
+              <span>Relatórios</span>
+            </div>
+          </nav>
+        </div>
+
+        <!-- ── Main content ── -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+
+          <!-- Top navbar -->
+          <div class="flex items-center justify-between px-4 py-2 flex-shrink-0"
+               style="border-bottom:1px solid #1a1a1a;background:#0a0a0a;">
+            <span style="font-size:11px;font-weight:500;color:#f5f5f5;">Bom dia, Maria 👋</span>
+            <div class="flex items-center gap-2">
+              <div class="w-6 h-6 rounded-full flex items-center justify-center" style="background:#1a1a1a;">
+                <svg class="w-3 h-3" style="color:#525252;" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"/>
+                </svg>
+              </div>
+              <div class="w-6 h-6 rounded-full flex items-center justify-center font-bold"
+                   style="background:#7c3aed;color:white;font-size:9px;">M</div>
+            </div>
+          </div>
+
+          <!-- Scrollable content area -->
+          <div class="flex-1 overflow-hidden p-3" style="background:#0a0a0a;">
+
+            <!-- 3 stat cards -->
+            <div class="grid grid-cols-3 gap-2 mb-2">
+              <div class="rounded-lg p-2.5" style="background:#111111;border:1px solid #262626;">
+                <p style="font-size:9px;color:#525252;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:3px;">Saldo Total</p>
+                <p class="font-mono font-bold" style="font-size:12px;color:#22c55e;">R$ 12.430</p>
+                <p style="font-size:8px;color:#525252;margin-top:2px;">3 contas ativas</p>
+              </div>
+              <div class="rounded-lg p-2.5" style="background:#111111;border:1px solid #262626;">
+                <p style="font-size:9px;color:#525252;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:3px;">Receitas</p>
+                <p class="font-mono font-bold" style="font-size:12px;color:#22c55e;">R$ 8.200</p>
+                <p style="font-size:8px;color:#525252;margin-top:2px;">Abril 2026</p>
+              </div>
+              <div class="rounded-lg p-2.5" style="background:#111111;border:1px solid #262626;">
+                <p style="font-size:9px;color:#525252;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:3px;">Despesas</p>
+                <p class="font-mono font-bold" style="font-size:12px;color:#ef4444;">R$ 3.840</p>
+                <p style="font-size:8px;color:#525252;margin-top:2px;">Abril 2026</p>
+              </div>
+            </div>
+
+            <!-- Chart row + mini goals -->
+            <div class="grid gap-2 mb-2" style="grid-template-columns:1fr 138px;">
+
+              <!-- Evolução Mensal — 3 lines SVG -->
+              <div class="rounded-lg p-2.5" style="background:#111111;border:1px solid #262626;">
+                <div class="flex items-center justify-between mb-1.5">
+                  <span style="font-size:9px;font-weight:500;color:#f5f5f5;">Evolução Mensal</span>
+                  <div class="flex items-center gap-2.5" style="font-size:8px;color:#525252;">
+                    <span class="flex items-center gap-1">
+                      <span class="inline-block rounded-full" style="width:6px;height:6px;background:#22c55e;"></span>Receitas
+                    </span>
+                    <span class="flex items-center gap-1">
+                      <span class="inline-block rounded-full" style="width:6px;height:6px;background:#ef4444;"></span>Despesas
+                    </span>
+                    <span class="flex items-center gap-1">
+                      <span class="inline-block rounded-full" style="width:6px;height:6px;background:#a78bfa;"></span>Saldo
+                    </span>
+                  </div>
+                </div>
+                <!-- Chart: viewBox 300×90, data range R$2k–R$8k mapped to y=70–10 -->
+                <svg viewBox="0 0 300 90" class="w-full" aria-hidden="true">
+                  <defs>
+                    <linearGradient id="mk1-fill" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="#22c55e" stop-opacity="0.12"/>
+                      <stop offset="100%" stop-color="#22c55e" stop-opacity="0"/>
+                    </linearGradient>
+                  </defs>
+                  <!-- Y-axis labels -->
+                  <text x="1" y="13"  style="font-size:6px;fill:#525252;">8k</text>
+                  <text x="1" y="33"  style="font-size:6px;fill:#525252;">6k</text>
+                  <text x="1" y="53"  style="font-size:6px;fill:#525252;">4k</text>
+                  <text x="1" y="73"  style="font-size:6px;fill:#525252;">2k</text>
+                  <!-- Gridlines -->
+                  <line x1="18" y1="10" x2="290" y2="10" stroke="#262626" stroke-width="0.5"/>
+                  <line x1="18" y1="30" x2="290" y2="30" stroke="#262626" stroke-width="0.5"/>
+                  <line x1="18" y1="50" x2="290" y2="50" stroke="#262626" stroke-width="0.5"/>
+                  <line x1="18" y1="70" x2="290" y2="70" stroke="#262626" stroke-width="0.5"/>
+                  <!-- X labels: Jan Fev Mar Abr Mai Jun at x=22,74,126,178,230,282 -->
+                  <text x="19"  y="80" style="font-size:6px;fill:#525252;">Jan</text>
+                  <text x="71"  y="80" style="font-size:6px;fill:#525252;">Fev</text>
+                  <text x="123" y="80" style="font-size:6px;fill:#525252;">Mar</text>
+                  <text x="175" y="80" style="font-size:6px;fill:#525252;">Abr</text>
+                  <text x="227" y="80" style="font-size:6px;fill:#525252;">Mai</text>
+                  <text x="279" y="80" style="font-size:6px;fill:#525252;">Jun</text>
+                  <!-- Receitas area fill (4500→45, 5200→38, 5800→32, 6200→28, 7100→19, 8200→8) -->
+                  <path d="M22,45 L74,38 L126,32 L178,28 L230,19 L282,8 L282,74 L22,74 Z" fill="url(#mk1-fill)"/>
+                  <!-- Receitas line (green) -->
+                  <polyline points="22,45 74,38 126,32 178,28 230,19 282,8"
+                            fill="none" stroke="#22c55e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <!-- Despesas line (red): 2800→62, 3100→59, 3400→56, 3200→58, 3600→54, 3840→52 -->
+                  <polyline points="22,62 74,59 126,56 178,58 230,54 282,52"
+                            fill="none" stroke="#ef4444" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <!-- Saldo line (purple): 1700→73, 2100→69, 2400→66, 3000→60, 3500→55, 4360→46 -->
+                  <polyline points="22,73 74,69 126,66 178,60 230,55 282,46"
+                            fill="none" stroke="#a78bfa" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <!-- Dots — end points only -->
+                  <circle cx="282" cy="8"  r="2.5" fill="#22c55e"/>
+                  <circle cx="282" cy="52" r="2.5" fill="#ef4444"/>
+                  <circle cx="282" cy="46" r="2.5" fill="#a78bfa"/>
+                  <circle cx="22"  cy="45" r="1.5" fill="#22c55e" opacity="0.45"/>
+                  <circle cx="22"  cy="62" r="1.5" fill="#ef4444" opacity="0.45"/>
+                  <circle cx="22"  cy="73" r="1.5" fill="#a78bfa" opacity="0.45"/>
+                </svg>
+              </div>
+
+              <!-- Mini goals panel -->
+              <div class="rounded-lg p-2.5" style="background:#111111;border:1px solid #262626;">
+                <div class="flex items-center gap-1.5 mb-2">
+                  <svg class="w-3 h-3 flex-shrink-0" style="color:#22c55e;" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z"/>
+                  </svg>
+                  <span style="font-size:9px;font-weight:500;color:#f5f5f5;">Minhas Metas</span>
+                </div>
+                <!-- Meta 1 -->
+                <div class="mb-2.5">
+                  <div class="flex items-center justify-between mb-1">
+                    <span style="font-size:8px;color:#a3a3a3;">✈️ Viagem Europa</span>
+                    <span class="font-mono font-bold" style="font-size:8px;color:#22c55e;">46%</span>
+                  </div>
+                  <div class="rounded-full overflow-hidden" style="height:3px;background:#1a1a1a;">
+                    <div style="width:46%;height:100%;background:linear-gradient(90deg,#16a34a,#22c55e);"></div>
+                  </div>
+                  <p style="font-size:7px;color:#525252;margin-top:2px;">R$ 4.600 / R$ 10.000</p>
+                </div>
+                <!-- Meta 2 -->
+                <div>
+                  <div class="flex items-center justify-between mb-1">
+                    <span style="font-size:8px;color:#a3a3a3;">🛡️ Reserva</span>
+                    <span class="font-mono font-bold" style="font-size:8px;color:#22c55e;">73%</span>
+                  </div>
+                  <div class="rounded-full overflow-hidden" style="height:3px;background:#1a1a1a;">
+                    <div style="width:73%;height:100%;background:linear-gradient(90deg,#16a34a,#22c55e);"></div>
+                  </div>
+                  <p style="font-size:7px;color:#525252;margin-top:2px;">R$ 7.300 / R$ 10.000</p>
+                </div>
+              </div>
+
+            </div><!-- /chart row -->
+
+            <!-- Recent transactions -->
+            <div class="rounded-lg p-2.5" style="background:#111111;border:1px solid #262626;">
+              <div class="flex items-center justify-between mb-2">
+                <span style="font-size:9px;font-weight:500;color:#f5f5f5;">Transações Recentes</span>
+                <span style="font-size:8px;color:#525252;">Ver todas →</span>
+              </div>
+              <!-- Row 1: Salário -->
+              <div class="flex items-center justify-between py-1.5" style="border-bottom:1px solid rgba(38,38,38,0.6);">
+                <div class="flex items-center gap-2">
+                  <div class="w-5 h-5 rounded flex items-center justify-center flex-shrink-0" style="background:#1a1a1a;">
+                    <svg class="w-2.5 h-2.5" style="color:#a3a3a3;" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M7 11l5-5m0 0l5 5m-5-5v12"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <p style="font-size:9px;font-weight:500;color:#f5f5f5;">Salário</p>
+                    <span style="font-size:7px;padding:1px 4px;border-radius:3px;background:rgba(34,197,94,0.1);color:#22c55e;">Receita</span>
+                  </div>
+                </div>
+                <p class="font-mono font-semibold" style="font-size:9px;color:#22c55e;">+R$ 5.800,00</p>
+              </div>
+              <!-- Row 2: Supermercado -->
+              <div class="flex items-center justify-between py-1.5" style="border-bottom:1px solid rgba(38,38,38,0.6);">
+                <div class="flex items-center gap-2">
+                  <div class="w-5 h-5 rounded flex items-center justify-center flex-shrink-0" style="background:#1a1a1a;">
+                    <svg class="w-2.5 h-2.5" style="color:#a3a3a3;" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M17 13l-5 5m0 0l-5-5m5 5V6"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <p style="font-size:9px;font-weight:500;color:#f5f5f5;">Supermercado Extra</p>
+                    <span style="font-size:7px;padding:1px 4px;border-radius:3px;background:rgba(239,68,68,0.1);color:#ef4444;">Alimentação</span>
+                  </div>
+                </div>
+                <p class="font-mono font-semibold" style="font-size:9px;color:#ef4444;">-R$ 320,50</p>
+              </div>
+              <!-- Row 3: Combustível -->
+              <div class="flex items-center justify-between py-1.5" style="border-bottom:1px solid rgba(38,38,38,0.6);">
+                <div class="flex items-center gap-2">
+                  <div class="w-5 h-5 rounded flex items-center justify-center flex-shrink-0" style="background:#1a1a1a;">
+                    <svg class="w-2.5 h-2.5" style="color:#a3a3a3;" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M17 13l-5 5m0 0l-5-5m5 5V6"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <p style="font-size:9px;font-weight:500;color:#f5f5f5;">Combustível Shell</p>
+                    <span style="font-size:7px;padding:1px 4px;border-radius:3px;background:rgba(59,130,246,0.1);color:#3b82f6;">Transporte</span>
+                  </div>
+                </div>
+                <p class="font-mono font-semibold" style="font-size:9px;color:#ef4444;">-R$ 89,90</p>
+              </div>
+              <!-- Row 4: Netflix -->
+              <div class="flex items-center justify-between py-1.5">
+                <div class="flex items-center gap-2">
+                  <div class="w-5 h-5 rounded flex items-center justify-center flex-shrink-0" style="background:#1a1a1a;">
+                    <svg class="w-2.5 h-2.5" style="color:#a3a3a3;" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M17 13l-5 5m0 0l-5-5m5 5V6"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <p style="font-size:9px;font-weight:500;color:#f5f5f5;">Netflix</p>
+                    <span style="font-size:7px;padding:1px 4px;border-radius:3px;background:rgba(167,139,250,0.1);color:#a78bfa;">Assinaturas</span>
+                  </div>
+                </div>
+                <p class="font-mono font-semibold" style="font-size:9px;color:#ef4444;">-R$ 39,90</p>
+              </div>
+            </div>
+
+          </div><!-- /content area -->
+        </div><!-- /main -->
+      </div><!-- /flex layout -->
+    </div>
+  </div>
+
+  <!-- Social proof -->
+  <div data-reveal class="flex items-center gap-3 mt-8" style="transition-delay:0.44s;">
+    <div class="flex -space-x-2.5">
+      <div class="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold" style="background:#7c3aed;color:white;border:2px solid #0a0a0a;">A</div>
+      <div class="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold" style="background:#0891b2;color:white;border:2px solid #0a0a0a;">M</div>
+      <div class="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold" style="background:#16a34a;color:white;border:2px solid #0a0a0a;">R</div>
+      <div class="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold" style="background:#b45309;color:white;border:2px solid #0a0a0a;">J</div>
+    </div>
+    <p class="text-sm" style="color:#525252;">
+      <span class="font-semibold" style="color:#a3a3a3;">+2.400 pessoas</span> já controlam suas finanças
     </p>
-
-    <!-- CTAs -->
-    <div class="flex items-center gap-3 flex-wrap justify-center">
-        <a href="{% url 'users:signup' %}" class="px-6 py-2.5 rounded-lg text-sm font-medium text-black transition-all duration-150 hover:opacity-90" style="background:#22c55e;">
-            Criar conta grátis
-        </a>
-        <a href="{% url 'users:login' %}" class="px-6 py-2.5 rounded-lg text-sm font-medium transition-all duration-150" style="border:1px solid #262626;color:#a3a3a3;">
-            Entrar na conta
-        </a>
-    </div>
-
-    <!-- Stats strip -->
-    <div class="mt-16 flex items-center gap-8 text-center flex-wrap justify-center">
-        <div>
-            <p class="font-mono text-2xl font-semibold" style="color:#f5f5f5;">R$ 0</p>
-            <p class="text-xs mt-1" style="color:#525252;">custo para começar</p>
-        </div>
-        <div class="w-px h-8" style="background:#262626;"></div>
-        <div>
-            <p class="font-mono text-2xl font-semibold" style="color:#f5f5f5;">100%</p>
-            <p class="text-xs mt-1" style="color:#525252;">seus dados, sua privacidade</p>
-        </div>
-        <div class="w-px h-8" style="background:#262626;"></div>
-        <div>
-            <p class="font-mono text-2xl font-semibold" style="color:#22c55e;">IA</p>
-            <p class="text-xs mt-1" style="color:#525252;">análise financeira integrada</p>
-        </div>
-    </div>
+  </div>
 </section>
 
-<!-- Features -->
-<section id="recursos" class="max-w-6xl mx-auto px-6 pb-24">
-    <div class="text-center mb-12">
-        <p class="section-label mb-3">Funcionalidades</p>
-        <h2 class="text-2xl font-semibold" style="color:#f5f5f5;">Tudo que você precisa. Nada que você não precisa.</h2>
+
+<!-- ══════════════════════════════════════════════════════════
+     BANK LOGOS MARQUEE
+     ══════════════════════════════════════════════════════════ -->
+<div class="py-12" style="border-top:1px solid #1a1a1a;border-bottom:1px solid #1a1a1a;background:#0d0d0d;">
+  <p class="text-center text-xs tracking-widest uppercase mb-8" style="color:#3d3d3d;">Compatível com os principais bancos brasileiros</p>
+  <div class="marquee-wrap">
+    <div class="marquee-track">
+      <!-- Set 1 -->
+      <div class="marquee-set">
+        <span class="text-base font-bold tracking-tight" style="color:#3d3d3d;">Nubank</span>
+        <span class="text-base font-bold tracking-tight" style="color:#3d3d3d;">Itaú</span>
+        <span class="text-base font-bold tracking-tight" style="color:#3d3d3d;">Bradesco</span>
+        <span class="text-base font-bold tracking-tight" style="color:#3d3d3d;">Santander</span>
+        <span class="text-base font-bold tracking-tight" style="color:#3d3d3d;">Caixa</span>
+        <span class="text-base font-bold tracking-tight" style="color:#3d3d3d;">Banco do Brasil</span>
+        <span class="text-base font-bold tracking-tight" style="color:#3d3d3d;">Inter</span>
+        <span class="text-base font-bold tracking-tight" style="color:#3d3d3d;">C6 Bank</span>
+      </div>
+      <!-- Set 2 (duplicate for seamless loop) -->
+      <div class="marquee-set" aria-hidden="true">
+        <span class="text-base font-bold tracking-tight" style="color:#3d3d3d;">Nubank</span>
+        <span class="text-base font-bold tracking-tight" style="color:#3d3d3d;">Itaú</span>
+        <span class="text-base font-bold tracking-tight" style="color:#3d3d3d;">Bradesco</span>
+        <span class="text-base font-bold tracking-tight" style="color:#3d3d3d;">Santander</span>
+        <span class="text-base font-bold tracking-tight" style="color:#3d3d3d;">Caixa</span>
+        <span class="text-base font-bold tracking-tight" style="color:#3d3d3d;">Banco do Brasil</span>
+        <span class="text-base font-bold tracking-tight" style="color:#3d3d3d;">Inter</span>
+        <span class="text-base font-bold tracking-tight" style="color:#3d3d3d;">C6 Bank</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════
+     POR QUE O FINOVA?
+     ══════════════════════════════════════════════════════════ -->
+<section id="por-que" class="max-w-6xl mx-auto px-6 py-24">
+  <div class="text-center mb-16" data-reveal>
+    <p class="lp-label mb-3">Por que o Finova?</p>
+    <h2 class="text-3xl md:text-4xl font-bold tracking-tight mb-4" style="color:#f5f5f5;">Simples, poderoso e gratuito.</h2>
+    <p class="text-base font-light max-w-md mx-auto" style="color:#a3a3a3;">Tudo que você precisa para tomar controle do seu dinheiro, sem complexidade desnecessária.</p>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+
+    <!-- Card 1 -->
+    <div data-reveal class="card-lp rounded-xl p-6 relative" style="background:#111111;border:1px solid #262626;transition-delay:0.08s;">
+      <div class="w-10 h-10 rounded-lg flex items-center justify-center mb-5" style="background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.14);">
+        <i data-lucide="layout-dashboard" class="w-5 h-5" style="color:#22c55e;"></i>
+      </div>
+      <p class="lp-label mb-2">Visão Total</p>
+      <h3 class="text-base font-semibold mb-2" style="color:#f5f5f5;">Tudo em um só lugar</h3>
+      <p class="text-sm font-light leading-relaxed" style="color:#a3a3a3;">Dashboard unificado com saldo consolidado, receitas, despesas e categorias em tempo real.</p>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <!-- Feature 1 -->
-        <div class="card-interactive rounded-lg p-6" style="background:#111111;border:1px solid #262626;">
-            <div class="mb-5" style="width:40px;height:40px;border-radius:8px;background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.15);display:flex;align-items:center;justify-content:center;">
-                <svg class="w-4 h-4" style="color:#22c55e;" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 3m8.5-3l1 3"/>
-                </svg>
-            </div>
-            <h3 class="font-semibold mb-2" style="color:#f5f5f5;">Visão 360°</h3>
-            <p class="text-sm font-light leading-relaxed" style="color:#a3a3a3;">Dashboard unificado com saldo, receitas, despesas e distribuição por categoria em tempo real.</p>
-        </div>
-
-        <!-- Feature 2 — central com glow -->
-        <div class="card-interactive rounded-lg p-6 glow-accent" style="background:#111111;border:1px solid #262626;">
-            <div class="mb-5" style="width:40px;height:40px;border-radius:8px;background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.15);display:flex;align-items:center;justify-content:center;">
-                <svg class="w-4 h-4" style="color:#22c55e;" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-                </svg>
-            </div>
-            <h3 class="font-semibold mb-2" style="color:#f5f5f5;">IA Financeira</h3>
-            <p class="text-sm font-light leading-relaxed" style="color:#a3a3a3;">Análise automática dos seus padrões de gasto com recomendações práticas geradas por inteligência artificial.</p>
-        </div>
-
-        <!-- Feature 3 -->
-        <div class="card-interactive rounded-lg p-6" style="background:#111111;border:1px solid #262626;">
-            <div class="mb-5" style="width:40px;height:40px;border-radius:8px;background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.15);display:flex;align-items:center;justify-content:center;">
-                <svg class="w-4 h-4" style="color:#22c55e;" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                </svg>
-            </div>
-            <h3 class="font-semibold mb-2" style="color:#f5f5f5;">Metas inteligentes</h3>
-            <p class="text-sm font-light leading-relaxed" style="color:#a3a3a3;">Defina objetivos financeiros, acompanhe o progresso e receba alertas quando desviar do plano.</p>
-        </div>
+    <!-- Card 2 (featured) -->
+    <div data-reveal class="card-lp rounded-xl p-6 relative" style="background:#111111;border:1px solid rgba(34,197,94,0.22);box-shadow:0 0 0 1px rgba(34,197,94,0.05);transition-delay:0.16s;">
+      <div class="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-0.5 rounded-full text-xs font-bold" style="background:#22c55e;color:#000;">Destaque</div>
+      <div class="w-10 h-10 rounded-lg flex items-center justify-center mb-5" style="background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.14);">
+        <i data-lucide="brain-circuit" class="w-5 h-5" style="color:#22c55e;"></i>
+      </div>
+      <p class="lp-label mb-2">IA Integrada</p>
+      <h3 class="text-base font-semibold mb-2" style="color:#f5f5f5;">Análise financeira com IA</h3>
+      <p class="text-sm font-light leading-relaxed" style="color:#a3a3a3;">Identifique padrões de gasto, receba alertas inteligentes e sugestões personalizadas para economizar mais.</p>
     </div>
+
+    <!-- Card 3 -->
+    <div data-reveal class="card-lp rounded-xl p-6 relative" style="background:#111111;border:1px solid #262626;transition-delay:0.24s;">
+      <div class="w-10 h-10 rounded-lg flex items-center justify-center mb-5" style="background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.14);">
+        <i data-lucide="target" class="w-5 h-5" style="color:#22c55e;"></i>
+      </div>
+      <p class="lp-label mb-2">Planejamento</p>
+      <h3 class="text-base font-semibold mb-2" style="color:#f5f5f5;">Metas que você atinge</h3>
+      <p class="text-sm font-light leading-relaxed" style="color:#a3a3a3;">Defina objetivos, acompanhe o progresso e receba alertas quando desviar do plano.</p>
+    </div>
+
+  </div>
 </section>
 
-<!-- Footer -->
-<footer id="sobre" style="border-top:1px solid #262626;" class="py-8 px-6">
-    <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4 text-xs" style="color:#525252;">
-        <a href="{% url 'home' %}" class="flex items-center gap-1 font-bold text-sm transition-opacity duration-150 hover:opacity-80">
-            <span style="color:#22c55e;">F</span><span style="color:#a3a3a3;">inanpy</span>
-        </a>
-        <span>&copy; 2026 Finanpy. Todos os direitos reservados.</span>
-        <div class="flex gap-5">
-            <a href="#" class="transition-colors duration-150 hover:text-[#a3a3a3]" style="color:#525252;">Privacidade</a>
-            <a href="#" class="transition-colors duration-150 hover:text-[#a3a3a3]" style="color:#525252;">Termos</a>
-            <a href="#" class="transition-colors duration-150 hover:text-[#a3a3a3]" style="color:#525252;">Suporte</a>
-        </div>
+
+<!-- ══════════════════════════════════════════════════════════
+     FEATURES — 4 ALTERNATING BLOCKS
+     ══════════════════════════════════════════════════════════ -->
+<section id="funcionalidades" style="border-top:1px solid #1a1a1a;">
+  <div class="max-w-6xl mx-auto px-6 py-24">
+
+    <!-- Section header -->
+    <div class="text-center mb-24" data-reveal>
+      <p class="lp-label mb-3">Funcionalidades</p>
+      <h2 class="text-3xl md:text-4xl font-bold tracking-tight" style="color:#f5f5f5;">Cada detalhe pensado para você.</h2>
     </div>
+
+    <!-- ── Feature 1: Dashboard (text left / mock right) ── -->
+    <div class="flex flex-col lg:flex-row items-center gap-12 lg:gap-20 mb-32">
+
+      <div data-reveal="left" class="flex-1 max-w-lg">
+        <p class="lp-label mb-3">Dashboard</p>
+        <h3 class="text-2xl md:text-3xl font-bold tracking-tight mb-4" style="color:#f5f5f5;">Visão completa das suas finanças</h3>
+        <p class="text-base font-light leading-relaxed mb-7" style="color:#a3a3a3;">Monitore todas as suas contas em um único painel. Saldo, receitas, despesas e categorias em tempo real, com gráficos que fazem sentido.</p>
+        <ul class="space-y-3.5 mb-9">
+          <li class="flex items-center gap-3 text-sm" style="color:#a3a3a3;"><i data-lucide="check-circle-2" class="w-4 h-4 shrink-0" style="color:#22c55e;"></i>Saldo consolidado de todas as contas</li>
+          <li class="flex items-center gap-3 text-sm" style="color:#a3a3a3;"><i data-lucide="check-circle-2" class="w-4 h-4 shrink-0" style="color:#22c55e;"></i>Categorização automática de transações</li>
+          <li class="flex items-center gap-3 text-sm" style="color:#a3a3a3;"><i data-lucide="check-circle-2" class="w-4 h-4 shrink-0" style="color:#22c55e;"></i>Relatórios mensais detalhados</li>
+        </ul>
+        <a href="{% url 'users:signup' %}" class="inline-flex items-center gap-1.5 text-sm font-medium transition-all duration-200 hover:gap-3" style="color:#22c55e;">
+          Saiba mais <i data-lucide="arrow-right" class="w-4 h-4"></i>
+        </a>
+      </div>
+
+      <!-- Analytics mock — Evolução + Categorias (Mockup 2) -->
+      <div data-reveal="right" class="flex-1 w-full max-w-lg">
+        <div class="rounded-xl overflow-hidden"
+             style="background:#0a0a0a;border:1px solid #262626;
+                    box-shadow:0 24px 60px rgba(0,0,0,0.5),0 0 0 1px rgba(34,197,94,0.05);
+                    mask-image:linear-gradient(to bottom,black 72%,transparent 100%);
+                    -webkit-mask-image:linear-gradient(to bottom,black 72%,transparent 100%);">
+
+          <!-- Browser chrome bar -->
+          <div class="flex items-center gap-1.5 px-4 py-2.5" style="background:#0d0d0d;border-bottom:1px solid #1a1a1a;">
+            <div class="w-2 h-2 rounded-full" style="background:#ef4444;"></div>
+            <div class="w-2 h-2 rounded-full" style="background:#fbbf24;"></div>
+            <div class="w-2 h-2 rounded-full" style="background:#22c55e;"></div>
+            <span class="ml-2 text-xs" style="color:#3d3d3d;">app.finova.com — Relatórios</span>
+          </div>
+
+          <!-- Two-panel analytics layout -->
+          <div class="flex flex-col sm:flex-row">
+
+            <!-- Left panel: line chart -->
+            <div class="flex-1 p-3" style="border-right:1px solid #1a1a1a;min-width:0;">
+              <div class="flex items-center justify-between mb-1.5">
+                <span style="font-size:10px;font-weight:500;color:#f5f5f5;">Evolução Mensal</span>
+                <span style="font-size:8px;color:#525252;">Jan – Jun 2026</span>
+              </div>
+
+              <!-- Chart: viewBox 220×100, data range R$2k–R$8k → y=71–11 -->
+              <svg viewBox="0 0 220 100" class="w-full" aria-hidden="true">
+                <defs>
+                  <linearGradient id="mk2-fill" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#22c55e" stop-opacity="0.09"/>
+                    <stop offset="100%" stop-color="#22c55e" stop-opacity="0"/>
+                  </linearGradient>
+                </defs>
+                <!-- Y-axis labels -->
+                <text x="0" y="14"  style="font-size:5px;fill:#525252;">8k</text>
+                <text x="0" y="30"  style="font-size:5px;fill:#525252;">6k</text>
+                <text x="0" y="46"  style="font-size:5px;fill:#525252;">4k</text>
+                <text x="0" y="62"  style="font-size:5px;fill:#525252;">2k</text>
+                <!-- Gridlines -->
+                <line x1="14" y1="11" x2="215" y2="11" stroke="#262626" stroke-width="0.5"/>
+                <line x1="14" y1="27" x2="215" y2="27" stroke="#262626" stroke-width="0.5"/>
+                <line x1="14" y1="43" x2="215" y2="43" stroke="#262626" stroke-width="0.5"/>
+                <line x1="14" y1="59" x2="215" y2="59" stroke="#262626" stroke-width="0.5"/>
+                <!-- X labels at x=17,57,97,137,177,212 -->
+                <text x="14"  y="69" style="font-size:5px;fill:#525252;">Jan</text>
+                <text x="54"  y="69" style="font-size:5px;fill:#525252;">Fev</text>
+                <text x="94"  y="69" style="font-size:5px;fill:#525252;">Mar</text>
+                <text x="134" y="69" style="font-size:5px;fill:#525252;">Abr</text>
+                <text x="174" y="69" style="font-size:5px;fill:#525252;">Mai</text>
+                <text x="209" y="69" style="font-size:5px;fill:#525252;">Jun</text>
+                <!-- Receitas area fill (mapping same as Mockup 1 scaled) -->
+                <!-- 4500→46, 5200→38, 5800→33, 6200→28, 7100→19, 8200→9 -->
+                <path d="M17,46 L57,38 L97,33 L137,28 L177,19 L212,9 L212,63 L17,63 Z" fill="url(#mk2-fill)"/>
+                <!-- Receitas line (green) -->
+                <polyline points="17,46 57,38 97,33 137,28 177,19 212,9"
+                          fill="none" stroke="#22c55e" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                <!-- Despesas line (red): 2800→55, 3100→52, 3400→49, 3200→51, 3600→47, 3840→45 -->
+                <polyline points="17,55 57,52 97,49 137,51 177,47 212,45"
+                          fill="none" stroke="#ef4444" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                <!-- Saldo line (purple): 1700→64, 2100→60, 2400→57, 3000→51, 3500→47, 4360→38 -->
+                <polyline points="17,64 57,60 97,57 137,51 177,47 212,38"
+                          fill="none" stroke="#a78bfa" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                <!-- End-point dots -->
+                <circle cx="212" cy="9"  r="2" fill="#22c55e"/>
+                <circle cx="212" cy="45" r="2" fill="#ef4444"/>
+                <circle cx="212" cy="38" r="2" fill="#a78bfa"/>
+                <!-- Start-point dots (faint) -->
+                <circle cx="17" cy="46" r="1.5" fill="#22c55e" opacity="0.4"/>
+                <circle cx="17" cy="55" r="1.5" fill="#ef4444" opacity="0.4"/>
+                <circle cx="17" cy="64" r="1.5" fill="#a78bfa" opacity="0.4"/>
+                <!-- Legend pills -->
+                <rect x="14" y="77" width="6" height="3" rx="1.5" fill="#22c55e"/>
+                <text x="23" y="80" style="font-size:5px;fill:#a3a3a3;">Receitas</text>
+                <rect x="72" y="77" width="6" height="3" rx="1.5" fill="#ef4444"/>
+                <text x="81" y="80" style="font-size:5px;fill:#a3a3a3;">Despesas</text>
+                <rect x="136" y="77" width="6" height="3" rx="1.5" fill="#a78bfa"/>
+                <text x="145" y="80" style="font-size:5px;fill:#a3a3a3;">Saldo</text>
+              </svg>
+            </div>
+
+            <!-- Right panel: donut + category list -->
+            <div class="flex-1 p-3" style="min-width:0;">
+              <div class="flex items-center justify-between mb-1.5">
+                <span style="font-size:10px;font-weight:500;color:#f5f5f5;">Despesas por Categoria</span>
+                <span style="font-size:8px;color:#525252;">Abril 2026</span>
+              </div>
+
+              <!-- Donut SVG: r=40, circumference≈251.3, stroke-width=18 -->
+              <!-- Segments (with 1px gap): Alimentação 32%→79px, Transporte 23%→57px, Moradia 31%→77px, Lazer 14%→34px -->
+              <!-- Offsets with rotate(-90): 0, -80, -138, -216 -->
+              <div class="flex justify-center mb-2.5">
+                <svg viewBox="0 0 120 120" style="width:86px;height:86px;" aria-hidden="true">
+                  <!-- Background ring -->
+                  <circle cx="60" cy="60" r="40" fill="none" stroke="#1a1a1a" stroke-width="18"/>
+                  <!-- Alimentação 32% (#ef4444) -->
+                  <circle cx="60" cy="60" r="40" fill="none" stroke="#ef4444" stroke-width="18"
+                          stroke-dasharray="79 172.3" stroke-dashoffset="0"
+                          transform="rotate(-90 60 60)"/>
+                  <!-- Transporte 23% (#3b82f6) -->
+                  <circle cx="60" cy="60" r="40" fill="none" stroke="#3b82f6" stroke-width="18"
+                          stroke-dasharray="57 194.3" stroke-dashoffset="-80"
+                          transform="rotate(-90 60 60)"/>
+                  <!-- Moradia 31% (#a78bfa) -->
+                  <circle cx="60" cy="60" r="40" fill="none" stroke="#a78bfa" stroke-width="18"
+                          stroke-dasharray="77 174.3" stroke-dashoffset="-138"
+                          transform="rotate(-90 60 60)"/>
+                  <!-- Lazer 14% (#fbbf24) -->
+                  <circle cx="60" cy="60" r="40" fill="none" stroke="#fbbf24" stroke-width="18"
+                          stroke-dasharray="34 217.3" stroke-dashoffset="-216"
+                          transform="rotate(-90 60 60)"/>
+                  <!-- Inner background disk -->
+                  <circle cx="60" cy="60" r="30" fill="#111111"/>
+                  <!-- Center text -->
+                  <text x="60" y="57" text-anchor="middle" style="font-size:6px;fill:#525252;">Total</text>
+                  <text x="60" y="67" text-anchor="middle" style="font-size:7.5px;font-weight:700;fill:#f5f5f5;font-family:monospace;">R$3.840</text>
+                </svg>
+              </div>
+
+              <!-- Category breakdown -->
+              <div style="display:flex;flex-direction:column;gap:6px;">
+                <!-- Alimentação 32% -->
+                <div>
+                  <div class="flex items-center justify-between" style="margin-bottom:2px;">
+                    <div class="flex items-center gap-1.5">
+                      <span class="rounded-full" style="width:7px;height:7px;background:#ef4444;display:inline-block;flex-shrink:0;"></span>
+                      <span style="font-size:8px;color:#a3a3a3;">Alimentação</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                      <span class="font-mono" style="font-size:8px;color:#f5f5f5;">R$1.240</span>
+                      <span style="font-size:7px;color:#525252;">32%</span>
+                    </div>
+                  </div>
+                  <div class="rounded-full overflow-hidden" style="height:2px;background:#1a1a1a;">
+                    <div style="width:32%;height:100%;background:#ef4444;"></div>
+                  </div>
+                </div>
+                <!-- Transporte 23% -->
+                <div>
+                  <div class="flex items-center justify-between" style="margin-bottom:2px;">
+                    <div class="flex items-center gap-1.5">
+                      <span class="rounded-full" style="width:7px;height:7px;background:#3b82f6;display:inline-block;flex-shrink:0;"></span>
+                      <span style="font-size:8px;color:#a3a3a3;">Transporte</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                      <span class="font-mono" style="font-size:8px;color:#f5f5f5;">R$890</span>
+                      <span style="font-size:7px;color:#525252;">23%</span>
+                    </div>
+                  </div>
+                  <div class="rounded-full overflow-hidden" style="height:2px;background:#1a1a1a;">
+                    <div style="width:23%;height:100%;background:#3b82f6;"></div>
+                  </div>
+                </div>
+                <!-- Moradia 31% -->
+                <div>
+                  <div class="flex items-center justify-between" style="margin-bottom:2px;">
+                    <div class="flex items-center gap-1.5">
+                      <span class="rounded-full" style="width:7px;height:7px;background:#a78bfa;display:inline-block;flex-shrink:0;"></span>
+                      <span style="font-size:8px;color:#a3a3a3;">Moradia</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                      <span class="font-mono" style="font-size:8px;color:#f5f5f5;">R$1.200</span>
+                      <span style="font-size:7px;color:#525252;">31%</span>
+                    </div>
+                  </div>
+                  <div class="rounded-full overflow-hidden" style="height:2px;background:#1a1a1a;">
+                    <div style="width:31%;height:100%;background:#a78bfa;"></div>
+                  </div>
+                </div>
+                <!-- Lazer 14% -->
+                <div>
+                  <div class="flex items-center justify-between" style="margin-bottom:2px;">
+                    <div class="flex items-center gap-1.5">
+                      <span class="rounded-full" style="width:7px;height:7px;background:#fbbf24;display:inline-block;flex-shrink:0;"></span>
+                      <span style="font-size:8px;color:#a3a3a3;">Lazer</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                      <span class="font-mono" style="font-size:8px;color:#f5f5f5;">R$509</span>
+                      <span style="font-size:7px;color:#525252;">14%</span>
+                    </div>
+                  </div>
+                  <div class="rounded-full overflow-hidden" style="height:2px;background:#1a1a1a;">
+                    <div style="width:14%;height:100%;background:#fbbf24;"></div>
+                  </div>
+                </div>
+              </div><!-- /category breakdown -->
+
+            </div><!-- /right panel -->
+          </div><!-- /two-panel layout -->
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ── Feature 2: WhatsApp (text right / mock left) ─── -->
+    <div class="flex flex-col lg:flex-row-reverse items-center gap-12 lg:gap-20 mb-32">
+
+      <div data-reveal="right" class="flex-1 max-w-lg">
+        <div class="flex items-center gap-3 mb-3">
+          <p class="lp-label">WhatsApp</p>
+          <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold" style="background:rgba(251,191,36,0.1);color:#fbbf24;border:1px solid rgba(251,191,36,0.22);">
+            <i data-lucide="clock-4" class="w-3 h-3"></i>Em Breve
+          </span>
+        </div>
+        <h3 class="text-2xl md:text-3xl font-bold tracking-tight mb-4" style="color:#f5f5f5;">Controle pelo WhatsApp</h3>
+        <p class="text-base font-light leading-relaxed mb-7" style="color:#a3a3a3;">Em breve você poderá registrar transações, consultar saldo e receber relatórios diretamente pelo WhatsApp. Sem precisar abrir o app.</p>
+        <ul class="space-y-3.5">
+          <li class="flex items-center gap-3 text-sm" style="color:#a3a3a3;"><i data-lucide="check-circle-2" class="w-4 h-4 shrink-0" style="color:#525252;"></i>Registrar despesas por mensagem de texto</li>
+          <li class="flex items-center gap-3 text-sm" style="color:#a3a3a3;"><i data-lucide="check-circle-2" class="w-4 h-4 shrink-0" style="color:#525252;"></i>Consultar saldo e últimas transações</li>
+          <li class="flex items-center gap-3 text-sm" style="color:#a3a3a3;"><i data-lucide="check-circle-2" class="w-4 h-4 shrink-0" style="color:#525252;"></i>Relatório semanal automático</li>
+        </ul>
+      </div>
+
+      <!-- WhatsApp mock -->
+      <div data-reveal="left" class="flex-1 w-full max-w-lg relative">
+        <div class="rounded-xl overflow-hidden" style="background:#111111;border:1px solid #262626;">
+          <div class="flex items-center gap-3 px-4 py-3" style="background:#0d0d0d;border-bottom:1px solid #1a1a1a;">
+            <div class="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0" style="background:#22c55e;">
+              <i data-lucide="message-circle" class="w-4 h-4 text-black"></i>
+            </div>
+            <div>
+              <p class="text-xs font-semibold" style="color:#f5f5f5;">Finova Bot</p>
+              <p class="text-xs" style="color:#22c55e;">online</p>
+            </div>
+          </div>
+          <div class="p-4 space-y-3">
+            <div class="flex justify-end">
+              <div class="max-w-[76%] rounded-xl rounded-tr-sm px-3 py-2 text-xs" style="background:#22c55e;color:#000;">
+                Gastei R$45 no almoço hoje
+              </div>
+            </div>
+            <div class="flex justify-start">
+              <div class="max-w-[80%] rounded-xl rounded-tl-sm px-3 py-2 text-xs space-y-1" style="background:#1a1a1a;color:#f5f5f5;border:1px solid #262626;">
+                <p>✅ Registrado! <span style="color:#22c55e;">R$ 45,00</span> em Alimentação</p>
+                <p style="color:#a3a3a3;">Você já gastou R$ 620 em Alimentação este mês.</p>
+              </div>
+            </div>
+            <div class="flex justify-end">
+              <div class="max-w-[76%] rounded-xl rounded-tr-sm px-3 py-2 text-xs" style="background:#22c55e;color:#000;">
+                Qual meu saldo atual?
+              </div>
+            </div>
+            <div class="flex justify-start">
+              <div class="max-w-[80%] rounded-xl rounded-tl-sm px-3 py-2 text-xs space-y-1" style="background:#1a1a1a;color:#f5f5f5;border:1px solid #262626;">
+                <p>💰 Saldo total: <span style="color:#22c55e;">R$ 4.832,00</span></p>
+                <p style="color:#a3a3a3;">Nubank: R$ 2.100 · Inter: R$ 2.732</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Em breve overlay -->
+        <div class="absolute inset-0 rounded-xl flex items-center justify-center" style="background:rgba(10,10,10,0.62);backdrop-filter:blur(3px);">
+          <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold" style="background:rgba(251,191,36,0.1);border:1px solid rgba(251,191,36,0.3);color:#fbbf24;">
+            <i data-lucide="clock" class="w-4 h-4"></i>Em Breve
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ── Feature 3: IA Financeira (text left / mock right) -->
+    <div class="flex flex-col lg:flex-row items-center gap-12 lg:gap-20 mb-32">
+
+      <div data-reveal="left" class="flex-1 max-w-lg">
+        <p class="lp-label mb-3">Inteligência Artificial</p>
+        <h3 class="text-2xl md:text-3xl font-bold tracking-tight mb-4" style="color:#f5f5f5;">Análise financeira com IA</h3>
+        <p class="text-base font-light leading-relaxed mb-7" style="color:#a3a3a3;">Nossa IA analisa seu histórico e entrega insights acionáveis: onde você gasta mais, quais hábitos prejudicam suas metas e como melhorar.</p>
+        <ul class="space-y-3.5 mb-9">
+          <li class="flex items-center gap-3 text-sm" style="color:#a3a3a3;"><i data-lucide="check-circle-2" class="w-4 h-4 shrink-0" style="color:#22c55e;"></i>Padrões de gasto identificados automaticamente</li>
+          <li class="flex items-center gap-3 text-sm" style="color:#a3a3a3;"><i data-lucide="check-circle-2" class="w-4 h-4 shrink-0" style="color:#22c55e;"></i>Alertas de desvio de orçamento</li>
+          <li class="flex items-center gap-3 text-sm" style="color:#a3a3a3;"><i data-lucide="check-circle-2" class="w-4 h-4 shrink-0" style="color:#22c55e;"></i>Recomendações personalizadas semanais</li>
+        </ul>
+        <a href="{% url 'users:signup' %}" class="inline-flex items-center gap-1.5 text-sm font-medium transition-all duration-200 hover:gap-3" style="color:#22c55e;">
+          Saiba mais <i data-lucide="arrow-right" class="w-4 h-4"></i>
+        </a>
+      </div>
+
+      <!-- IA mock -->
+      <div data-reveal="right" class="flex-1 w-full max-w-lg">
+        <div class="rounded-xl overflow-hidden" style="background:#111111;border:1px solid #262626;">
+          <div class="flex items-center gap-3 px-4 py-3" style="background:#0d0d0d;border-bottom:1px solid #1a1a1a;">
+            <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0" style="background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.2);">
+              <i data-lucide="brain-circuit" class="w-4 h-4" style="color:#22c55e;"></i>
+            </div>
+            <span class="text-sm font-medium" style="color:#f5f5f5;">Análise de IA — Abril 2026</span>
+          </div>
+          <div class="p-4 space-y-3">
+            <div class="rounded-lg p-3" style="background:#0d0d0d;border:1px solid #1a1a1a;">
+              <div class="flex items-start gap-3">
+                <div class="w-6 h-6 rounded-full flex items-center justify-center shrink-0 mt-0.5" style="background:rgba(239,68,68,0.1);">
+                  <i data-lucide="trending-up" class="w-3 h-3" style="color:#ef4444;"></i>
+                </div>
+                <div>
+                  <p class="text-xs font-semibold mb-1" style="color:#f5f5f5;">Gasto em Alimentação ↑ 23%</p>
+                  <p class="text-xs" style="color:#a3a3a3;">Você gastou R$ 892 este mês vs. média de R$ 725. Considere reduzir delivery nos fins de semana.</p>
+                </div>
+              </div>
+            </div>
+            <div class="rounded-lg p-3" style="background:#0d0d0d;border:1px solid #1a1a1a;">
+              <div class="flex items-start gap-3">
+                <div class="w-6 h-6 rounded-full flex items-center justify-center shrink-0 mt-0.5" style="background:rgba(34,197,94,0.1);">
+                  <i data-lucide="piggy-bank" class="w-3 h-3" style="color:#22c55e;"></i>
+                </div>
+                <div>
+                  <p class="text-xs font-semibold mb-1" style="color:#f5f5f5;">Oportunidade de economia</p>
+                  <p class="text-xs" style="color:#a3a3a3;">Reduzir Lazer em 15% pouparia R$ 180/mês — suficiente para sua meta de viagem em 8 meses.</p>
+                </div>
+              </div>
+            </div>
+            <div class="rounded-lg p-3" style="background:#0d0d0d;border:1px solid rgba(34,197,94,0.18);">
+              <div class="flex items-start gap-3">
+                <div class="w-6 h-6 rounded-full flex items-center justify-center shrink-0 mt-0.5" style="background:rgba(34,197,94,0.1);">
+                  <i data-lucide="star" class="w-3 h-3" style="color:#22c55e;"></i>
+                </div>
+                <div>
+                  <p class="text-xs font-semibold mb-1" style="color:#22c55e;">Parabéns! Meta de poupança atingida</p>
+                  <p class="text-xs" style="color:#a3a3a3;">Você poupou R$ 2.480 em abril, superando a meta de R$ 2.000 em 24%.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ── Feature 4: Metas (text right / mock left) ───── -->
+    <div class="flex flex-col lg:flex-row-reverse items-center gap-12 lg:gap-20">
+
+      <div data-reveal="right" class="flex-1 max-w-lg">
+        <p class="lp-label mb-3">Planejamento</p>
+        <h3 class="text-2xl md:text-3xl font-bold tracking-tight mb-4" style="color:#f5f5f5;">Metas e orçamentos inteligentes</h3>
+        <p class="text-base font-light leading-relaxed mb-7" style="color:#a3a3a3;">Crie metas de economia, defina orçamentos por categoria e acompanhe o progresso mês a mês com alertas automáticos.</p>
+        <ul class="space-y-3.5 mb-9">
+          <li class="flex items-center gap-3 text-sm" style="color:#a3a3a3;"><i data-lucide="check-circle-2" class="w-4 h-4 shrink-0" style="color:#22c55e;"></i>Metas de economia com prazos</li>
+          <li class="flex items-center gap-3 text-sm" style="color:#a3a3a3;"><i data-lucide="check-circle-2" class="w-4 h-4 shrink-0" style="color:#22c55e;"></i>Orçamentos por categoria</li>
+          <li class="flex items-center gap-3 text-sm" style="color:#a3a3a3;"><i data-lucide="check-circle-2" class="w-4 h-4 shrink-0" style="color:#22c55e;"></i>Alertas de limite de gastos</li>
+        </ul>
+        <a href="{% url 'users:signup' %}" class="inline-flex items-center gap-1.5 text-sm font-medium transition-all duration-200 hover:gap-3" style="color:#22c55e;">
+          Saiba mais <i data-lucide="arrow-right" class="w-4 h-4"></i>
+        </a>
+      </div>
+
+      <!-- Metas mock -->
+      <div data-reveal="left" class="flex-1 w-full max-w-lg">
+        <div class="rounded-xl overflow-hidden" style="background:#111111;border:1px solid #262626;">
+          <div class="flex items-center justify-between px-4 py-3" style="background:#0d0d0d;border-bottom:1px solid #1a1a1a;">
+            <span class="text-sm font-medium" style="color:#f5f5f5;">Minhas Metas</span>
+            <span class="text-xs font-medium" style="color:#22c55e;">Abril 2026</span>
+          </div>
+          <div class="p-4 space-y-3">
+            <!-- Meta: Viagem -->
+            <div class="rounded-lg p-3" style="background:#0d0d0d;border:1px solid #1a1a1a;">
+              <div class="flex items-center justify-between mb-2">
+                <div class="flex items-center gap-2.5">
+                  <span class="text-lg leading-none">✈️</span>
+                  <div>
+                    <p class="text-xs font-semibold" style="color:#f5f5f5;">Viagem para Europa</p>
+                    <p class="text-xs" style="color:#525252;">Dezembro 2026</p>
+                  </div>
+                </div>
+                <span class="text-xs font-bold font-mono" style="color:#22c55e;">68%</span>
+              </div>
+              <div class="w-full rounded-full h-1.5" style="background:#1a1a1a;">
+                <div class="h-1.5 rounded-full" style="width:68%;background:linear-gradient(90deg,#16a34a,#22c55e);"></div>
+              </div>
+              <p class="text-xs mt-1.5" style="color:#525252;">R$ 6.800 de R$ 10.000</p>
+            </div>
+            <!-- Meta: Reserva -->
+            <div class="rounded-lg p-3" style="background:#0d0d0d;border:1px solid #1a1a1a;">
+              <div class="flex items-center justify-between mb-2">
+                <div class="flex items-center gap-2.5">
+                  <span class="text-lg leading-none">🛡️</span>
+                  <div>
+                    <p class="text-xs font-semibold" style="color:#f5f5f5;">Reserva de emergência</p>
+                    <p class="text-xs" style="color:#525252;">Junho 2026</p>
+                  </div>
+                </div>
+                <span class="text-xs font-bold font-mono" style="color:#22c55e;">45%</span>
+              </div>
+              <div class="w-full rounded-full h-1.5" style="background:#1a1a1a;">
+                <div class="h-1.5 rounded-full" style="width:45%;background:linear-gradient(90deg,#16a34a,#22c55e);"></div>
+              </div>
+              <p class="text-xs mt-1.5" style="color:#525252;">R$ 4.500 de R$ 10.000</p>
+            </div>
+            <!-- Orçamento: alerta -->
+            <div class="rounded-lg p-3" style="background:#0d0d0d;border:1px solid rgba(239,68,68,0.2);">
+              <div class="flex items-center justify-between mb-2">
+                <div class="flex items-center gap-2.5">
+                  <span class="text-lg leading-none">🍽️</span>
+                  <div>
+                    <p class="text-xs font-semibold" style="color:#f5f5f5;">Orçamento Alimentação</p>
+                    <p class="text-xs" style="color:#ef4444;">Atenção: 89% utilizado</p>
+                  </div>
+                </div>
+                <span class="text-xs font-bold font-mono" style="color:#ef4444;">89%</span>
+              </div>
+              <div class="w-full rounded-full h-1.5" style="background:#1a1a1a;">
+                <div class="h-1.5 rounded-full" style="width:89%;background:#ef4444;"></div>
+              </div>
+              <p class="text-xs mt-1.5" style="color:#525252;">R$ 890 de R$ 1.000</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════════
+     DEPOIMENTOS
+     ══════════════════════════════════════════════════════════ -->
+<section id="depoimentos" class="py-24" style="border-top:1px solid #1a1a1a;">
+  <div class="max-w-6xl mx-auto px-6">
+
+    <div class="text-center mb-16" data-reveal>
+      <p class="lp-label mb-3">Depoimentos</p>
+      <h2 class="text-3xl md:text-4xl font-bold tracking-tight" style="color:#f5f5f5;">O que nossos usuários dizem.</h2>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+
+      <!-- Depoimento 1 -->
+      <div data-reveal class="card-lp rounded-xl p-6" style="background:#111111;border:1px solid #262626;transition-delay:0.08s;">
+        <div class="flex items-center gap-0.5 mb-5">
+          {% for i in "12345" %}<i data-lucide="star" class="w-4 h-4" style="color:#fbbf24;fill:#fbbf24;"></i>{% endfor %}
+        </div>
+        <p class="text-sm font-light leading-relaxed mb-6" style="color:#a3a3a3;">"Finalmente entendi para onde meu dinheiro estava indo. O dashboard com IA mostrou que eu gastava R$ 400/mês só em delivery. Reduzi para R$ 150 e já atingi minha meta de viagem."</p>
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-full flex items-center justify-center font-bold text-sm shrink-0" style="background:#7c3aed;color:white;">A</div>
+          <div>
+            <p class="text-sm font-medium" style="color:#f5f5f5;">Ana Lima</p>
+            <p class="text-xs" style="color:#525252;">Designer · São Paulo</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Depoimento 2 -->
+      <div data-reveal class="card-lp rounded-xl p-6" style="background:#111111;border:1px solid rgba(34,197,94,0.16);transition-delay:0.16s;">
+        <div class="flex items-center gap-0.5 mb-5">
+          {% for i in "12345" %}<i data-lucide="star" class="w-4 h-4" style="color:#fbbf24;fill:#fbbf24;"></i>{% endfor %}
+        </div>
+        <p class="text-sm font-light leading-relaxed mb-6" style="color:#a3a3a3;">"Tenho 3 contas em bancos diferentes e o Finova consolida tudo em um lugar. Os orçamentos por categoria me ajudam sem precisar de planilhas. É gratuito e melhor que os concorrentes pagos."</p>
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-full flex items-center justify-center font-bold text-sm shrink-0" style="background:#0891b2;color:white;">M</div>
+          <div>
+            <p class="text-sm font-medium" style="color:#f5f5f5;">Marcos Silva</p>
+            <p class="text-xs" style="color:#525252;">Engenheiro · Curitiba</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Depoimento 3 -->
+      <div data-reveal class="card-lp rounded-xl p-6" style="background:#111111;border:1px solid #262626;transition-delay:0.24s;">
+        <div class="flex items-center gap-0.5 mb-5">
+          {% for i in "12345" %}<i data-lucide="star" class="w-4 h-4" style="color:#fbbf24;fill:#fbbf24;"></i>{% endfor %}
+        </div>
+        <p class="text-sm font-light leading-relaxed mb-6" style="color:#a3a3a3;">"A IA me surpreendeu. Em uma semana ela identificou que eu pagava R$ 89 em assinatura que havia esquecido. As metas com barra de progresso me motivam a poupar todo mês."</p>
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-full flex items-center justify-center font-bold text-sm shrink-0" style="background:#16a34a;color:white;">R</div>
+          <div>
+            <p class="text-sm font-medium" style="color:#f5f5f5;">Rafaela Costa</p>
+            <p class="text-xs" style="color:#525252;">Professora · Recife</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════════
+     CTA FINAL
+     ══════════════════════════════════════════════════════════ -->
+<section class="py-24 px-6" style="border-top:1px solid #1a1a1a;">
+  <div class="max-w-4xl mx-auto">
+    <div class="relative rounded-2xl p-12 md:p-20 text-center overflow-hidden dotted-lp" style="background:#111111;border:1px solid rgba(34,197,94,0.18);">
+
+      <!-- Background glow -->
+      <div class="absolute inset-0 pointer-events-none" style="background:radial-gradient(ellipse 70% 45% at 50% 0%, rgba(34,197,94,0.10) 0%, transparent 65%);filter:blur(30px);"></div>
+
+      <div class="relative z-10" data-reveal>
+        <div class="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-8" style="background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.22);">
+          <i data-lucide="trending-up" class="w-6 h-6" style="color:#22c55e;"></i>
+        </div>
+
+        <h2 class="text-3xl md:text-5xl font-bold tracking-tight mb-5" style="color:#f5f5f5;">
+          Comece a controlar<br>seu dinheiro hoje.
+        </h2>
+        <p class="text-base font-light leading-relaxed max-w-md mx-auto mb-10" style="color:#a3a3a3;">
+          Gratuito para sempre. Sem cartão de crédito. Seus dados são seus — nunca compartilhamos informações pessoais.
+        </p>
+
+        <a href="{% url 'users:signup' %}" class="inline-flex items-center gap-2 px-8 py-3.5 rounded-lg text-sm font-semibold transition-all duration-200 hover:opacity-90 hover:-translate-y-px" style="background:#22c55e;color:#000;box-shadow:0 0 40px rgba(34,197,94,0.28);">
+          Criar conta grátis
+          <i data-lucide="arrow-right" class="w-4 h-4"></i>
+        </a>
+
+        <div class="flex items-center justify-center gap-8 mt-9 flex-wrap">
+          <div class="flex items-center gap-2 text-xs" style="color:#525252;">
+            <i data-lucide="shield-check" class="w-4 h-4"></i>100% gratuito
+          </div>
+          <div class="flex items-center gap-2 text-xs" style="color:#525252;">
+            <i data-lucide="lock" class="w-4 h-4"></i>Dados privados
+          </div>
+          <div class="flex items-center gap-2 text-xs" style="color:#525252;">
+            <i data-lucide="zap" class="w-4 h-4"></i>Pronto em 2 minutos
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════════
+     FOOTER
+     ══════════════════════════════════════════════════════════ -->
+<footer class="pt-14 pb-8 px-6" style="border-top:1px solid #1a1a1a;">
+  <div class="max-w-6xl mx-auto">
+
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-10 mb-14">
+
+      <!-- Col 1: Brand -->
+      <div class="col-span-2 md:col-span-1">
+        <a href="{% url 'home' %}" class="inline-flex items-center select-none mb-3">
+          <span class="font-bold text-xl tracking-tight" style="color:#22c55e;">F</span>
+          <span class="font-bold text-xl tracking-tight" style="color:#f5f5f5;">inova</span>
+        </a>
+        <p class="text-sm font-light leading-relaxed" style="color:#525252;">Gestão financeira pessoal gratuita, privada e inteligente.</p>
+      </div>
+
+      <!-- Col 2: Produto -->
+      <div>
+        <p class="text-xs font-semibold tracking-widest uppercase mb-5" style="color:#3d3d3d;">Produto</p>
+        <ul class="space-y-3">
+          <li><a href="#por-que"         class="text-sm transition-colors hover:text-[#f5f5f5]" style="color:#a3a3a3;">Por que o Finova?</a></li>
+          <li><a href="#funcionalidades" class="text-sm transition-colors hover:text-[#f5f5f5]" style="color:#a3a3a3;">Funcionalidades</a></li>
+          <li><a href="#depoimentos"     class="text-sm transition-colors hover:text-[#f5f5f5]" style="color:#a3a3a3;">Depoimentos</a></li>
+        </ul>
+      </div>
+
+      <!-- Col 3: Conta -->
+      <div>
+        <p class="text-xs font-semibold tracking-widest uppercase mb-5" style="color:#3d3d3d;">Conta</p>
+        <ul class="space-y-3">
+          <li><a href="{% url 'users:signup' %}" class="text-sm transition-colors hover:text-[#f5f5f5]" style="color:#a3a3a3;">Criar conta</a></li>
+          <li><a href="{% url 'users:login' %}"  class="text-sm transition-colors hover:text-[#f5f5f5]" style="color:#a3a3a3;">Entrar</a></li>
+        </ul>
+      </div>
+
+      <!-- Col 4: Legal -->
+      <div>
+        <p class="text-xs font-semibold tracking-widest uppercase mb-5" style="color:#3d3d3d;">Legal</p>
+        <ul class="space-y-3">
+          <li><a href="#" class="text-sm transition-colors hover:text-[#f5f5f5]" style="color:#a3a3a3;">Privacidade</a></li>
+          <li><a href="#" class="text-sm transition-colors hover:text-[#f5f5f5]" style="color:#a3a3a3;">Termos de uso</a></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="flex flex-col md:flex-row items-center justify-between pt-6 gap-3" style="border-top:1px solid #1a1a1a;">
+      <p class="text-xs" style="color:#3d3d3d;">&copy; 2026 Finova. Todos os direitos reservados.</p>
+      <p class="text-xs" style="color:#3d3d3d;">Feito com cuidado no Brasil 🇧🇷</p>
+    </div>
+
+  </div>
 </footer>
+
+{% endblock %}
+
+
+{% block extra_js %}
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  // ── Lucide icons ──────────────────────────────────────────
+  if (window.lucide) lucide.createIcons();
+
+  // ── Navbar: add .scrolled class on scroll ─────────────────
+  var nav = document.getElementById('landing-nav');
+  function handleScroll() {
+    nav.classList.toggle('scrolled', window.scrollY > 24);
+  }
+  window.addEventListener('scroll', handleScroll, { passive: true });
+  handleScroll();
+
+  // ── Mobile menu ───────────────────────────────────────────
+  var menuBtn    = document.getElementById('menu-btn');
+  var menuClose  = document.getElementById('menu-close');
+  var mobileMenu = document.getElementById('mobile-menu');
+
+  function openMenu()  { mobileMenu.classList.add('open');    menuBtn.setAttribute('aria-expanded', 'true');  document.body.style.overflow = 'hidden'; }
+  function closeMenu() { mobileMenu.classList.remove('open'); menuBtn.setAttribute('aria-expanded', 'false'); document.body.style.overflow = ''; }
+
+  menuBtn.addEventListener('click', openMenu);
+  menuClose.addEventListener('click', closeMenu);
+
+  // Close on anchor click inside mobile menu
+  mobileMenu.querySelectorAll('[data-close-menu]').forEach(function (el) {
+    el.addEventListener('click', closeMenu);
+  });
+
+  // ── Intersection Observer — scroll reveal ─────────────────
+  var revealEls = document.querySelectorAll('[data-reveal]');
+  if ('IntersectionObserver' in window) {
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.10, rootMargin: '0px 0px -40px 0px' });
+
+    revealEls.forEach(function (el) { observer.observe(el); });
+  } else {
+    // Fallback: reveal all immediately
+    revealEls.forEach(function (el) { el.classList.add('revealed'); });
+  }
+
+  // ── Hero chart line draw-in ───────────────────────────────
+  setTimeout(function () {
+    var line = document.getElementById('hero-chart-line');
+    if (line) line.classList.add('drawn');
+  }, 500);
+
+}());
+</script>
 {% endblock %}
