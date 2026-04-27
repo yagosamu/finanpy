@@ -1,5 +1,5 @@
 '''
-LangChain database tools for accessing Finanpy financial data.
+LangChain database tools for accessing Aurum Finance financial data.
 
 This module provides tools that allow AI agents to query Django ORM
 for user-specific financial information including transactions, accounts,

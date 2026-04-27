@@ -1,6 +1,6 @@
 @import 'tailwindcss';
 
-/* Custom theme configuration for Finanpy — redesign palette */
+/* Custom theme configuration for Aurum Finance — redesign palette */
 @theme {
     /* New dark palette */
     --color-base: #0a0a0a;

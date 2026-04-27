@@ -1,5 +1,5 @@
 """
-Production settings for the finanpy project.
+Production settings for the Aurum Finance project.
 
 This module imports all base settings from core.settings and overrides
 or extends them with production-specific configuration.

@@ -9,6 +9,7 @@ from langchain.agents import create_agent
 from langchain_core.messages import AIMessage, HumanMessage
 from langchain_core.tools import tool
 from langchain_openai import ChatOpenAI
+from openai import AuthenticationError, RateLimitError
 
 logger = logging.getLogger(__name__)
 
@@ -292,6 +293,8 @@ def run_analysis_for_user(user, period_start, period_end) -> dict:
             {'messages': [HumanMessage(content=human_input)]},
             config={'recursion_limit': 20},
         )
+    except (AuthenticationError, RateLimitError):
+        raise
     except Exception as exc:
         logger.error(
             'Falha ao executar análise de IA',
