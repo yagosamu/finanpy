@@ -13,6 +13,10 @@ Personal finance management platform built with Django. Combining a sophisticate
 
 Aurum Finance is a full-stack web application that gives users complete visibility and control over their personal finances. Beyond standard income and expense tracking, it features an AI agent that analyzes spending patterns and delivers personalized insights, plus a WhatsApp integration that allows users to log transactions by sending a text message, voice note, or photo of a receipt, without opening the app.
 
+<p align="center">
+  <img src="assets/main_dashboard.png" alt="Aurum Finance Dashboard" width="900"/>
+</p>
+
 ---
 
 ## Features
@@ -28,6 +32,12 @@ Aurum Finance is a full-stack web application that gives users complete visibili
 - Financial goals with progress tracking and account-linked deposits
 - Category budgets with real-time usage and overspend alerts
 
+<p align="center">
+  <img src="assets/budget.png" alt="Budgets" width="440"/>
+  &nbsp;&nbsp;
+  <img src="assets/goals.png" alt="Goals" width="440"/>
+</p>
+
 ### Intelligence & Analytics
 
 - AI financial analysis powered by LangChain and OpenAI GPT-4o mini
@@ -36,6 +46,12 @@ Aurum Finance is a full-stack web application that gives users complete visibili
 - Monthly evolution dashboard with interactive Chart.js line graphs
 - Detailed reports filterable by period, account and category
 - Automatic weekly financial summary sent via WhatsApp every Monday
+
+<p align="center">
+  <img src="assets/cards.png" alt="Credit Cards" width="440"/>
+  &nbsp;&nbsp;
+  <img src="assets/functionalities.png" alt="Features" width="440"/>
+</p>
 
 ---
 
@@ -95,12 +111,6 @@ python manage.py seed_data
 # Start the development server
 python manage.py runserver
 ```
-
----
-
-## Screenshots
-
-> Screenshots coming soon.
 
 ---
 
