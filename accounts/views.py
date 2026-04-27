@@ -2,7 +2,7 @@ import logging
 from decimal import Decimal
 
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Sum
 from django.http import Http404, HttpResponseRedirect
 from django.urls import reverse_lazy
@@ -290,7 +290,7 @@ class CardCreateView(LoginRequiredMixin, CreateView):
         return response
 
 
-class CardUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+class CardUpdateView(LoginRequiredMixin, UpdateView):
     model = CreditCard
     form_class = CreditCardForm
     template_name = 'accounts/card_form.html'
@@ -298,11 +298,7 @@ class CardUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     context_object_name = 'card'
 
     def get_queryset(self):
-        return CreditCard.objects.all()
-
-    def test_func(self):
-        card = self.get_object()
-        return card.user == self.request.user
+        return CreditCard.objects.filter(user=self.request.user)
 
     def form_valid(self, form):
         response = super().form_valid(form)
@@ -310,18 +306,14 @@ class CardUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         return response
 
 
-class CardDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+class CardDeleteView(LoginRequiredMixin, DeleteView):
     model = CreditCard
     template_name = 'accounts/card_confirm_delete.html'
     success_url = reverse_lazy('accounts:card_list')
     context_object_name = 'card'
 
     def get_queryset(self):
-        return CreditCard.objects.all()
-
-    def test_func(self):
-        card = self.get_object()
-        return card.user == self.request.user
+        return CreditCard.objects.filter(user=self.request.user)
 
     def form_valid(self, form):
         self.object.is_active = False

@@ -3,7 +3,7 @@ from decimal import Decimal
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.http import Http404, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.utils import timezone
@@ -81,13 +81,9 @@ class InstallmentPlanDetailView(LoginRequiredMixin, DetailView):
     context_object_name = 'plan'
 
     def get_queryset(self):
-        return InstallmentPlan.objects.select_related('account', 'category')
-
-    def get_object(self, queryset=None):
-        obj = super().get_object(queryset)
-        if obj.user != self.request.user:
-            raise Http404('Parcelamento não encontrado.')
-        return obj
+        return InstallmentPlan.objects.filter(
+            user=self.request.user
+        ).select_related('account', 'category')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
