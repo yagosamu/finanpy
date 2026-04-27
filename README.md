@@ -5,6 +5,10 @@
 ![TailwindCSS](https://img.shields.io/badge/tailwindcss-4.1-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white)
 ![Status](https://img.shields.io/badge/status-active-22c55e?style=flat-square)
 
+<p align="right">
+  <a href="README.pt-BR.md">🇧🇷 Português</a>
+</p>
+
 Personal finance management platform built with Django. Combining a sophisticated dark interface, AI-powered financial analysis, and WhatsApp integration to make expense tracking effortless.
 
 ---
